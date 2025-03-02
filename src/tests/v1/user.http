@@ -1,0 +1,12 @@
+### User: Detail
+GET http://localhost:3210/v1/user/edd70544-f73e-11ef-9eb4-089798d3
+Content-Type: application/json
+
+### User: login
+POST http://localhost:3210/v1/user/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "1234abcd"
+}

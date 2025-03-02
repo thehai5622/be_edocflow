@@ -1,0 +1,7 @@
+### Upload single file
+GET http://localhost:3210/v1/file/single-upload
+Content-Type: application/json
+
+### Upload multiple file
+GET http://localhost:3210/v1/file/multiple-upload
+Content-Type: application/json
