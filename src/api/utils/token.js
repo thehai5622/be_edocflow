@@ -14,10 +14,10 @@ function signAccessToken(accountId) {
       if (err) {
         reject(err);
       }
-      // rt = await signRefreshToken(token);
+      rt = await signRefreshToken();
       resolve({
         accessToken: token,
-        // refreshToken: rt,
+        refreshToken: rt,
       });
     });
   });
@@ -36,10 +36,10 @@ function verifyAccessToken(token) {
   });
 }
 
-function signRefreshToken(aToken) {
+function signRefreshToken(accountId) {
   return new Promise((resolve, reject) => {
     const payload = {
-      at: aToken,
+      at: accountId,
     };
     const secret = process.env.SECRET_KEY_RT;
     const options = {

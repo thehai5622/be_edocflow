@@ -1,0 +1,28 @@
+============================================================================
+        Tue Mar 04 2025 21:45:58 GMT+0700 (Indochina Time)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\middleware\check_login.js:5:19)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:284:15
+    at param (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:421:3)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:280:10)
+============================================================================
+        Tue Mar 04 2025 21:46:07 GMT+0700 (Indochina Time)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\middleware\check_login.js:5:19)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:284:15
+    at param (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:421:3)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:280:10)

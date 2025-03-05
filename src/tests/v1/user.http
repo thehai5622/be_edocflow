@@ -1,6 +1,7 @@
 ### User: Detail
 GET http://localhost:3210/v1/user/edd70544-f73e-11ef-9eb4-089798d3
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMDk3NTE1LCJleHAiOjE3NDExODM5MTV9.8VJtszkrYuXsg8H05zDpKhlyHGMlRXfWXR8kwqbOkgU
 
 ### User: login
 POST http://localhost:3210/v1/user/login
@@ -9,4 +10,13 @@ Content-Type: application/json
 {
   "username": "admin",
   "password": "1234abcd"
+}
+
+### Refresh Token
+POST http://localhost:3210/v1/user/refresh-token
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMDk3NTE1LCJleHAiOjE3NDExODM5MTV9.8VJtszkrYuXsg8H05zDpKhlyHGMlRXfWXR8kwqbOkgU
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDEwOTc1MTUsImV4cCI6MTc0MzY4OTUxNX0.zL5aVWtTLcLlNdU7NV3jLmsKjApzq31ndxF-NMZK5_Q"
 }

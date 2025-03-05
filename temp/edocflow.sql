@@ -51,7 +51,7 @@ CREATE TABLE `user` (
   `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `permission_id` tinyint(1) DEFAULT NULL,
   `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
-  `gender` int(11) DEFAULT NULL,
+  `gender` tinyint(1) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
   `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
