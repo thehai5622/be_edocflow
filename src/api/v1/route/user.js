@@ -3,9 +3,9 @@ const router = express.Router();
 const controller = require("../controller/user_controller");
 const { checkLogin } = require("../../middleware/check_login");
 
-router.get("/:id", checkLogin, async (req, res, next) => {
+router.get("/me", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.getDetailInfo(req.params.id));
+    res.json(await controller.getDetailInfo(req.payload.id));
   } catch (error) {
     next(error);
   }
@@ -22,6 +22,14 @@ router.post("/login", async (req, res, next) => {
 router.post("/refresh-token", async (req, res, next) => {
   try {
     res.json(await controller.refreshToken(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/me", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.updateProfile(req.payload.id, req.body));
   } catch (error) {
     next(error);
   }

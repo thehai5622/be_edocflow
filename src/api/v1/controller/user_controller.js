@@ -3,13 +3,15 @@ const { signAccessToken, verifyRefreshToken } = require("../../utils/token");
 
 async function getDetailInfo(id) {
   try {
-    const [data] = await db.execute(
-      `SELECT
+    const [data] = await db.execute(`
+      SELECT
         uuid, name, gender, birth_day, phone,
         email, permission_id, create_at, update_at
-        FROM \`user\`
-        WHERE \`uuid\` = '${id}'`
-    );
+      FROM 
+        \`user\`
+      WHERE 
+        \`uuid\` = '${id}'
+    `);
 
     return {
       code: 200,
@@ -22,13 +24,14 @@ async function getDetailInfo(id) {
 
 async function login(user) {
   try {
-    const [rows] = await db.execute(
-      `SELECT  
-          uuid, name, permission_id
-          FROM \`user\` 
-          WHERE \`username\` = '${user.username}'
-          AND \`password\` = '${user.password}'`
-    );
+    const [rows] = await db.execute(`
+      SELECT  
+        uuid, name, permission_id
+      FROM \`user\` 
+      WHERE 
+        \`username\` = '${user.username}'
+        AND \`password\` = '${user.password}'
+    `);
 
     if (rows == null) {
       const error = new Error(
@@ -44,17 +47,17 @@ async function login(user) {
     await db.queryMultiple([
       `DELETE FROM \`token\` WHERE \`user_id\` = '${uuid}'`,
       `
-      INSERT INTO \`token\`(
-            \`uuid\`,
-            \`user_id\`,
-            \`access_token\`,
-            \`refresh_token\`
+        INSERT INTO \`token\`(
+          \`uuid\`,
+          \`user_id\`,
+          \`access_token\`,
+          \`refresh_token\`
         )
         VALUES(
-            uuid(),
-            '${uuid}',
-            '${token.accessToken}',
-            '${token.refreshToken}'
+          uuid(),
+          '${uuid}',
+          '${token.accessToken}',
+          '${token.refreshToken}'
         )
       `,
     ]);
@@ -82,17 +85,17 @@ async function refreshToken(body) {
     await db.queryMultiple([
       `DELETE FROM \`token\` WHERE \`user_id\` = '${payload.id}'`,
       `
-      INSERT INTO \`token\`(
-            \`uuid\`,
-            \`user_id\`,
-            \`access_token\`,
-            \`refresh_token\`
+        INSERT INTO \`token\`(
+          \`uuid\`,
+          \`user_id\`,
+          \`access_token\`,
+          \`refresh_token\`
         )
         VALUES(
-            uuid(),
-            '${payload.id}',
-            '${token.accessToken}',
-            '${token.refreshToken}'
+          uuid(),
+          '${payload.id}',
+          '${token.accessToken}',
+          '${token.refreshToken}'
         )
       `,
     ]);
@@ -109,8 +112,54 @@ async function refreshToken(body) {
   }
 }
 
+async function updateProfile(uuid, body) {
+  try {
+    if (body.name == null || body.name == "") {
+      const error = new Error("Vui lòng nhập tên!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (body.phone == null || body.phone == "") {
+      const error = new Error("Vui lòng nhập số diện thoại!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (body.email == null || body.email == "") {
+      const error = new Error("Vui lòng nhập email!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(`
+      UPDATE 
+        \`user\` 
+      SET
+        \`name\` = '${body.name}',
+        \`gender\` = ${body.gender == null ? null : `'${body.gender}'`},
+        \`birth_day\` = ${
+          body.birth_day == null ? null : `'${body.birth_day}'`
+        },
+        \`phone\` = '${body.phone}',
+        \`email\` = '${body.email}',
+        \`permission_id\` = ${body.permission_id}
+      WHERE 
+        \`uuid\` = '${uuid}'
+    `);
+
+    return {
+      code: 200,
+      message: "Cập nhật thông tin thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getDetailInfo,
   login,
   refreshToken,
+  updateProfile,
 };
