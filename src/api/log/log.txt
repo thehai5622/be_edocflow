@@ -1,0 +1,26 @@
+============================================================================
+        Fri Mar 07 2025 23:19:24 GMT+0700 (Indochina Time)
+        message: Bạn chưa đăng nhập!
+        stack: Error: Bạn chưa đăng nhập!
+    at checkLogin (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\middleware\check_login.js:6:15)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:175:3)
+    at router (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\index.js:47:12)
+============================================================================
+        Fri Mar 07 2025 23:19:34 GMT+0700 (Indochina Time)
+        message: Table 'edocflow.templatefile' doesn't exist
+        stack: Error: Table 'edocflow.templatefile' doesn't exist
+    at PromisePool.execute (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\utils\database.js:14:32)
+    at Object.getListTemplateFile (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\v1\controller\template_file_controller.js:5:27)
+    at D:\Programing\KLTN\BackEnd\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
