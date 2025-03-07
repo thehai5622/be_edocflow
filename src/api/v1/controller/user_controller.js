@@ -41,7 +41,7 @@ async function login(user) {
     const uuid = rows.uuid;
     const token = await signAccessToken(uuid);
 
-    db.queryMultiple([
+    await db.queryMultiple([
       `DELETE FROM \`token\` WHERE \`user_id\` = '${uuid}'`,
       `
       INSERT INTO \`token\`(
@@ -78,6 +78,24 @@ async function refreshToken(body) {
   try {
     const payload = await verifyRefreshToken(body.token);
     const token = await signAccessToken(payload.id);
+
+    await db.queryMultiple([
+      `DELETE FROM \`token\` WHERE \`user_id\` = '${payload.id}'`,
+      `
+      INSERT INTO \`token\`(
+            \`uuid\`,
+            \`user_id\`,
+            \`access_token\`,
+            \`refresh_token\`
+        )
+        VALUES(
+            uuid(),
+            '${payload.id}',
+            '${token.accessToken}',
+            '${token.refreshToken}'
+        )
+      `,
+    ]);
 
     return {
       code: 200,

@@ -12,15 +12,6 @@ Content-Type: application/json
   "password": "1234abcd"
 }
 
-### User: login
-POST http://localhost:3210/v1/user/login
-Content-Type: application/json
-
-{
-  "username": "some1",
-  "password": "some1"
-}
-
 ### Refresh Token
 POST http://localhost:3210/v1/user/refresh-token
 Content-Type: application/json
