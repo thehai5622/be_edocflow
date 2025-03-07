@@ -14,7 +14,7 @@ function signAccessToken(accountId) {
       if (err) {
         reject(err);
       }
-      rt = await signRefreshToken();
+      rt = await signRefreshToken(accountId);
       resolve({
         accessToken: token,
         refreshToken: rt,
@@ -39,7 +39,7 @@ function verifyAccessToken(token) {
 function signRefreshToken(accountId) {
   return new Promise((resolve, reject) => {
     const payload = {
-      at: accountId,
+      id: accountId,
     };
     const secret = process.env.SECRET_KEY_RT;
     const options = {

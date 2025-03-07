@@ -27,4 +27,20 @@ router.post("/refresh-token", async (req, res, next) => {
   }
 });
 
+router.post("/test-at", async (req, res, next) => {
+  try {
+    res.json(await controller.testAT(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/test-rt", async (req, res, next) => {
+  try {
+    res.json(await controller.testRT(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

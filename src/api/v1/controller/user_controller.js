@@ -1,5 +1,5 @@
 const db = require("../../utils/database");
-const { signAccessToken } = require("../../utils/token");
+const { signAccessToken, verifyAccessToken, verifyRefreshToken } = require("../../utils/token");
 
 async function getDetailInfo(id) {
   try {
@@ -59,7 +59,7 @@ async function login(user) {
 async function refreshToken(body) {
   try {
     const uuid = body.uuid;
-    const token = await signAccessToken(uuid);
+    const token = await verifyRefreshToken(body.refreshToken);
 
     return {
       code: 200,
@@ -73,8 +73,40 @@ async function refreshToken(body) {
   }
 }
 
+async function testAT(body) {
+  try {
+    const token = await verifyAccessToken(body.token);
+
+    return {
+      code: 200,
+      data: {
+        token: token,
+      },
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function testRT(body) {
+  try {
+    const token = await verifyRefreshToken(body.token);
+
+    return {
+      code: 200,
+      data: {
+        token: token,
+      },
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getDetailInfo,
   login,
   refreshToken,
+  testAT,
+  testRT,
 };
