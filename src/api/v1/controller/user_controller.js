@@ -192,10 +192,24 @@ async function changePassword(uuid, body) {
   }
 }
 
+async function changeStatus(uuid, body) {
+  try {
+    // Thêm thay đổi trạng thái người dùng
+
+    return {
+      code: 200,
+      message: "Chưa thay đổi trạng thái!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getDetailInfo,
   login,
   refreshToken,
   updateProfile,
   changePassword,
+  changeStatus
 };

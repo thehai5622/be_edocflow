@@ -43,4 +43,12 @@ router.put("/change-password", checkLogin, async (req, res, next) => {
   }
 });
 
+router.put("/change-status", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.changeStatus(req.payload.id, req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
