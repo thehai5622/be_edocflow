@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `permission` (
   `uuid` tinyint(1) NOT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) NOT NULL,
   `create_at` datetime DEFAULT current_timestamp(),
   `update_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -44,19 +44,32 @@ INSERT INTO `permission` (`uuid`, `name`, `create_at`, `update_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `token`
+--
+
+CREATE TABLE `token` (
+  `uuid` char(32) NOT NULL,
+  `user_id` char(32) NOT NULL,
+  `access_token` char(181) NOT NULL,
+  `refresh_token` char(181) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` char(32) NOT NULL,
   `permission_id` tinyint(1) DEFAULT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) NOT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
-  `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
-  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(10) NOT NULL,
+  `email` varchar(75) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) DEFAULT NULL,
   `create_at` datetime DEFAULT current_timestamp(),
   `update_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -80,6 +93,13 @@ ALTER TABLE `permission`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `token`
+--
+ALTER TABLE `token`
+  ADD PRIMARY KEY (`uuid`),
+  ADD KEY `token_user` (`user_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -92,6 +112,12 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `token`
+--
+ALTER TABLE `token`
+  ADD CONSTRAINT `token_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user`

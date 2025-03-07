@@ -1,5 +1,5 @@
 const db = require("../../utils/database");
-const { signAccessToken, verifyAccessToken, verifyRefreshToken } = require("../../utils/token");
+const { signAccessToken, verifyRefreshToken } = require("../../utils/token");
 
 async function getDetailInfo(id) {
   try {
@@ -41,6 +41,24 @@ async function login(user) {
     const uuid = rows.uuid;
     const token = await signAccessToken(uuid);
 
+    db.queryMultiple([
+      `DELETE FROM \`token\` WHERE \`user_id\` = '${uuid}'`,
+      `
+      INSERT INTO \`token\`(
+            \`uuid\`,
+            \`user_id\`,
+            \`access_token\`,
+            \`refresh_token\`
+        )
+        VALUES(
+            uuid(),
+            '${uuid}',
+            '${token.accessToken}',
+            '${token.refreshToken}'
+        )
+      `,
+    ]);
+
     return {
       code: 200,
       data: {
@@ -58,8 +76,8 @@ async function login(user) {
 
 async function refreshToken(body) {
   try {
-    const uuid = body.uuid;
-    const token = await verifyRefreshToken(body.refreshToken);
+    const payload = await verifyRefreshToken(body.token);
+    const token = await signAccessToken(payload.id);
 
     return {
       code: 200,
@@ -73,40 +91,8 @@ async function refreshToken(body) {
   }
 }
 
-async function testAT(body) {
-  try {
-    const token = await verifyAccessToken(body.token);
-
-    return {
-      code: 200,
-      data: {
-        token: token,
-      },
-    };
-  } catch (error) {
-    throw error;
-  }
-}
-
-async function testRT(body) {
-  try {
-    const token = await verifyRefreshToken(body.token);
-
-    return {
-      code: 200,
-      data: {
-        token: token,
-      },
-    };
-  } catch (error) {
-    throw error;
-  }
-}
-
 module.exports = {
   getDetailInfo,
   login,
   refreshToken,
-  testAT,
-  testRT,
 };

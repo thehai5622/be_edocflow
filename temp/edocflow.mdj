@@ -1686,7 +1686,7 @@
 											"top": 123,
 											"width": 153.56884765625,
 											"height": 13,
-											"text": "-refresh_token: char[128]",
+											"text": "-refresh_token: char[181]",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2500,7 +2500,7 @@
 							"name": "refresh_token",
 							"visibility": "private",
 							"type": "char",
-							"multiplicity": "128"
+							"multiplicity": "181"
 						}
 					]
 				}
