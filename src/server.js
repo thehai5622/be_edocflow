@@ -1,6 +1,7 @@
 const { writeFileSync } = require("fs");
 const express = require("express");
 const cors = require("cors");
+const { checkLogin } = require("./api/middleware/check_login");
 require("dotenv").config();
 
 // Setup server
@@ -19,6 +20,7 @@ app.get("/", (req, res, next) => {
 });
 
 // Router version
+app.use('/resources', checkLogin, express.static(__dirname + '/resources'))
 app.use('/v1', require("./api/v1/main"));
 
 // Error response
