@@ -47,7 +47,7 @@ async function login(user) {
         uuid: uuid ?? null,
         name: rows.name ?? null,
         permission: rows.permission_id ?? null,
-        accessToken: token.accessToken ?? null,
+        accessToken: token.accessToken,
         refreshToken: token.refreshToken,
       },
     };
@@ -56,34 +56,15 @@ async function login(user) {
   }
 }
 
-async function refreshToken(token) {
+async function refreshToken(body) {
   try {
-    const [rows] = await db.execute(
-      `SELECT  
-          uuid, name, permission_id
-          FROM \`user\` 
-          WHERE \`username\` = '${user.username}'
-          AND \`password\` = '${user.password}'`
-    );
-
-    if (rows == null) {
-      const error = new Error(
-        "Thông tin tài khoản hoặc mật khẩu không chính xác!"
-      );
-      error.statusCode = 401;
-      throw error;
-    }
-
-    const uuid = rows.uuid;
+    const uuid = body.uuid;
     const token = await signAccessToken(uuid);
 
     return {
       code: 200,
       data: {
-        uuid: uuid ?? null,
-        name: rows.name ?? null,
-        permission: rows.permission_id ?? null,
-        accessToken: token.accessToken ?? null,
+        accessToken: token.accessToken,
         refreshToken: token.refreshToken,
       },
     };

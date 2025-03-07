@@ -21,7 +21,7 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/refresh-token", async (req, res, next) => {
   try {
-    res.json(await controller.refreshToken(req.body.refreshToken));
+    res.json(await controller.refreshToken(req.body));
   } catch (error) {
     next(error);
   }
