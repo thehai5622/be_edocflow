@@ -16,8 +16,8 @@ function signAccessToken(accountId) {
       }
       rt = await signRefreshToken(accountId);
       resolve({
-        accessToken: token,
-        refreshToken: rt,
+        access_token: token,
+        refresh_token: rt,
       });
     });
   });

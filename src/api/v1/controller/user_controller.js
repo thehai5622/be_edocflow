@@ -37,7 +37,7 @@ async function login(user) {
       const error = new Error(
         "Thông tin tài khoản hoặc mật khẩu không chính xác!"
       );
-      error.statusCode = 401;
+      error.statusCode = 400;
       throw error;
     }
 
@@ -56,8 +56,8 @@ async function login(user) {
         VALUES(
           uuid(),
           '${uuid}',
-          '${token.accessToken}',
-          '${token.refreshToken}'
+          '${token.access_token}',
+          '${token.refresh_token}'
         )
       `,
     ]);
@@ -68,8 +68,8 @@ async function login(user) {
         uuid: uuid ?? null,
         name: rows.name ?? null,
         permission: rows.permission_id ?? null,
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
+        access_token: token.access_token,
+        refresh_token: token.refresh_token,
       },
     };
   } catch (error) {
@@ -94,8 +94,8 @@ async function refreshToken(body) {
         VALUES(
           uuid(),
           '${payload.id}',
-          '${token.accessToken}',
-          '${token.refreshToken}'
+          '${token.access_token}',
+          '${token.refresh_token}'
         )
       `,
     ]);
@@ -103,8 +103,8 @@ async function refreshToken(body) {
     return {
       code: 200,
       data: {
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
+        access_token: token.access_token,
+        refresh_token: token.refresh_token,
       },
     };
   } catch (error) {
@@ -157,9 +157,45 @@ async function updateProfile(uuid, body) {
   }
 }
 
+async function changePassword(uuid, body) {
+  try {
+    const [rows] = await db.execute(`
+      SELECT  
+        uuid
+      FROM \`user\` 
+      WHERE 
+        \`uuid\` = '${uuid}'
+        AND \`password\` = '${body.current_password}'
+    `);
+
+    if (rows == null) {
+      const error = new Error("Mật khẩu hiện tại không chính xác!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(`
+      UPDATE 
+        \`user\` 
+      SET
+        \`password\` = '${body.password}'
+      WHERE 
+        \`uuid\` = '${uuid}'
+    `);
+
+    return {
+      code: 200,
+      message: "Mật khẩu đã được thay đổi!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getDetailInfo,
   login,
   refreshToken,
   updateProfile,
+  changePassword,
 };

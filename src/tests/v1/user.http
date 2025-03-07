@@ -33,3 +33,14 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0L
   "email": "luonghai5622@gmail.com",
   "permission_id": 1
 }
+
+### Update profile
+PUT http://localhost:3210/v1/user/change-password
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMzIxMzAwLCJleHAiOjE3NDE0MDc3MDB9._3zA8fKNqGs7o4neDSR1H_QkYSvWMUqf-gNRC-fEVH0
+
+{
+  "otp": "123456",
+  "old_password": "1234abcd",
+  "password": "1234abcd"
+}
