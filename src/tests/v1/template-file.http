@@ -1,4 +1,38 @@
 ### Get list template file
-GET http://localhost:3210/v1/template-file
+GET http://localhost:3210/v1/template-file?page=1&limit=12&keyword=hehe
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMzIxMzAwLCJleHAiOjE3NDE0MDc3MDB9._3zA8fKNqGs7o4neDSR1H_QkYSvWMUqf-gNRC-fEVH0
+
+### Create template file
+POST http://localhost:3210/v1/template-file
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMzIxMzAwLCJleHAiOjE3NDE0MDc3MDB9._3zA8fKNqGs7o4neDSR1H_QkYSvWMUqf-gNRC-fEVH0
+
+{
+  "name": "Một file mẫu khác nhưng là cá nhân",
+  "file": "resources/somefile.txt",
+  "type": 0,
+  "status": 1,
+  "note": "Một đoạn mô tả khác nhưng là cá nhân"
+}
+
+### Update template file
+PUT http://localhost:3210/v1/template-file/e85dd89d-fbc4-11ef-8991-309c23d7
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMzIxMzAwLCJleHAiOjE3NDE0MDc3MDB9._3zA8fKNqGs7o4neDSR1H_QkYSvWMUqf-gNRC-fEVH0
+
+{
+    "name": "File mẫu nào đó",
+    "file": "resources/somefile.txt",
+    "type": 1,
+    "note": "Ghi chú nào đó"
+}
+
+### Change status template file
+PUT http://localhost:3210/v1/template-file/change-status/e85dd89d-fbc4-11ef-8991-309c23d7
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxMzIxMzAwLCJleHAiOjE3NDE0MDc3MDB9._3zA8fKNqGs7o4neDSR1H_QkYSvWMUqf-gNRC-fEVH0
+
+{
+    "status": 1
+}
