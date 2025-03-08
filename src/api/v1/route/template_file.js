@@ -5,18 +5,50 @@ const { checkLogin } = require("../../middleware/check_login");
 
 router.get("/", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.getListTemplateFile());
+    res.json(await controller.getListTemplateFile({
+      user_id: req.payload.id,
+      keyword: req.query.keyword,
+      page: req.query.page,
+      limit: req.query.limit
+    }));
   } catch (error) {
     next(error);
   }
 });
 
-// Thêm file template
+router.post("/", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.createTemplateFile({
+      user_id: req.payload.id,
+      body: req.body
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
 
-// Chỉnh sửa file template
+router.put("/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.updateTemplateFile({
+      uuid: req.params.id,
+      user_id: req.payload.id,
+      body: req.body
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
 
-// Mở/Khóa file template
-
-// Xóa file template
+router.put("/change-status/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.changeStatusTemplateFile({
+      uuid: req.params.id,
+      user_id: req.payload.id,
+      body: req.body
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
