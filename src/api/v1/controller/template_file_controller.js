@@ -1,4 +1,5 @@
 const db = require("../../utils/database");
+const offsetUtils = require("../../utils/offset");
 
 async function getListTemplateFile({
   user_id,
@@ -7,7 +8,21 @@ async function getListTemplateFile({
   limit = 12
 }) {
   try {
-    // const offset = helper.getOffset(page, limit);
+    const offset = offsetUtils.getOffset(page, limit);
+
+    console.log(`
+      SELECT 
+        * 
+      FROM 
+        \`templatefile\`
+      WHERE 
+        ((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
+        \`type\` = 1) AND
+        (\`name\` LIKE '%${keyword}%' OR 
+        \`note\` LIKE '%${keyword}%')
+      ORDER BY \`templatefile\`.\`created_at\` DESC
+        LIMIT ${offset}, ${limit}
+    `);
 
     const data = await db.execute(`
       SELECT 
@@ -15,8 +30,12 @@ async function getListTemplateFile({
       FROM 
         \`templatefile\`
       WHERE 
-        (\`user_id\` = '${user_id}' AND \`type\` = 0) ||
-        \`type\` = 1
+        ((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
+        \`type\` = 1) AND
+        (\`name\` LIKE '%${keyword}%' OR 
+        \`note\` LIKE '%${keyword}%')
+      ORDER BY \`templatefile\`.\`created_at\` DESC
+        LIMIT ${offset}, ${limit}
     `);
 
     return {

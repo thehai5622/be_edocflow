@@ -1,0 +1,80 @@
+============================================================================
+        Sat Mar 08 2025 10:28:31 GMT+0700 (Indochina Time)
+        message: helper is not defined
+        stack: ReferenceError: helper is not defined
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:11:20)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+============================================================================
+        Sat Mar 08 2025 10:28:45 GMT+0700 (Indochina Time)
+        message: helper is not defined
+        stack: ReferenceError: helper is not defined
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:11:20)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+============================================================================
+        Sat Mar 08 2025 10:29:13 GMT+0700 (Indochina Time)
+        message: Unknown column 'news.create_at' in 'order clause'
+        stack: Error: Unknown column 'news.create_at' in 'order clause'
+    at PromisePool.execute (D:\NodeJS\be_edocflow\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\NodeJS\be_edocflow\src\api\utils\database.js:14:32)
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:13:27)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+============================================================================
+        Sat Mar 08 2025 10:29:25 GMT+0700 (Indochina Time)
+        message: Unknown column 'news.create_at' in 'order clause'
+        stack: Error: Unknown column 'news.create_at' in 'order clause'
+    at PromisePool.execute (D:\NodeJS\be_edocflow\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\NodeJS\be_edocflow\src\api\utils\database.js:14:32)
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:13:27)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+============================================================================
+        Sat Mar 08 2025 10:29:29 GMT+0700 (Indochina Time)
+        message: Unknown column 'templatefile.create_at' in 'order clause'
+        stack: Error: Unknown column 'templatefile.create_at' in 'order clause'
+    at PromisePool.execute (D:\NodeJS\be_edocflow\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\NodeJS\be_edocflow\src\api\utils\database.js:14:32)
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:13:27)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+============================================================================
+        Sat Mar 08 2025 10:31:29 GMT+0700 (Indochina Time)
+        message: Undeclared variable: NaN
+        stack: Error: Undeclared variable: NaN
+    at PromisePool.execute (D:\NodeJS\be_edocflow\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\NodeJS\be_edocflow\src\api\utils\database.js:14:32)
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:13:27)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+============================================================================
+        Sat Mar 08 2025 10:31:38 GMT+0700 (Indochina Time)
+        message: Undeclared variable: NaN
+        stack: Error: Undeclared variable: NaN
+    at PromisePool.execute (D:\NodeJS\be_edocflow\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (D:\NodeJS\be_edocflow\src\api\utils\database.js:14:32)
+    at Object.getListTemplateFile (D:\NodeJS\be_edocflow\src\api\v1\controller\template_file_controller.js:13:27)
+    at D:\NodeJS\be_edocflow\src\api\v1\route\template_file.js:8:31
+    at Layer.handle [as handle_request] (D:\NodeJS\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\NodeJS\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at checkLogin (D:\NodeJS\be_edocflow\src\api\middleware\check_login.js:29:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
