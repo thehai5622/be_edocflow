@@ -1,7 +1,7 @@
 const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
 
-async function getListTypeTemplateFile({
+async function getIssuingAuthority({
   user_id,
   keyword = "",
   page = 1,
@@ -15,11 +15,11 @@ async function getListTypeTemplateFile({
       SELECT
         *
       FROM
-        \`typetemplatefile\`
+        \`issuingauthority\`
       WHERE
         (\`name\` LIKE '%${keyword}%') AND
-        \`is_removed\` = ${isRecycleBin}
-      ORDER BY \`typetemplatefile\`.\`created_at\` DESC
+        \`is_removed\` = ${isRecycleBin} AND
+      ORDER BY \`issuingauthority\`.\`created_at\` DESC
         LIMIT ${offset}, ${limit}
     `);
 
@@ -32,7 +32,7 @@ async function getListTypeTemplateFile({
   }
 }
 
-async function createTypeTemplateFile({ user_id, body }) {
+async function createIssuingAuthority({ user_id, body }) {
   try {
     if (body.name == null || body.name == "") {
       const error = new Error("Vui lòng nhập tên!");
@@ -41,7 +41,7 @@ async function createTypeTemplateFile({ user_id, body }) {
     }
 
     await db.execute(`
-      INSERT INTO \`typetemplatefile\`(
+      INSERT INTO \`issuingauthority\`(
         \`uuid\`,
         \`name\`
       )
@@ -53,14 +53,14 @@ async function createTypeTemplateFile({ user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã thêm loại file mẫu thành công!",
+      data: "Đã thêm cơ quan ban hành thành công!",
     };
   } catch (error) {
     throw error;
   }
 }
 
-async function updateTypeTemplateFile({ uuid, user_id, body }) {
+async function updateIssuingAuthority({ uuid, user_id, body }) {
   try {
     if (body.name == null || body.name == "") {
       const error = new Error("Vui lòng nhập tên!");
@@ -70,7 +70,7 @@ async function updateTypeTemplateFile({ uuid, user_id, body }) {
 
     await db.execute(`
       UPDATE
-        \`typetemplatefile\`
+        \`issuingauthority\`
       SET
         \`name\` = '${body.name}'
       WHERE
@@ -79,18 +79,18 @@ async function updateTypeTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã chỉnh sửa thông tin loại file mẫu thành công!",
+      data: "Đã chỉnh sửa thông tin cơ quan ban hành thành công!",
     };
   } catch (error) {
     throw error;
   }
 }
 
-async function deleteTypeTemplateFile({ uuid, user_id, body }) {
+async function deleteIssuingAuthority({ uuid, user_id, body }) {
   try {
     await db.execute(`
       UPDATE
-        \`typetemplatefile\`
+        \`issuingauthority\`
       SET
         \`is_removed\` = 1
       WHERE
@@ -99,7 +99,7 @@ async function deleteTypeTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã xóa loại file mẫu thành công!",
+      data: "Đã xóa cơ quan ban hành thành công!",
     };
   } catch (error) {
     throw error;
@@ -107,8 +107,8 @@ async function deleteTypeTemplateFile({ uuid, user_id, body }) {
 }
 
 module.exports = {
-  getListTypeTemplateFile,
-  createTypeTemplateFile,
-  updateTypeTemplateFile,
-  deleteTypeTemplateFile,
+  getIssuingAuthority,
+  createIssuingAuthority,
+  updateIssuingAuthority,
+  deleteIssuingAuthority,
 };

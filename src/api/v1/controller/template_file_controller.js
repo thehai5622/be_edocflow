@@ -5,7 +5,8 @@ async function getListTemplateFile({
   user_id,
   keyword = "",
   page = 1,
-  limit = 12
+  limit = 12,
+  isRecycleBin = 0,
 }) {
   try {
     const offset = offsetUtils.getOffset(page, limit);
@@ -20,7 +21,7 @@ async function getListTemplateFile({
         \`type\` = 1) AND
         (\`name\` LIKE '%${keyword}%' OR 
         \`note\` LIKE '%${keyword}%')) AND
-        \`is_removed\` = 0
+        \`is_removed\` = ${isRecycleBin}
       ORDER BY \`templatefile\`.\`created_at\` DESC
         LIMIT ${offset}, ${limit}
     `);

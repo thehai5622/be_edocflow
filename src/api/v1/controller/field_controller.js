@@ -6,6 +6,7 @@ async function getListField({
   keyword = "",
   page = 1,
   limit = 12,
+  isRecycleBin = 0,
 }) {
   try {
     const offset = offsetUtils.getOffset(page, limit);
@@ -17,7 +18,7 @@ async function getListField({
         \`field\`
       WHERE
         (\`name\` LIKE '%${keyword}%') AND
-        \`is_removed\` = 0
+        \`is_removed\` = ${isRecycleBin}
       ORDER BY \`field\`.\`created_at\` DESC
         LIMIT ${offset}, ${limit}
     `);

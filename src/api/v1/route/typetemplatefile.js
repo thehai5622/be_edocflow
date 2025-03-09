@@ -9,7 +9,8 @@ router.get("/", checkLogin, async (req, res, next) => {
       user_id: req.payload.id,
       keyword: req.query.keyword,
       page: req.query.page,
-      limit: req.query.limit
+      limit: req.query.limit,
+      isRecycleBin: req.query.isRecycleBin,
     }));
   } catch (error) {
     next(error);
