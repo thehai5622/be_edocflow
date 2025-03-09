@@ -10,30 +10,17 @@ async function getListTemplateFile({
   try {
     const offset = offsetUtils.getOffset(page, limit);
 
-    console.log(`
-      SELECT 
-        * 
-      FROM 
-        \`templatefile\`
-      WHERE 
-        ((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
-        \`type\` = 1) AND
-        (\`name\` LIKE '%${keyword}%' OR 
-        \`note\` LIKE '%${keyword}%')
-      ORDER BY \`templatefile\`.\`created_at\` DESC
-        LIMIT ${offset}, ${limit}
-    `);
-
     const data = await db.execute(`
       SELECT 
         * 
       FROM 
         \`templatefile\`
       WHERE 
-        ((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
+        (((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
         \`type\` = 1) AND
         (\`name\` LIKE '%${keyword}%' OR 
-        \`note\` LIKE '%${keyword}%')
+        \`note\` LIKE '%${keyword}%')) AND
+        \`is_removed\` = 0
       ORDER BY \`templatefile\`.\`created_at\` DESC
         LIMIT ${offset}, ${limit}
     `);
@@ -61,10 +48,17 @@ async function createTemplateFile({ user_id, body }) {
       throw error;
     }
 
+    if (body.typetemplatefile_id == null || body.typetemplatefile_id == "") {
+      const error = new Error("Vui lòng chọn loại file mẫu!");
+      error.statusCode = 400;
+      throw error;
+    }
+
     await db.execute(`
       INSERT INTO \`templatefile\`(
         \`uuid\`,
         \`user_id\`,
+        \`typetemplatefile_id\`,
         \`name\`,
         \`file\`,
         \`type\`,
@@ -74,6 +68,7 @@ async function createTemplateFile({ user_id, body }) {
       VALUES(
         UUID(),
         '${user_id}',
+        '${body.typetemplatefile_id}',
         '${body.name}',
         '${body.file}',
         ${body.type},
@@ -105,11 +100,18 @@ async function updateTemplateFile({ uuid, user_id, body }) {
       throw error;
     }
 
+    if (body.typetemplatefile_id == null || body.typetemplatefile_id == "") {
+      const error = new Error("Vui lòng chọn loại file mẫu!");
+      error.statusCode = 400;
+      throw error;
+    }
+
     await db.execute(`
       UPDATE
         \`templatefile\`
       SET
         \`user_id\` = '${user_id}',
+        \`typetemplatefile_id\` = '${body.typetemplatefile_id}',
         \`name\` = '${body.name}',
         \`file\` = '${body.file}',
         \`type\` = '${body.type}',
@@ -154,9 +156,30 @@ async function changeStatusTemplateFile({ uuid, user_id, body }) {
   }
 }
 
+async function deleteTemplateFile({ uuid }) {
+  try {
+    await db.execute(`
+      UPDATE
+        \`templatefile\`
+      SET
+        \`is_removed\` = 1
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    return {
+      code: 200,
+      data: 'Đã xóa file mẫu thành công!',
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getListTemplateFile,
   createTemplateFile,
   updateTemplateFile,
-  changeStatusTemplateFile
+  changeStatusTemplateFile,
+  deleteTemplateFile,
 };

@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controller/template_file_controller");
+const controller = require("../controller/typetemplatefile_controller");
 const { checkLogin } = require("../../middleware/check_login");
 
 router.get("/", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.getListTemplateFile({
+    res.json(await controller.getListTypeTemplateFile({
       user_id: req.payload.id,
       keyword: req.query.keyword,
       page: req.query.page,
@@ -18,7 +18,7 @@ router.get("/", checkLogin, async (req, res, next) => {
 
 router.post("/", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.createTemplateFile({
+    res.json(await controller.createTypeTemplateFile({
       user_id: req.payload.id,
       body: req.body
     }));
@@ -29,19 +29,7 @@ router.post("/", checkLogin, async (req, res, next) => {
 
 router.put("/:id", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.updateTemplateFile({
-      uuid: req.params.id,
-      user_id: req.payload.id,
-      body: req.body
-    }));
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/change-status/:id", checkLogin, async (req, res, next) => {
-  try {
-    res.json(await controller.changeStatusTemplateFile({
+    res.json(await controller.updateTypeTemplateFile({
       uuid: req.params.id,
       user_id: req.payload.id,
       body: req.body
@@ -53,7 +41,7 @@ router.put("/change-status/:id", checkLogin, async (req, res, next) => {
 
 router.delete("/:id", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.deleteTemplateFile({
+    res.json(await controller.deleteTypeTemplateFile({
       uuid: req.params.id,
     }));
   } catch (error) {
