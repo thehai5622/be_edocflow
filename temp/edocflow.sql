@@ -30,15 +30,15 @@ SET time_zone = "+00:00";
 CREATE TABLE `permission` (
   `uuid` tinyint(1) NOT NULL,
   `name` varchar(75) NOT NULL,
-  `create_at` datetime DEFAULT current_timestamp(),
-  `update_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `permission`
 --
 
-INSERT INTO `permission` (`uuid`, `name`, `create_at`, `update_at`) VALUES
+INSERT INTO `permission` (`uuid`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'Quản trị viên', '2025-03-01 21:37:55', '2025-03-01 21:37:55');
 
 -- --------------------------------------------------------
@@ -105,15 +105,15 @@ CREATE TABLE `user` (
   `email` varchar(75) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) DEFAULT NULL,
-  `create_at` datetime DEFAULT current_timestamp(),
-  `update_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`uuid`, `permission_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `create_at`, `update_at`) VALUES
+INSERT INTO `user` (`uuid`, `permission_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`) VALUES
 ('8c951845-fb31-11ef-8991-309c23d7', 1, 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'some1', '2025-03-07 15:52:48', '2025-03-07 15:52:48'),
 ('edd70544-f73e-11ef-9eb4-089798d3', 1, 'Quản Trị Viên', NULL, NULL, '0326090580', 'luonghai5622@gmail.com', 'admin', '1234abcd', '2025-03-02 15:18:32', '2025-03-08 09:10:30');
 

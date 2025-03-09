@@ -1,0 +1,14 @@
+============================================================================
+        Sun Mar 09 2025 16:39:49 GMT+0700 (Indochina Time)
+        message: jwt expired
+        stack: TokenExpiredError: jwt expired
+    at D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\jsonwebtoken\verify.js:101:10)
+    at D:\Programing\KLTN\BackEnd\be_edocflow\src\api\utils\token.js:29:9
+    at new Promise (<anonymous>)
+    at verifyAccessToken (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\utils\token.js:27:10)
+    at checkLogin (D:\Programing\KLTN\BackEnd\be_edocflow\src\api\middleware\check_login.js:15:25)
+    at Layer.handle [as handle_request] (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\Programing\KLTN\BackEnd\be_edocflow\node_modules\express\lib\router\route.js:119:3)
