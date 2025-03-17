@@ -6,7 +6,7 @@ async function getDetailInfo(id) {
     const [data] = await db.execute(`
       SELECT
         uuid, name, gender, birth_day, phone,
-        email, permission_id, create_at, update_at
+        email, permission_id, created_at, updated_at
       FROM 
         \`user\`
       WHERE 
