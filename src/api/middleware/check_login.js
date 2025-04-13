@@ -21,8 +21,7 @@ const checkLogin = async (req, res, next) => {
 
     if (rows.access_token != token) {
       var err = new Error("Tài khoản này hiện đang được đăng nhập ở nơi khác!");
-      // err.statusCode = 406;
-      err.statusCode = 401;
+      err.statusCode = 406;
       next(err);
       return;
     } else {

@@ -11,8 +11,8 @@ async function getListField({
   try {
     const offset = offsetUtils.getOffset(page, limit);
 
-    const data = await db.execute(`
-      SELECT
+    const result = await db.queryMultiple([
+      `SELECT
         *
       FROM
         \`field\`
@@ -20,12 +20,18 @@ async function getListField({
         (\`name\` LIKE '%${keyword}%') AND
         \`is_removed\` = ${isRecycleBin}
       ORDER BY \`field\`.\`created_at\` DESC
-        LIMIT ${offset}, ${limit}
-    `);
+        LIMIT ${offset}, ${limit}`,
+      `SELECT count(*) AS total FROM field`,
+    ]);
+    const totalCount = result[1][0].total
 
     return {
       code: 200,
-      data: data ?? null,
+      data: result[0] ?? null,
+      pagination: {
+        totalPage: Math.ceil(totalCount/limit),
+        totalCount,
+      },
     };
   } catch (error) {
     throw error;
@@ -53,7 +59,7 @@ async function createField({ user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã thêm lĩnh vực thành công!",
+      message: "Đã thêm lĩnh vực thành công!",
     };
   } catch (error) {
     throw error;
@@ -79,7 +85,7 @@ async function updateField({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã chỉnh sửa thông tin lĩnh vực thành công!",
+      message: "Đã chỉnh sửa thông tin lĩnh vực thành công!",
     };
   } catch (error) {
     throw error;
@@ -99,7 +105,7 @@ async function deleteField({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã xóa lĩnh vực thành công!",
+      message: "Đã xóa lĩnh vực thành công!",
     };
   } catch (error) {
     throw error;
