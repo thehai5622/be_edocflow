@@ -21,7 +21,7 @@ async function getListField({
         \`is_removed\` = ${isRecycleBin}
       ORDER BY \`field\`.\`created_at\` DESC
         LIMIT ${offset}, ${limit}`,
-      `SELECT count(*) AS total FROM field`,
+      `SELECT count(*) AS total FROM \`field\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
     ]);
     const totalCount = result[1][0].total
 
