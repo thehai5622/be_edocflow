@@ -2,7 +2,6 @@ const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
 
 async function getListField({
-  user_id,
   keyword = "",
   page = 1,
   limit = 12,
@@ -23,13 +22,13 @@ async function getListField({
         LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`field\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
     ]);
-    const totalCount = result[1][0].total
+    const totalCount = result[1][0].total;
 
     return {
       code: 200,
       data: result[0] ?? null,
       pagination: {
-        totalPage: Math.ceil(totalCount/limit),
+        totalPage: Math.ceil(totalCount / limit),
         totalCount,
       },
     };

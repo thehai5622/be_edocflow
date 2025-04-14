@@ -11,21 +11,27 @@ async function getListTypeTemplateFile({
   try {
     const offset = offsetUtils.getOffset(page, limit);
 
-    const data = await db.execute(`
-      SELECT
-        *
-      FROM
-        \`typetemplatefile\`
-      WHERE
-        (\`name\` LIKE '%${keyword}%') AND
-        \`is_removed\` = ${isRecycleBin}
-      ORDER BY \`typetemplatefile\`.\`created_at\` DESC
-        LIMIT ${offset}, ${limit}
-    `);
+    const result = await db.queryMultiple([
+      `SELECT
+            *
+          FROM
+            \`typetemplatefile\`
+          WHERE
+            (\`name\` LIKE '%${keyword}%') AND
+            \`is_removed\` = ${isRecycleBin}
+          ORDER BY \`typetemplatefile\`.\`created_at\` DESC
+            LIMIT ${offset}, ${limit}`,
+      `SELECT count(*) AS total FROM \`typetemplatefile\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
+    ]);
+    const totalCount = result[1][0].total;
 
     return {
       code: 200,
-      data: data ?? null,
+      data: result[0] ?? null,
+      pagination: {
+        totalPage: Math.ceil(totalCount / limit),
+        totalCount,
+      },
     };
   } catch (error) {
     throw error;
@@ -53,7 +59,7 @@ async function createTypeTemplateFile({ user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã thêm loại file mẫu thành công!",
+      message: "Đã thêm loại file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -79,7 +85,7 @@ async function updateTypeTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã chỉnh sửa thông tin loại file mẫu thành công!",
+      message: "Đã chỉnh sửa thông tin loại file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -99,7 +105,7 @@ async function deleteTypeTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã xóa loại file mẫu thành công!",
+      message: "Đã xóa loại file mẫu thành công!",
     };
   } catch (error) {
     throw error;
