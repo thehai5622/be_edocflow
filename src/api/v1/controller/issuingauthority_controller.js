@@ -2,7 +2,6 @@ const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
 
 async function getIssuingAuthority({
-  user_id,
   keyword = "",
   page = 1,
   limit = 12,
@@ -11,21 +10,27 @@ async function getIssuingAuthority({
   try {
     const offset = offsetUtils.getOffset(page, limit);
 
-    const data = await db.execute(`
-      SELECT
+    const result = await db.queryMultiple([
+      `SELECT
         *
       FROM
         \`issuingauthority\`
       WHERE
         (\`name\` LIKE '%${keyword}%') AND
-        \`is_removed\` = ${isRecycleBin} AND
+        \`is_removed\` = ${isRecycleBin}
       ORDER BY \`issuingauthority\`.\`created_at\` DESC
-        LIMIT ${offset}, ${limit}
-    `);
+        LIMIT ${offset}, ${limit}`,
+      `SELECT count(*) AS total FROM \`issuingauthority\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
+    ]);
+    const totalCount = result[1][0].total;
 
     return {
       code: 200,
-      data: data ?? null,
+      data: result[0] ?? null,
+      pagination: {
+        totalPage: Math.ceil(totalCount / limit),
+        totalCount,
+      },
     };
   } catch (error) {
     throw error;
@@ -53,7 +58,7 @@ async function createIssuingAuthority({ user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã thêm cơ quan ban hành thành công!",
+      message: "Đã thêm cơ quan ban hành thành công!",
     };
   } catch (error) {
     throw error;
@@ -79,7 +84,7 @@ async function updateIssuingAuthority({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã chỉnh sửa thông tin cơ quan ban hành thành công!",
+      message: "Đã chỉnh sửa thông tin cơ quan ban hành thành công!",
     };
   } catch (error) {
     throw error;
@@ -99,7 +104,7 @@ async function deleteIssuingAuthority({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã xóa cơ quan ban hành thành công!",
+      message: "Đã xóa cơ quan ban hành thành công!",
     };
   } catch (error) {
     throw error;

@@ -13,14 +13,14 @@ async function getListTypeTemplateFile({
 
     const result = await db.queryMultiple([
       `SELECT
-            *
-          FROM
-            \`typetemplatefile\`
-          WHERE
-            (\`name\` LIKE '%${keyword}%') AND
-            \`is_removed\` = ${isRecycleBin}
-          ORDER BY \`typetemplatefile\`.\`created_at\` DESC
-            LIMIT ${offset}, ${limit}`,
+        *
+      FROM
+        \`typetemplatefile\`
+      WHERE
+        (\`name\` LIKE '%${keyword}%') AND
+        \`is_removed\` = ${isRecycleBin}
+      ORDER BY \`typetemplatefile\`.\`created_at\` DESC
+        LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`typetemplatefile\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
     ]);
     const totalCount = result[1][0].total;
