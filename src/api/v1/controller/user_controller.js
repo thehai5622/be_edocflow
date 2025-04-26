@@ -5,7 +5,7 @@ async function getDetailInfo(id) {
   try {
     const [data] = await db.execute(`
       SELECT
-        uuid, name, gender, birth_day, phone,
+        uuid, name, avatar, gender, birth_day, phone,
         email, permission_id, created_at, updated_at
       FROM 
         \`user\`
@@ -26,7 +26,7 @@ async function login(user) {
   try {
     const [rows] = await db.execute(`
       SELECT  
-        uuid, name, permission_id
+        uuid, name, avatar, permission_id
       FROM \`user\` 
       WHERE 
         \`username\` = '${user.username}'
@@ -136,6 +136,7 @@ async function updateProfile(uuid, body) {
       UPDATE 
         \`user\` 
       SET
+        \`avatar\` = ${body.avatar == null ? null : `'${body.avatar}'`},
         \`name\` = '${body.name}',
         \`gender\` = ${body.gender == null ? null : `'${body.gender}'`},
         \`birth_day\` = ${
