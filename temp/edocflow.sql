@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2025 at 11:26 AM
+-- Generation Time: Apr 26, 2025 at 02:33 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -42,7 +42,32 @@ CREATE TABLE `field` (
 INSERT INTO `field` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) VALUES
 ('1c159b67-fccd-11ef-b13b-089798d3', 'Giải trí', '2025-03-09 16:58:54', '2025-03-09 17:00:56', 0),
 ('2e307e6b-fccd-11ef-b13b-089798d3', 'Truyền thống - Văn hóa', '2025-03-09 16:59:24', '2025-03-09 16:59:24', 0),
-('324cf553-fccd-11ef-b13b-089798d3', 'Nghệ thuật', '2025-03-09 16:59:31', '2025-03-09 16:59:31', 0);
+('324cf553-fccd-11ef-b13b-089798d3', 'Nghệ thuật', '2025-03-09 16:59:31', '2025-04-13 18:19:39', 0),
+('97cea305-187a-11f0-bb92-089798d3', 'Công nghiệp', '2025-04-13 22:18:46', '2025-04-14 20:03:28', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `issuingauthority`
+--
+
+CREATE TABLE `issuingauthority` (
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_removed` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `issuingauthority`
+--
+
+INSERT INTO `issuingauthority` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) VALUES
+('12c123f4-193d-11f0-991b-089798d3', 'Khong coa', '2025-04-14 21:30:54', '2025-04-14 21:30:58', 1),
+('1af70dac-193d-11f0-991b-089798d3', 'haha', '2025-04-14 21:31:08', '2025-04-14 21:31:18', 1),
+('ea7a876b-fcd2-11ef-b13b-089798d3', 'Sở thông tin Truyền thông', '2025-03-09 17:40:27', '2025-03-09 17:40:27', 0),
+('f1aed81d-fcd2-11ef-b13b-089798d3', 'Sở Giao thông Vận tái', '2025-03-09 17:40:39', '2025-03-09 17:42:13', 0);
 
 -- --------------------------------------------------------
 
@@ -73,7 +98,6 @@ INSERT INTO `permission` (`uuid`, `name`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `templatefile` (
   `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `typetemplatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `file` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `type` tinyint(1) NOT NULL,
@@ -81,6 +105,7 @@ CREATE TABLE `templatefile` (
   `note` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `typetemplatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_removed` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -112,8 +137,8 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
-('38cc22ac-fbd0-11ef-8991-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQxNDA1NzE2LCJleHAiOjE3NDE0MDc1MTZ9.x5DDOsQqg-ICGPKlxjlFZpvMSowxCFyRfSF7TqPLKJw', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQxNDA1NzE2LCJleHAiOjE3NDM5OTc3MTZ9.tDhdzLcartmlNhIJqiIwXGyIoe3r-lZ2ONBP3teZuvg'),
-('742dfbd6-fcca-11ef-b13b-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxNTEzMTkzLCJleHAiOjE3NDE1MTQ5OTN9.o3bjHt7DWfKFq1yzHYwDAvSvE9snL9KT4vLOamdNF0M', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQxNTEzMTkzLCJleHAiOjE3NDQxMDUxOTN9.0CKzKAdvxZAQv2z-A9tb7ku1KxbVBqrZ68szewkitUc');
+('56b44a73-2235-11f0-96fe-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ1NjI3MjkzLCJleHAiOjE3NDU2MjkwOTN9.1oaGwpfcZH8wRW-JhxAhDesnziO8_9tMxNIAafn-FPM', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ1NjI3MjkzLCJleHAiOjE3NDgyMTkyOTN9.S2pHkStRvFRMvW1um1Fe5R-aHDuQxJze32HR3DujWOU'),
+('b5be990e-21e6-11f0-96fe-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ1NTkzNTIyLCJleHAiOjE3NDU1OTUzMjJ9.TjM7dWpmoz5yLlFBNu4Sb-iXT9fPjbofoJT7QbxViro', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ1NTkzNTIyLCJleHAiOjE3NDgxODU1MjJ9.2ST07VCAjF9j6iid2BftDQB1g4aHuO59aY06WBpzhm0');
 
 -- --------------------------------------------------------
 
@@ -136,7 +161,8 @@ CREATE TABLE `typetemplatefile` (
 INSERT INTO `typetemplatefile` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) VALUES
 ('886419de-fcba-11ef-b13b-089798d3', 'Tờ trình', '2025-03-09 14:45:55', '2025-03-09 14:45:55', 0),
 ('886a0fd6-fcc7-11ef-b13b-089798d3', 'Chương trình', '2025-03-09 16:18:58', '2025-03-09 16:18:58', 0),
-('9bdc8ea4-fcba-11ef-b13b-089798d3', 'Nghị quyết', '2025-03-09 14:46:28', '2025-03-09 16:16:40', 0);
+('9bdc8ea4-fcba-11ef-b13b-089798d3', 'Nghị quyết', '2025-03-09 14:46:28', '2025-03-09 16:16:40', 0),
+('e7fc979a-1935-11f0-991b-089798d3', 'Thông tư', '2025-04-14 20:39:36', '2025-04-14 20:47:17', 0);
 
 -- --------------------------------------------------------
 
@@ -155,16 +181,17 @@ CREATE TABLE `user` (
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`uuid`, `permission_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`) VALUES
-('8c951845-fb31-11ef-8991-309c23d7', 1, 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'some1', '2025-03-07 15:52:48', '2025-03-07 15:52:48'),
-('edd70544-f73e-11ef-9eb4-089798d3', 1, 'Quản Trị Viên', NULL, NULL, '0326090580', 'luonghai5622@gmail.com', 'admin', '1234abcd', '2025-03-02 15:18:32', '2025-03-08 09:10:30');
+INSERT INTO `user` (`uuid`, `permission_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`, `avatar`) VALUES
+('8c951845-fb31-11ef-8991-309c23d7', 1, 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'ef73781effc5774100f87fe2f437a435', '2025-03-07 15:52:48', '2025-04-25 22:07:01', NULL),
+('edd70544-f73e-11ef-9eb4-089798d3', 1, 'Quản Trị Viên', NULL, NULL, '0326090580', 'luonghai5622@gmail.com', 'admin', 'ef73781effc5774100f87fe2f437a435', '2025-03-02 15:18:32', '2025-04-25 20:36:36', NULL);
 
 --
 -- Indexes for dumped tables
@@ -174,6 +201,12 @@ INSERT INTO `user` (`uuid`, `permission_id`, `name`, `gender`, `birth_day`, `pho
 -- Indexes for table `field`
 --
 ALTER TABLE `field`
+  ADD PRIMARY KEY (`uuid`);
+
+--
+-- Indexes for table `issuingauthority`
+--
+ALTER TABLE `issuingauthority`
   ADD PRIMARY KEY (`uuid`);
 
 --
