@@ -67,6 +67,7 @@ async function login(user) {
       data: {
         uuid: uuid ?? null,
         name: rows.name ?? null,
+        avatar: rows.avatar ?? null,
         permission: rows.permission_id ?? null,
         access_token: token.access_token,
         refresh_token: token.refresh_token,

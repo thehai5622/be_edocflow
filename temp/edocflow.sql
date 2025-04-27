@@ -174,6 +174,7 @@ CREATE TABLE `user` (
   `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `permission_id` tinyint(1) DEFAULT NULL,
   `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
   `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -181,8 +182,7 @@ CREATE TABLE `user` (
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
