@@ -1,5 +1,6 @@
 const db = require("../../utils/database");
 const { signAccessToken, verifyRefreshToken } = require("../../utils/token");
+const { deleteFile } = require("../controller/file_controller");
 
 async function getDetailInfo(id) {
   try {
@@ -127,11 +128,12 @@ async function updateProfile(uuid, body) {
       throw error;
     }
 
-    if (body.email == null || body.email == "") {
-      const error = new Error("Vui lòng nhập email!");
-      error.statusCode = 400;
-      throw error;
-    }
+    let avatar;
+
+    await db.execute(`SELECT \`avatar\` FROM \`user\` WHERE \`uuid\` = '${uuid}'`).then((result) => {
+      console.log(result[0].avatar);
+      avatar = result[0].avatar
+    });
 
     await db.execute(`
       UPDATE 
@@ -141,14 +143,17 @@ async function updateProfile(uuid, body) {
         \`name\` = '${body.name}',
         \`gender\` = ${body.gender == null ? null : `'${body.gender}'`},
         \`birth_day\` = ${
-          body.birth_day == null ? null : `'${body.birth_day}'`
+          body.birthDay == null ? null : `'${body.birthDay}'`
         },
         \`phone\` = '${body.phone}',
-        \`email\` = '${body.email}',
-        \`permission_id\` = ${body.permission_id}
+        \`email\` = ${body.email == null ? null : `'${body.email}'`}
       WHERE 
         \`uuid\` = '${uuid}'
     `);
+
+    if (avatar != null && avatar !== body.avatar) {
+      deleteFile(avatar);
+    }
 
     return {
       code: 200,

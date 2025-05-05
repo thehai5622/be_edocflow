@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-async function uploadImage(imageFile) {
+async function uploadFile(imageFile) {
     const extension = path.extname(imageFile.originalname)
     const oldPath = imageFile.path
     const newPath = path.join(__dirname, '../../../resources/' + imageFile.filename + extension)
@@ -17,7 +17,7 @@ async function uploadImage(imageFile) {
     }
 }
 
-async function uploadMultipleImages(imageFiles) {
+async function uploadMultipleFile(imageFiles) {
     const uploadedImages = []
 
     for(const file of imageFiles) {
@@ -38,7 +38,19 @@ async function uploadMultipleImages(imageFiles) {
     }
 }
 
+async function deleteFile(nameFile) {
+    const filePath = path.join(__dirname, '../../../' + nameFile)
+
+    fs.promises.rm(filePath)
+
+    return {
+        code: 200,
+        message: "Delete successful"
+    }
+}
+
 module.exports = {
-    uploadImage,
-    uploadMultipleImages
+    uploadFile,
+    uploadMultipleFile,
+    deleteFile,
 }
