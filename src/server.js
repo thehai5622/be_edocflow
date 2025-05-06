@@ -20,7 +20,7 @@ app.get("/", (req, res, next) => {
 });
 
 // Router version
-app.use('/resources', checkLogin, express.static(__dirname + '/resources'))
+app.use('/resources', express.static(__dirname + '/resources'))
 app.use('/v1', require("./api/v1/main"));
 
 // Error response

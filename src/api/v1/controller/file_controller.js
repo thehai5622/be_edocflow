@@ -13,7 +13,7 @@ async function uploadFile(imageFile) {
     return {
         code: 200,
         message: "Upload successful",
-        image: "resources/" + image
+        file: "resources/" + image
     }
 }
 
@@ -34,7 +34,7 @@ async function uploadMultipleFile(imageFiles) {
     return {
         code: 200,
         message: "Upload successful",
-        images: uploadedImages
+        files: uploadedImages
     }
 }
 
