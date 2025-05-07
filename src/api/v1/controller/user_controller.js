@@ -131,7 +131,6 @@ async function updateProfile(uuid, body) {
     let avatar;
 
     await db.execute(`SELECT \`avatar\` FROM \`user\` WHERE \`uuid\` = '${uuid}'`).then((result) => {
-      console.log(result[0].avatar);
       avatar = result[0].avatar
     });
 
