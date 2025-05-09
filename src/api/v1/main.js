@@ -7,5 +7,6 @@ router.use("/typetemplatefile", require("./route/typetemplatefile"));
 router.use("/template-file", require("./route/template_file"));
 router.use("/field", require("./route/field"));
 router.use("/issuingauthority", require("./route/issuingauthority"));
+router.use("/administrativelevel", require("./route/administrativelevel"));
 
 module.exports = router;
