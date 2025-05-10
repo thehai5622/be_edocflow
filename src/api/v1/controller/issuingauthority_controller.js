@@ -12,21 +12,42 @@ async function getIssuingAuthority({
 
     const result = await db.queryMultiple([
       `SELECT
-        *
+          \`issuingauthority\`.\`uuid\`,
+          \`issuingauthority\`.\`name\`,
+          \`issuingauthority\`.\`created_at\`,
+          \`issuingauthority\`.\`updated_at\`,
+          \`administrativelevel\`.\`uuid\` AS \`a_uuid\`,
+          \`administrativelevel\`.\`name\` AS \`a_name\`
       FROM
-        \`issuingauthority\`
+          \`issuingauthority\`
+      LEFT JOIN \`administrativelevel\` ON \`issuingauthority\`.\`administrativelevel_id\` = \`administrativelevel\`.\`uuid\`
       WHERE
-        (\`name\` LIKE '%${keyword}%') AND
+        (\`issuingauthority\`.\`name\` LIKE '%${keyword}%') AND
         \`is_removed\` = ${isRecycleBin}
       ORDER BY \`issuingauthority\`.\`created_at\` DESC
         LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`issuingauthority\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
     ]);
     const totalCount = result[1][0].total;
+    const data =
+      result[0] == null
+        ? null
+        : result[0].map((item) => {
+            return {
+              uuid: item.uuid,
+              name: item.name,
+              created_at: item.created_at,
+              updated_at: item.updated_at,
+              administrative_level: {
+                uuid: item.a_uuid,
+                name: item.a_name,
+              },
+            };
+          });
 
     return {
       code: 200,
-      data: result[0] ?? null,
+      data: data,
       pagination: {
         totalPage: Math.ceil(totalCount / limit),
         totalCount,
