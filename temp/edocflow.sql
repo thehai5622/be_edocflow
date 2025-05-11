@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2025 at 02:37 AM
+-- Generation Time: May 11, 2025 at 08:18 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -97,8 +97,8 @@ INSERT INTO `issuingauthority` (`uuid`, `name`, `created_at`, `updated_at`, `is_
 ('76014082-2cf1-11f0-9674-089798d3', 'Ủy ban thường vụ Quốc hội', '2025-05-09 23:20:02', '2025-05-09 23:20:02', 0, 1),
 ('7e271345-2cf1-11f0-9674-089798d3', 'Chủ tịch nước', '2025-05-09 23:20:16', '2025-05-09 23:20:16', 0, 1),
 ('e6dbe80d-2cf1-11f0-9674-089798d3', 'Thủ tướng Chính phủ', '2025-05-09 23:23:12', '2025-05-09 23:23:12', 0, 1),
-('ea7a876b-fcd2-11ef-b13b-089798d3', 'Sở thông tin Truyền thông', '2025-03-09 17:40:27', '2025-03-09 17:40:27', 0, NULL),
-('f1aed81d-fcd2-11ef-b13b-089798d3', 'Sở Giao thông Vận tái', '2025-03-09 17:40:39', '2025-03-09 17:42:13', 0, NULL);
+('ea7a876b-fcd2-11ef-b13b-089798d3', 'Sở thông tin Truyền thông', '2025-03-09 17:40:27', '2025-05-12 01:10:08', 0, 3),
+('f1aed81d-fcd2-11ef-b13b-089798d3', 'Sở Giao thông Vận tái', '2025-03-09 17:40:39', '2025-05-12 01:11:54', 0, 4);
 
 -- --------------------------------------------------------
 
@@ -168,8 +168,8 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
-('a725cacd-2cfc-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ2ODEyNDA5LCJleHAiOjE3NDY4MTQyMDl9.AwdubcrsvT7ju-4YlGe9wRZetsafSkODlQA8O-8XS00', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ2ODEyNDA5LCJleHAiOjE3NDk0MDQ0MDl9.NVow7M6Yb7_s0UyXPVKM4fBbs9bqXStLi2uD4ttTpLc'),
-('d8fb13d1-2cfc-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ2ODEyNDkzLCJleHAiOjE3NDY4MTQyOTN9.sSI6Av7jYng6UUykbGPBztiW3if-H3c-iPx54aqGzVI', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ2ODEyNDkzLCJleHAiOjE3NDk0MDQ0OTN9.tbdwPJuSRMTToE9Sdq4E6VhPZlPiz76cCN9t1jakr98');
+('98745c41-2e92-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ2OTg2NzYwLCJleHAiOjE3NDY5ODg1NjB9.HgxM5OwfKTkDQxgIFESjFNKjtjF_Wn5r_R5hrgjDH7M', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ2OTg2NzYwLCJleHAiOjE3NDk1Nzg3NjB9.uorNENvDjQasKXqWyj8sF3Qnu_NKMuOhhBuSeMMAFeY'),
+('d0d2d9c2-2e07-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ2OTI3MTU0LCJleHAiOjE3NDY5Mjg5NTR9.4SDdLsGaH4350OJmdaP2CA_Gmfx0I0SgPYZ0iB2K4nY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ2OTI3MTU1LCJleHAiOjE3NDk1MTkxNTV9.2hpriVsUMRIRtxuuocMGf28K43bB3_SllmTyD9gI8jg');
 
 -- --------------------------------------------------------
 
