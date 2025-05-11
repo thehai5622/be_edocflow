@@ -86,7 +86,7 @@ async function createIssuingAuthority({ user_id, body }) {
   }
 }
 
-async function updateIssuingAuthority({ uuid, user_id, body }) {
+async function updateIssuingAuthority({ uuid, body }) {
   try {
     if (body.name == null || body.name == "") {
       const error = new Error("Vui lòng nhập tên!");
@@ -98,7 +98,8 @@ async function updateIssuingAuthority({ uuid, user_id, body }) {
       UPDATE
         \`issuingauthority\`
       SET
-        \`name\` = '${body.name}'
+        \`name\` = '${body.name}',
+        \`administrativelevel_id\` = ${body.administrativelevel_id}
       WHERE
         \`uuid\` = '${uuid}'
     `);

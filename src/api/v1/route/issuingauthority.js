@@ -32,7 +32,6 @@ router.put("/:id", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.updateIssuingAuthority({
       uuid: req.params.id,
-      user_id: req.payload.id,
       body: req.body
     }));
   } catch (error) {
