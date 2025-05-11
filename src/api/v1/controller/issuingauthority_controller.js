@@ -24,7 +24,7 @@ async function getIssuingAuthority({
       WHERE
         (\`issuingauthority\`.\`name\` LIKE '%${keyword}%') AND
         \`is_removed\` = ${isRecycleBin}
-      ORDER BY \`issuingauthority\`.\`created_at\` DESC
+      ORDER BY \`issuingauthority\`.\`updated_at\` DESC
         LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`issuingauthority\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
     ]);
