@@ -76,11 +76,11 @@ INSERT INTO `field` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) V
 
 CREATE TABLE `issuingauthority` (
   `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `administrativelevel_id` tinyint(1) DEFAULT NULL
+  `administrativelevel_id` tinyint(1) DEFAULT NULL,
   `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `is_removed` tinyint(1) DEFAULT 0,
+  `is_removed` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -204,7 +204,7 @@ INSERT INTO `typetemplatefile` (`uuid`, `name`, `created_at`, `updated_at`, `is_
 CREATE TABLE `user` (
   `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `permission_id` tinyint(1) DEFAULT NULL,
-  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL
+  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE `user` (
   `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

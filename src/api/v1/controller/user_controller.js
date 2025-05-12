@@ -4,19 +4,52 @@ const { deleteFile } = require("../controller/file_controller");
 
 async function getDetailInfo(id) {
   try {
-    const [data] = await db.execute(`
+    const [result] = await db.execute(`
       SELECT
-        uuid, name, avatar, gender, birth_day, phone,
-        email, permission_id, created_at, updated_at
-      FROM 
+        \`user\`.\`uuid\`,
+        \`user\`.\`name\`,
+        \`user\`.\`avatar\`,
+        \`user\`.\`gender\`,
+        \`user\`.\`birth_day\`,
+        \`user\`.\`phone\`,
+        \`user\`.\`email\`,
+        \`user\`.\`created_at\`,
+        \`user\`.\`updated_at\`,
+        \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
+        \`issuingauthority\`.\`name\` AS \`ia_name\`,
+        \`permission\`.\`uuid\` AS \`p_uuid\`,
+        \`permission\`.\`name\` AS \`p_name\`
+      FROM
         \`user\`
-      WHERE 
-        \`uuid\` = '${id}'
+      INNER JOIN \`issuingauthority\` ON \`issuingauthority\`.\`uuid\` = \`user\`.\`issuingauthority_id\`
+      INNER JOIN \`permission\` ON \`permission\`.\`uuid\` = \`user\`.\`permission_id\`
+      WHERE
+        \`user\`.\`uuid\` = '${id}'
     `);
+
+    const data = result == null ? null : {
+      uuid: result.uuid,
+      name: result.name,
+      avatar: result.avatar,
+      gender: result.gender,
+      birth_day: result.birth_day,
+      phone: result.phone,
+      email: result.email,
+      created_at: result.created_at,
+      updated_at: result.updated_at,
+      issuing_authority: {
+        uuid: result.ia_uuid,
+        name: result.ia_name,
+      },
+      permission: {
+        uuid: result.p_uuid,
+        name: result.p_name,
+      },
+    };
 
     return {
       code: 200,
-      data: data ?? null,
+      data: data,
     };
   } catch (error) {
     throw error;
@@ -130,9 +163,11 @@ async function updateProfile(uuid, body) {
 
     let avatar;
 
-    await db.execute(`SELECT \`avatar\` FROM \`user\` WHERE \`uuid\` = '${uuid}'`).then((result) => {
-      avatar = result[0].avatar
-    });
+    await db
+      .execute(`SELECT \`avatar\` FROM \`user\` WHERE \`uuid\` = '${uuid}'`)
+      .then((result) => {
+        avatar = result[0].avatar;
+      });
 
     await db.execute(`
       UPDATE 
@@ -141,9 +176,7 @@ async function updateProfile(uuid, body) {
         \`avatar\` = ${body.avatar == null ? null : `'${body.avatar}'`},
         \`name\` = '${body.name}',
         \`gender\` = ${body.gender == null ? null : `'${body.gender}'`},
-        \`birth_day\` = ${
-          body.birthDay == null ? null : `'${body.birthDay}'`
-        },
+        \`birth_day\` = ${body.birthDay == null ? null : `'${body.birthDay}'`},
         \`phone\` = '${body.phone}',
         \`email\` = ${body.email == null ? null : `'${body.email}'`}
       WHERE 
@@ -217,5 +250,5 @@ module.exports = {
   refreshToken,
   updateProfile,
   changePassword,
-  changeStatus
+  changeStatus,
 };
