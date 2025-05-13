@@ -11,24 +11,72 @@ async function getListTemplateFile({
   try {
     const offset = offsetUtils.getOffset(page, limit);
 
-    const data = await db.execute(`
-      SELECT 
-        * 
+    const result = await db.queryMultiple([
+      `SELECT 
+        \`templatefile\`.\`uuid\`,
+        \`templatefile\`.\`name\`,
+        \`templatefile\`.\`file\`,
+        \`templatefile\`.\`type\`,
+        \`templatefile\`.\`status\`,
+        \`templatefile\`.\`note\`,
+        \`templatefile\`.\`created_at\`,
+        \`templatefile\`.\`updated_at\`,
+        \`user\`.\`uuid\` AS \`u_uuid\`,
+        \`user\`.\`name\` AS \`u_name\`,
+        \`user\`.\`name\` AS \`u_name\`,
+        \`typetemplatefile\`.\`uuid\` AS \`ttf_uuid\`,
+        \`typetemplatefile\`.\`name\` AS \`ttf_name\`
       FROM 
         \`templatefile\`
+      INNER JOIN \`user\` ON \`templatefile\`.\`user_id\` = \`user\`.\`uuid\`
+      INNER JOIN \`typetemplatefile\` ON \`templatefile\`.\`typetemplatefile_id\` = \`typetemplatefile\`.\`uuid\`
       WHERE 
-        (((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
+        (((\`templatefile\`.\`user_id\` = '${user_id}' AND \`templatefile\`.\`type\` = 0) ||
+        \`templatefile\`.\`type\` = 1) AND
+        (\`templatefile\`.\`name\` LIKE '%${keyword}%' OR 
+        \`templatefile\`.\`note\` LIKE '%${keyword}%')) AND
+        \`templatefile\`.\`is_removed\` = ${isRecycleBin}
+      ORDER BY \`templatefile\`.\`updated_at\` DESC
+        LIMIT ${offset}, ${limit}`,
+      `SELECT count(*) AS total
+      FROM \`templatefile\`
+      WHERE
+        ((\`user_id\` = '${user_id}' AND \`type\` = 0) ||
         \`type\` = 1) AND
-        (\`name\` LIKE '%${keyword}%' OR 
-        \`note\` LIKE '%${keyword}%')) AND
-        \`is_removed\` = ${isRecycleBin}
-      ORDER BY \`templatefile\`.\`created_at\` DESC
-        LIMIT ${offset}, ${limit}
-    `);
+        \`is_removed\` = ${isRecycleBin}`,
+    ]);
+    const totalCount = result[1][0].total;
+    const data =
+      result[0] == null
+        ? null
+        : result[0].map((item) => {
+            return {
+              uuid: item.uuid,
+              name: item.name,
+              file: item.file,
+              type: item.type,
+              status: item.status,
+              note: item.note,
+              created_at: item.created_at,
+              updated_at: item.updated_at,
+              user: {
+                uuid: item.u_uuid,
+                name: item.u_name,
+              },
+              type_template_file: {
+                uuid: item.ttf_uuid,
+                name: item.ttf_name,
+              },
+            };
+          });
 
     return {
       code: 200,
-      data: data ?? null,
+      data: data,
+      pagination: {
+        totalPage: Math.ceil(totalCount / limit),
+        totalCount,
+      },
     };
   } catch (error) {
     throw error;
@@ -80,7 +128,7 @@ async function createTemplateFile({ user_id, body }) {
 
     return {
       code: 200,
-      data: 'Đã thêm file mẫu thành công!',
+      data: "Đã thêm file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -123,7 +171,7 @@ async function updateTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: 'Đã chỉnh sửa thông tin file mẫu thành công!',
+      data: "Đã chỉnh sửa thông tin file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -150,7 +198,7 @@ async function changeStatusTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: 'Đã chỉnh sửa thông tin file mẫu thành công!',
+      data: "Đã chỉnh sửa thông tin file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -170,7 +218,7 @@ async function deleteTemplateFile({ uuid }) {
 
     return {
       code: 200,
-      data: 'Đã xóa file mẫu thành công!',
+      data: "Đã xóa file mẫu thành công!",
     };
   } catch (error) {
     throw error;
