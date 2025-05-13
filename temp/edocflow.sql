@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2025 at 08:18 PM
+-- Generation Time: May 13, 2025 at 08:37 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -87,18 +87,18 @@ CREATE TABLE `issuingauthority` (
 -- Dumping data for table `issuingauthority`
 --
 
-INSERT INTO `issuingauthority` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`, `administrativelevel_id`) VALUES
-('41691e42-2cf2-11f0-9674-089798d3', 'Bộ trưởng, Thủ trưởng cơ quan ngang bộ', '2025-05-09 23:25:43', '2025-05-09 23:25:43', 0, 1),
-('4822cfd0-2cf2-11f0-9674-089798d3', 'Tổng Kiểm toán Nhà nước', '2025-05-09 23:25:55', '2025-05-09 23:25:55', 0, 1),
-('4eef6746-2cf2-11f0-9674-089798d3', 'Hội đồng thẩm phán TAND tối cao', '2025-05-09 23:26:06', '2025-05-09 23:26:06', 0, 1),
-('53c2b8d5-2cf2-11f0-9674-089798d3', 'Chánh án TAND tối cao', '2025-05-09 23:26:14', '2025-05-09 23:26:14', 0, 1),
-('5b144b5c-2cf2-11f0-9674-089798d3', 'Viện trưởng VKSND tối cao', '2025-05-09 23:26:26', '2025-05-09 23:26:26', 0, 1),
-('6af857b7-2cf1-11f0-9674-089798d3', 'Quốc hội', '2025-05-09 23:19:44', '2025-05-09 23:19:44', 0, 1),
-('76014082-2cf1-11f0-9674-089798d3', 'Ủy ban thường vụ Quốc hội', '2025-05-09 23:20:02', '2025-05-09 23:20:02', 0, 1),
-('7e271345-2cf1-11f0-9674-089798d3', 'Chủ tịch nước', '2025-05-09 23:20:16', '2025-05-09 23:20:16', 0, 1),
-('e6dbe80d-2cf1-11f0-9674-089798d3', 'Thủ tướng Chính phủ', '2025-05-09 23:23:12', '2025-05-09 23:23:12', 0, 1),
-('ea7a876b-fcd2-11ef-b13b-089798d3', 'Sở thông tin Truyền thông', '2025-03-09 17:40:27', '2025-05-12 01:10:08', 0, 3),
-('f1aed81d-fcd2-11ef-b13b-089798d3', 'Sở Giao thông Vận tái', '2025-03-09 17:40:39', '2025-05-12 01:11:54', 0, 4);
+INSERT INTO `issuingauthority` (`uuid`, `administrativelevel_id`, `name`, `created_at`, `updated_at`, `is_removed`) VALUES
+('41691e42-2cf2-11f0-9674-089798d3', 1, 'Bộ trưởng, Thủ trưởng cơ quan ngang bộ', '2025-05-09 23:25:43', '2025-05-09 23:25:43', 0),
+('4822cfd0-2cf2-11f0-9674-089798d3', 1, 'Tổng Kiểm toán Nhà nước', '2025-05-09 23:25:55', '2025-05-09 23:25:55', 0),
+('4eef6746-2cf2-11f0-9674-089798d3', 1, 'Hội đồng thẩm phán TAND tối cao', '2025-05-09 23:26:06', '2025-05-09 23:26:06', 0),
+('53c2b8d5-2cf2-11f0-9674-089798d3', 1, 'Chánh án TAND tối cao', '2025-05-09 23:26:14', '2025-05-09 23:26:14', 0),
+('5b144b5c-2cf2-11f0-9674-089798d3', 1, 'Viện trưởng VKSND tối cao', '2025-05-09 23:26:26', '2025-05-09 23:26:26', 0),
+('6af857b7-2cf1-11f0-9674-089798d3', 1, 'Quốc hội', '2025-05-09 23:19:44', '2025-05-09 23:19:44', 0),
+('76014082-2cf1-11f0-9674-089798d3', 1, 'Ủy ban thường vụ Quốc hội', '2025-05-09 23:20:02', '2025-05-09 23:20:02', 0),
+('7e271345-2cf1-11f0-9674-089798d3', 1, 'Chủ tịch nước', '2025-05-09 23:20:16', '2025-05-09 23:20:16', 0),
+('e6dbe80d-2cf1-11f0-9674-089798d3', 1, 'Thủ tướng Chính phủ', '2025-05-09 23:23:12', '2025-05-09 23:23:12', 0),
+('ea7a876b-fcd2-11ef-b13b-089798d3', 3, 'Sở thông tin Truyền thông', '2025-03-09 17:40:27', '2025-05-12 01:10:08', 0),
+('f1aed81d-fcd2-11ef-b13b-089798d3', 4, 'Sở Giao thông Vận tái', '2025-03-09 17:40:39', '2025-05-12 01:11:54', 0);
 
 -- --------------------------------------------------------
 
@@ -144,11 +144,11 @@ CREATE TABLE `templatefile` (
 -- Dumping data for table `templatefile`
 --
 
-INSERT INTO `templatefile` (`uuid`, `user_id`, `name`, `file`, `type`, `status`, `note`, `created_at`, `updated_at`, `typetemplatefile_id`, `is_removed`) VALUES
-('7f3cd833-fbc7-11ef-8991-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'Một file mẫu khác', 'resources/somefile.txt', 1, 1, 'Một đoạn mô tả khác', '2025-03-08 09:46:09', '2025-03-09 16:04:21', '9bdc8ea4-fcba-11ef-b13b-089798d3', 0),
-('a03eb04c-fbc7-11ef-8991-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'Một file mẫu khác nhưng là cá nhân', 'resources/somefile.txt', 0, 1, 'Một đoạn mô tả khác nhưng là cá nhân', '2025-03-08 09:47:05', '2025-03-09 16:04:25', '9bdc8ea4-fcba-11ef-b13b-089798d3', 0),
-('e85dd89d-fbc4-11ef-8991-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'File mẫu nào đó', 'resources/somefile.txt', 1, 1, 'Ghi chú nào đó', '2025-03-08 09:27:37', '2025-03-09 16:01:26', '886419de-fcba-11ef-b13b-089798d3', 0),
-('f99141d0-fcc4-11ef-b13b-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'Một tờ trình nào đó', 'resources/somefile.txt', 1, 1, 'Mô tả tờ trình nào đó', '2025-03-09 16:00:40', '2025-03-09 16:00:40', '886419de-fcba-11ef-b13b-089798d3', 0);
+INSERT INTO `templatefile` (`uuid`, `user_id`, `typetemplatefile_id`, `name`, `file`, `type`, `status`, `note`, `created_at`, `updated_at`, `is_removed`) VALUES
+('7f3cd833-fbc7-11ef-8991-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', '9bdc8ea4-fcba-11ef-b13b-089798d3', 'Một file mẫu khác', 'resources/somefile.txt', 1, 1, 'Một đoạn mô tả khác', '2025-03-08 09:46:09', '2025-03-09 16:04:21', 0),
+('a03eb04c-fbc7-11ef-8991-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', '9bdc8ea4-fcba-11ef-b13b-089798d3', 'Một file mẫu khác nhưng là cá nhân', 'resources/somefile.txt', 0, 1, 'Một đoạn mô tả khác nhưng là cá nhân', '2025-03-08 09:47:05', '2025-03-09 16:04:25', 0),
+('e85dd89d-fbc4-11ef-8991-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '886419de-fcba-11ef-b13b-089798d3', 'File mẫu nào đó', 'resources/somefile.txt', 1, 1, 'Ghi chú nào đó', '2025-03-08 09:27:37', '2025-03-09 16:01:26', 0),
+('f99141d0-fcc4-11ef-b13b-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', '886419de-fcba-11ef-b13b-089798d3', 'Một tờ trình nào đó', 'resources/somefile.txt', 1, 1, 'Mô tả tờ trình nào đó', '2025-03-09 16:00:40', '2025-03-09 16:00:40', 0);
 
 -- --------------------------------------------------------
 
@@ -168,8 +168,8 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
-('98745c41-2e92-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ2OTg2NzYwLCJleHAiOjE3NDY5ODg1NjB9.HgxM5OwfKTkDQxgIFESjFNKjtjF_Wn5r_R5hrgjDH7M', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ2OTg2NzYwLCJleHAiOjE3NDk1Nzg3NjB9.uorNENvDjQasKXqWyj8sF3Qnu_NKMuOhhBuSeMMAFeY'),
-('d0d2d9c2-2e07-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ2OTI3MTU0LCJleHAiOjE3NDY5Mjg5NTR9.4SDdLsGaH4350OJmdaP2CA_Gmfx0I0SgPYZ0iB2K4nY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ2OTI3MTU1LCJleHAiOjE3NDk1MTkxNTV9.2hpriVsUMRIRtxuuocMGf28K43bB3_SllmTyD9gI8jg');
+('068ff26d-3026-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3MTYwMDMyLCJleHAiOjE3NDcxNjE4MzJ9.vG0kpQqSlh4_bHmZsIsYf_bqRi5EsG2MRH5d9pZwGzw', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3MTYwMDMyLCJleHAiOjE3NDk3NTIwMzJ9.IEAHQYK7_vfKpQ4I2j2GC_DBtqVtbMah9ojTgJjqxpM'),
+('06cc530c-3027-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDcxNjIyNjJ9.0MZiJcVcguajXJZixNHpajKUHfBhaKJGF0hpCtCVaHk', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDk3NTI0NjJ9.elIg33iNckuRurxuthY9u_cGDTCQCRQe6G3rVUfwljI');
 
 -- --------------------------------------------------------
 
@@ -221,9 +221,9 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`uuid`, `permission_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`, `avatar`, `issuingauthority_id`) VALUES
-('8c951845-fb31-11ef-8991-309c23d7', 1, 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'ef73781effc5774100f87fe2f437a435', '2025-03-07 15:52:48', '2025-05-05 21:29:19', 'resources/ae6e246332d700ce171e7ca066e19a27.jpg', NULL),
-('edd70544-f73e-11ef-9eb4-089798d3', 1, 'Quản Trị Viên', 0, '1998-01-25', '0326090580', 'luonghai5622@gmail.com', 'admin', 'ef73781effc5774100f87fe2f437a435', '2025-03-02 15:18:32', '2025-05-06 21:35:08', 'resources/d35a42d2866569014927e893dfb5b656.jpg', NULL);
+INSERT INTO `user` (`uuid`, `permission_id`, `issuingauthority_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`, `avatar`) VALUES
+('8c951845-fb31-11ef-8991-309c23d7', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'ef73781effc5774100f87fe2f437a435', '2025-03-07 15:52:48', '2025-05-12 20:58:25', 'resources/ae6e246332d700ce171e7ca066e19a27.jpg'),
+('edd70544-f73e-11ef-9eb4-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Quản Trị Viên', 0, '1998-01-25', '0326090580', 'luonghai5622@gmail.com', 'admin', 'ef73781effc5774100f87fe2f437a435', '2025-03-02 15:18:32', '2025-05-13 21:45:23', 'resources/f7b84f16effa5961c0118e832b4b3c20.jpg');
 
 --
 -- Indexes for dumped tables
