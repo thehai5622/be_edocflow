@@ -83,6 +83,61 @@ async function getListTemplateFile({
   }
 }
 
+async function getDetailTemplateFile({ uuid }) {
+  try {
+    const [result] = await db.execute(`
+      SELECT 
+        \`templatefile\`.\`uuid\`,
+        \`templatefile\`.\`name\`,
+        \`templatefile\`.\`file\`,
+        \`templatefile\`.\`type\`,
+        \`templatefile\`.\`status\`,
+        \`templatefile\`.\`note\`,
+        \`templatefile\`.\`created_at\`,
+        \`templatefile\`.\`updated_at\`,
+        \`user\`.\`uuid\` AS \`u_uuid\`,
+        \`user\`.\`name\` AS \`u_name\`,
+        \`user\`.\`name\` AS \`u_name\`,
+        \`typetemplatefile\`.\`uuid\` AS \`ttf_uuid\`,
+        \`typetemplatefile\`.\`name\` AS \`ttf_name\`
+      FROM 
+        \`templatefile\`
+      INNER JOIN \`user\` ON \`templatefile\`.\`user_id\` = \`user\`.\`uuid\`
+      INNER JOIN \`typetemplatefile\` ON \`templatefile\`.\`typetemplatefile_id\` = \`typetemplatefile\`.\`uuid\`
+      WHERE 
+        \`templatefile\`.\`uuid\` = '${uuid}' 
+    `);
+    const data =
+      result == null
+        ? null
+        : {
+            uuid: result.uuid,
+            name: result.name,
+            file: result.file,
+            type: result.type,
+            status: result.status,
+            note: result.note,
+            created_at: result.created_at,
+            updated_at: result.updated_at,
+            user: {
+              uuid: result.u_uuid,
+              name: result.u_name,
+            },
+            type_template_file: {
+              uuid: result.ttf_uuid,
+              name: result.ttf_name,
+            },
+          };
+
+    return {
+      code: 200,
+      data: data,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createTemplateFile({ user_id, body }) {
   try {
     if (body.name == null || body.name == "") {
@@ -227,6 +282,7 @@ async function deleteTemplateFile({ uuid }) {
 
 module.exports = {
   getListTemplateFile,
+  getDetailTemplateFile,
   createTemplateFile,
   updateTemplateFile,
   changeStatusTemplateFile,

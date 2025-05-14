@@ -2,7 +2,6 @@ const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
 
 async function getListTypeTemplateFile({
-  user_id,
   keyword = "",
   page = 1,
   limit = 12,
@@ -32,6 +31,29 @@ async function getListTypeTemplateFile({
         totalPage: Math.ceil(totalCount / limit),
         totalCount,
       },
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getListTTF({
+  keyword = "",
+}) {
+  try {
+    const result = await db.execute(`
+      SELECT
+        *
+      FROM
+        \`typetemplatefile\`
+      WHERE
+        \`name\` LIKE '%${keyword}%' AND
+        \`is_removed\` = 0
+    `);
+
+    return {
+      code: 200,
+      data: result ?? null,
     };
   } catch (error) {
     throw error;
@@ -114,6 +136,7 @@ async function deleteTypeTemplateFile({ uuid, user_id, body }) {
 
 module.exports = {
   getListTypeTemplateFile,
+  getListTTF,
   createTypeTemplateFile,
   updateTypeTemplateFile,
   deleteTypeTemplateFile,
