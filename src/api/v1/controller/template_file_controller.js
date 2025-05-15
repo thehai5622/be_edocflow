@@ -1,5 +1,6 @@
 const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
+const { deleteFile } = require("../controller/file_controller");
 
 async function getListTemplateFile({
   user_id,
@@ -183,7 +184,7 @@ async function createTemplateFile({ user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã thêm file mẫu thành công!",
+      message: "Đã thêm file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -210,6 +211,13 @@ async function updateTemplateFile({ uuid, user_id, body }) {
       throw error;
     }
 
+    let file;
+    await db
+      .execute(`SELECT \`file\` FROM \`templatefile\` WHERE \`uuid\` = '${uuid}'`)
+      .then((result) => {
+        file = result[0].file;
+      });
+
     await db.execute(`
       UPDATE
         \`templatefile\`
@@ -219,14 +227,19 @@ async function updateTemplateFile({ uuid, user_id, body }) {
         \`name\` = '${body.name}',
         \`file\` = '${body.file}',
         \`type\` = '${body.type}',
+        \`status\` = ${body.status},
         \`note\` = '${body.note == null ? "" : body.note}'
       WHERE
         \`uuid\` = '${uuid}'
     `);
 
+    if (file != null && file !== body.file) {
+      deleteFile(file);
+    }
+
     return {
       code: 200,
-      data: "Đã chỉnh sửa thông tin file mẫu thành công!",
+      message: "Đã chỉnh sửa thông tin file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -253,7 +266,7 @@ async function changeStatusTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      data: "Đã chỉnh sửa thông tin file mẫu thành công!",
+      message: "Đã chỉnh sửa thông tin file mẫu thành công!",
     };
   } catch (error) {
     throw error;
@@ -273,7 +286,7 @@ async function deleteTemplateFile({ uuid }) {
 
     return {
       code: 200,
-      data: "Đã xóa file mẫu thành công!",
+      message: "Đã xóa file mẫu thành công!",
     };
   } catch (error) {
     throw error;
