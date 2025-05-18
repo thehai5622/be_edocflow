@@ -51,4 +51,12 @@ router.put("/change-status", checkLogin, async (req, res, next) => {
   }
 });
 
+router.delete("/logout", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.logout(req.payload.id));
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

@@ -244,6 +244,19 @@ async function changeStatus(uuid, body) {
   }
 }
 
+async function logout(uuid) {
+  try {
+    // Đăng xuất
+
+    return {
+      code: 200,
+      message: "Đăng xuất thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getDetailInfo,
   login,
@@ -251,4 +264,5 @@ module.exports = {
   updateProfile,
   changePassword,
   changeStatus,
+  logout,
 };

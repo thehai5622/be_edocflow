@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2025 at 08:37 PM
+-- Generation Time: May 18, 2025 at 08:28 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -43,6 +43,31 @@ INSERT INTO `administrativelevel` (`uuid`, `name`, `created_at`, `updated_at`) V
 (2, 'Cấp tỉnh', '2025-05-08 19:49:02', '2025-05-08 19:49:02'),
 (3, 'Cấp huyện', '2025-05-08 19:49:02', '2025-05-08 19:49:02'),
 (4, 'Cấp xã', '2025-05-08 19:49:02', '2025-05-08 19:49:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `document`
+--
+
+CREATE TABLE `document` (
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `usersign_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `field_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `templatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `summary` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `year` int(4) DEFAULT NULL,
+  `original_location` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `number_releases` int(2) DEFAULT NULL,
+  `type` tinyint(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `urgency_level` tinyint(1) DEFAULT NULL,
+  `confidentiality_level` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_removed` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -168,8 +193,8 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
-('068ff26d-3026-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3MTYwMDMyLCJleHAiOjE3NDcxNjE4MzJ9.vG0kpQqSlh4_bHmZsIsYf_bqRi5EsG2MRH5d9pZwGzw', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3MTYwMDMyLCJleHAiOjE3NDk3NTIwMzJ9.IEAHQYK7_vfKpQ4I2j2GC_DBtqVtbMah9ojTgJjqxpM'),
-('06cc530c-3027-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDcxNjIyNjJ9.0MZiJcVcguajXJZixNHpajKUHfBhaKJGF0hpCtCVaHk', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDk3NTI0NjJ9.elIg33iNckuRurxuthY9u_cGDTCQCRQe6G3rVUfwljI');
+('06cc530c-3027-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDcxNjIyNjJ9.0MZiJcVcguajXJZixNHpajKUHfBhaKJGF0hpCtCVaHk', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDk3NTI0NjJ9.elIg33iNckuRurxuthY9u_cGDTCQCRQe6G3rVUfwljI'),
+('4799250a-3401-11f0-9dfa-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NTg0MDUyLCJleHAiOjE3NDc1ODU4NTJ9.n9GAOy-GFWVUtGDeNrPoVT_C10yffB66QK_earV802U', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NTg0MDUyLCJleHAiOjE3NTAxNzYwNTJ9.mLPSmASmQlsnhIwcRwR9f60j0K3rg3AcCHsjCzdiA04');
 
 -- --------------------------------------------------------
 
@@ -237,6 +262,16 @@ ALTER TABLE `administrativelevel`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `document`
+--
+ALTER TABLE `document`
+  ADD PRIMARY KEY (`uuid`),
+  ADD KEY `document_field` (`field_id`),
+  ADD KEY `document_templatefile` (`templatefile_id`),
+  ADD KEY `document_user` (`user_id`),
+  ADD KEY `document_user2` (`usersign_id`);
+
+--
 -- Indexes for table `field`
 --
 ALTER TABLE `field`
@@ -292,6 +327,15 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `document`
+--
+ALTER TABLE `document`
+  ADD CONSTRAINT `document_field` FOREIGN KEY (`field_id`) REFERENCES `field` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_templatefile` FOREIGN KEY (`templatefile_id`) REFERENCES `templatefile` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_user2` FOREIGN KEY (`usersign_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `issuingauthority`
