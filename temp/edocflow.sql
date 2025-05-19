@@ -53,6 +53,7 @@ INSERT INTO `administrativelevel` (`uuid`, `name`, `created_at`, `updated_at`) V
 CREATE TABLE `document` (
   `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `usersign_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `field_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `templatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -60,7 +61,6 @@ CREATE TABLE `document` (
   `year` int(4) DEFAULT NULL,
   `original_location` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `number_releases` int(2) DEFAULT NULL,
-  `type` tinyint(1) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `urgency_level` tinyint(1) DEFAULT NULL,
   `confidentiality_level` tinyint(1) DEFAULT NULL,
@@ -332,9 +332,10 @@ ALTER TABLE `user`
 -- Constraints for table `document`
 --
 ALTER TABLE `document`
+  ADD CONSTRAINT `document_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_issuingauthority` FOREIGN KEY (`issuingauthority_id`) REFERENCES `issuingauthority` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `document_field` FOREIGN KEY (`field_id`) REFERENCES `field` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `document_templatefile` FOREIGN KEY (`templatefile_id`) REFERENCES `templatefile` (`uuid`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `document_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `document_user2` FOREIGN KEY (`usersign_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE;
 
 --

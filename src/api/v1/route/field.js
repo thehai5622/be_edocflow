@@ -16,6 +16,16 @@ router.get("/", checkLogin, async (req, res, next) => {
   }
 });
 
+router.get("/dropdown", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.getListF({
+      keyword: req.query.keyword,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.createField({

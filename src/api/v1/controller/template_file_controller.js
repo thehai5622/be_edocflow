@@ -84,6 +84,30 @@ async function getListTemplateFile({
   }
 }
 
+async function getListTF({
+  user_id,
+  keyword = "",
+}) {
+  try {
+    const result = await db.execute(`
+      SELECT
+        \`uuid\`, \`name\`
+      FROM
+        \`templatefile\`
+      WHERE
+        ((\`user_id\` = '${user_id}' AND \`type\` = 0) OR \`type\` = 1) AND \`name\` LIKE '%${keyword}%' AND
+        \`is_removed\` = 0
+    `);
+
+    return {
+      code: 200,
+      data: result ?? null,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getDetailTemplateFile({ uuid }) {
   try {
     const [result] = await db.execute(`
@@ -295,6 +319,7 @@ async function deleteTemplateFile({ uuid }) {
 
 module.exports = {
   getListTemplateFile,
+  getListTF,
   getDetailTemplateFile,
   createTemplateFile,
   updateTemplateFile,

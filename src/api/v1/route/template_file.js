@@ -17,6 +17,17 @@ router.get("/", checkLogin, async (req, res, next) => {
   }
 });
 
+router.get("/dropdown", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.getListTF({
+      user_id: req.payload.id,
+      keyword: req.query.keyword,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.getDetailTemplateFile({
