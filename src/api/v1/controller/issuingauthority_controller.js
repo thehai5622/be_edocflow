@@ -58,6 +58,29 @@ async function getIssuingAuthority({
   }
 }
 
+async function getListIA({
+  keyword = "",
+}) {
+  try {
+    const result = await db.execute(`
+      SELECT
+        \`uuid\`,
+        \`name\`
+      FROM
+        \`issuingauthority\`
+      WHERE
+        \`name\` LIKE '%${keyword}%' AND \`is_removed\` = 0
+    `);
+
+    return {
+      code: 200,
+      data: result ?? null,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createIssuingAuthority({ user_id, body }) {
   try {
     if (body.name == null || body.name == "") {
@@ -135,6 +158,7 @@ async function deleteIssuingAuthority({ uuid, user_id, body }) {
 
 module.exports = {
   getIssuingAuthority,
+  getListIA,
   createIssuingAuthority,
   updateIssuingAuthority,
   deleteIssuingAuthority,
