@@ -60,7 +60,7 @@ async function login(user) {
   try {
     const [rows] = await db.execute(`
       SELECT  
-        uuid, name, avatar, permission_id
+        \`uuid\`, \`name\`, \`avatar\`, \`permission_id\`, \`issuingauthority_id\`
       FROM \`user\` 
       WHERE 
         \`username\` = '${user.username}'
@@ -85,13 +85,15 @@ async function login(user) {
           \`uuid\`,
           \`user_id\`,
           \`access_token\`,
-          \`refresh_token\`
+          \`refresh_token\`,
+          \`fcm_token\`
         )
         VALUES(
           uuid(),
           '${uuid}',
           '${token.access_token}',
-          '${token.refresh_token}'
+          '${token.refresh_token}',
+          '${user.fcm_token}'
         )
       `,
     ]);
@@ -103,6 +105,7 @@ async function login(user) {
         name: rows.name ?? null,
         avatar: rows.avatar ?? null,
         permission: rows.permission_id ?? null,
+        issuing_authority: rows.issuingauthority_id ?? null,
         access_token: token.access_token,
         refresh_token: token.refresh_token,
       },
@@ -124,13 +127,15 @@ async function refreshToken(body) {
           \`uuid\`,
           \`user_id\`,
           \`access_token\`,
-          \`refresh_token\`
+          \`refresh_token\`,
+          \`fcm_token\`
         )
         VALUES(
           uuid(),
           '${payload.id}',
           '${token.access_token}',
-          '${token.refresh_token}'
+          '${token.refresh_token}',
+          '${body.fcm_token}'
         )
       `,
     ]);
@@ -246,7 +251,7 @@ async function changeStatus(uuid, body) {
 
 async function logout(uuid) {
   try {
-    // Đăng xuất
+    db.execute(`DELETE FROM \`token\` WHERE \`user_id\` = '${uuid}'`);
 
     return {
       code: 200,

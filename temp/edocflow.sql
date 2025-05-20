@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 08:28 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: May 20, 2025 at 12:03 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `administrativelevel` (
   `uuid` tinyint(1) NOT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -51,15 +51,16 @@ INSERT INTO `administrativelevel` (`uuid`, `name`, `created_at`, `updated_at`) V
 --
 
 CREATE TABLE `document` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `usersign_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `field_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `templatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `summary` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `uuid` char(32) NOT NULL,
+  `user_id` char(32) DEFAULT NULL,
+  `from_issuingauthority_id` char(32) DEFAULT NULL,
+  `issuingauthority_id` char(32) DEFAULT NULL,
+  `usersign_id` char(32) DEFAULT NULL,
+  `field_id` char(32) DEFAULT NULL,
+  `templatefile_id` char(32) DEFAULT NULL,
+  `summary` varchar(75) DEFAULT NULL,
   `year` int(4) DEFAULT NULL,
-  `original_location` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `original_location` varchar(75) DEFAULT NULL,
   `number_releases` int(2) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `urgency_level` tinyint(1) DEFAULT NULL,
@@ -69,6 +70,13 @@ CREATE TABLE `document` (
   `is_removed` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `document`
+--
+
+INSERT INTO `document` (`uuid`, `user_id`, `issuingauthority_id`, `usersign_id`, `field_id`, `templatefile_id`, `summary`, `year`, `original_location`, `number_releases`, `status`, `urgency_level`, `confidentiality_level`, `created_at`, `updated_at`, `is_removed`, `from_issuingauthority_id`) VALUES
+('d8bc0d6b-352b-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '53c2b8d5-2cf2-11f0-9674-089798d3', NULL, '1c159b67-fccd-11ef-b13b-089798d3', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'Một đoạn trích yếu nào đó', 2028, 'Tổng khu hành chính', 3, 1, 0, 0, '2025-05-20 10:38:07', '2025-05-20 16:25:04', 0, '6af857b7-2cf1-11f0-9674-089798d3');
+
 -- --------------------------------------------------------
 
 --
@@ -76,8 +84,8 @@ CREATE TABLE `document` (
 --
 
 CREATE TABLE `field` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` char(32) NOT NULL,
+  `name` varchar(75) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -100,9 +108,9 @@ INSERT INTO `field` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) V
 --
 
 CREATE TABLE `issuingauthority` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` char(32) NOT NULL,
   `administrativelevel_id` tinyint(1) DEFAULT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -133,7 +141,7 @@ INSERT INTO `issuingauthority` (`uuid`, `administrativelevel_id`, `name`, `creat
 
 CREATE TABLE `permission` (
   `uuid` tinyint(1) NOT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -152,14 +160,14 @@ INSERT INTO `permission` (`uuid`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `templatefile` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `typetemplatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
-  `file` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` char(32) NOT NULL,
+  `user_id` char(32) DEFAULT NULL,
+  `typetemplatefile_id` char(32) DEFAULT NULL,
+  `name` varchar(75) NOT NULL,
+  `file` varchar(100) NOT NULL,
   `type` tinyint(1) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `note` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `note` varchar(500) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -182,19 +190,20 @@ INSERT INTO `templatefile` (`uuid`, `user_id`, `typetemplatefile_id`, `name`, `f
 --
 
 CREATE TABLE `token` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `access_token` char(181) COLLATE utf8_unicode_ci NOT NULL,
-  `refresh_token` char(181) COLLATE utf8_unicode_ci NOT NULL
+  `uuid` char(32) NOT NULL,
+  `user_id` char(32) NOT NULL,
+  `access_token` char(181) NOT NULL,
+  `refresh_token` char(181) NOT NULL,
+  `fcm_token` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `token`
 --
 
-INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
-('06cc530c-3027-11f0-9674-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDcxNjIyNjJ9.0MZiJcVcguajXJZixNHpajKUHfBhaKJGF0hpCtCVaHk', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3MTYwNDYyLCJleHAiOjE3NDk3NTI0NjJ9.elIg33iNckuRurxuthY9u_cGDTCQCRQe6G3rVUfwljI'),
-('4799250a-3401-11f0-9dfa-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NTg0MDUyLCJleHAiOjE3NDc1ODU4NTJ9.n9GAOy-GFWVUtGDeNrPoVT_C10yffB66QK_earV802U', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NTg0MDUyLCJleHAiOjE3NTAxNzYwNTJ9.mLPSmASmQlsnhIwcRwR9f60j0K3rg3AcCHsjCzdiA04');
+INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`, `fcm_token`) VALUES
+('33dbd457-355a-11f0-b4a3-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3NzMyMTk2LCJleHAiOjE3NDc3MzM5OTZ9.0nqTcw-PI7pHltCs2bBqEYaxrHdFx7xyuDN44zY5_S0', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3NzMyMTk2LCJleHAiOjE3NTAzMjQxOTZ9.dBCnhsaQ2NL5fniLuJn9tLgnHD-rqD_7XoJfYcfz2Yw', NULL),
+('8cf56d3c-3561-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NzM1MzUzLCJleHAiOjE3NDc3MzcxNTN9.OIjv4jaFLRiPh9OrRTcl9wygJK1pY8OWHjI8JiE77rQ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NzM1MzUzLCJleHAiOjE3NTAzMjczNTN9.pE1-1I0j2KgL2maxg4cwxjKbSY6m4A4ty4Gt45nh970', 'fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ');
 
 -- --------------------------------------------------------
 
@@ -203,8 +212,8 @@ INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`) VALUES
 --
 
 CREATE TABLE `typetemplatefile` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` char(32) NOT NULL,
+  `name` varchar(75) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -227,19 +236,19 @@ INSERT INTO `typetemplatefile` (`uuid`, `name`, `created_at`, `updated_at`, `is_
 --
 
 CREATE TABLE `user` (
-  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` char(32) NOT NULL,
   `permission_id` tinyint(1) DEFAULT NULL,
-  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `issuingauthority_id` char(32) DEFAULT NULL,
+  `name` varchar(75) NOT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
-  `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(10) NOT NULL,
+  `email` varchar(75) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL
+  `avatar` varchar(75) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -269,7 +278,9 @@ ALTER TABLE `document`
   ADD KEY `document_field` (`field_id`),
   ADD KEY `document_templatefile` (`templatefile_id`),
   ADD KEY `document_user` (`user_id`),
-  ADD KEY `document_user2` (`usersign_id`);
+  ADD KEY `document_user2` (`usersign_id`),
+  ADD KEY `document_issuingauthority` (`issuingauthority_id`),
+  ADD KEY `document_issuingauthority2` (`from_issuingauthority_id`);
 
 --
 -- Indexes for table `field`
@@ -332,10 +343,11 @@ ALTER TABLE `user`
 -- Constraints for table `document`
 --
 ALTER TABLE `document`
-  ADD CONSTRAINT `document_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `document_issuingauthority` FOREIGN KEY (`issuingauthority_id`) REFERENCES `issuingauthority` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `document_field` FOREIGN KEY (`field_id`) REFERENCES `field` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_issuingauthority` FOREIGN KEY (`issuingauthority_id`) REFERENCES `issuingauthority` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_issuingauthority2` FOREIGN KEY (`from_issuingauthority_id`) REFERENCES `issuingauthority` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `document_templatefile` FOREIGN KEY (`templatefile_id`) REFERENCES `templatefile` (`uuid`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `document_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE,
   ADD CONSTRAINT `document_user2` FOREIGN KEY (`usersign_id`) REFERENCES `user` (`uuid`) ON UPDATE CASCADE;
 
 --

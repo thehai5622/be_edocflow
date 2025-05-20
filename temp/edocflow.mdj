@@ -6510,7 +6510,7 @@
 								"$ref": "AAAAAAGVejVxfuS2opM="
 							},
 							"name": "status",
-							"documentation": "Chờ xử lý/Chưa xử lý/Chờ duyệt/Chờ phát hành/Quá hạn/Hủy bỏ",
+							"documentation": "1-Chưa xử lý/2-Chờ duyệt/3-Chờ phát hành/4-Quá hạn/0-Hủy bỏ",
 							"visibility": "private",
 							"type": "tinyint",
 							"multiplicity": "1"

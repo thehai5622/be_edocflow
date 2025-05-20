@@ -23,6 +23,11 @@ app.get("/", (req, res, next) => {
 app.use('/resources', express.static(__dirname + '/resources'))
 app.use('/v1', require("./api/v1/main"));
 
+// Not found
+app.use('*', (req, res, next) => {
+  res.status(404).json({ code: 404, message: "Not found" });
+});
+
 // Error response
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -8,5 +8,6 @@ router.use("/template-file", require("./route/template_file"));
 router.use("/field", require("./route/field"));
 router.use("/issuingauthority", require("./route/issuingauthority"));
 router.use("/administrativelevel", require("./route/administrativelevel"));
+router.use("/document", require("./route/document"));
 
 module.exports = router;
