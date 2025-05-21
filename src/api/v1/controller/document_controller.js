@@ -14,7 +14,9 @@ async function getListDocumentOut({
     let issuingauthority_id;
 
     await db
-      .execute(`SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`)
+      .execute(
+        `SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`
+      )
       .then((result) => {
         issuingauthority_id = result[0].issuingauthority_id;
       });
@@ -76,7 +78,7 @@ async function getListDocumentOut({
               summary: item.summary,
               year: item.year,
               original_location: item.original_location,
-              original_location: item.from_issuingauthority_id,
+              from_issuingauthority_id: item.from_issuingauthority_id,
               number_releases: item.number_releases,
               status: item.status,
               urgency_level: item.urgency_level,
@@ -109,6 +111,99 @@ async function getListDocumentOut({
         totalPage: Math.ceil(totalCount / limit),
         totalCount,
       },
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getDetailDocument({ uuid }) {
+  try {
+    const [result] = await db.execute(`
+      SELECT
+        \`document\`.\`uuid\`,
+        \`document\`.\`summary\`,
+        \`document\`.\`year\`,
+        \`document\`.\`original_location\`,
+        \`document\`.\`number_releases\`,
+        \`document\`.\`status\`,
+        \`document\`.\`urgency_level\`,
+        \`document\`.\`confidentiality_level\`,
+        \`document\`.\`created_at\`,
+        \`document\`.\`updated_at\`,
+        \`user\`.\`uuid\` AS \`u_uuid\`,
+        \`user\`.\`name\` AS \`u_name\`,
+        \`usersign\`.\`uuid\` AS \`us_uuid\`,
+        \`usersign\`.\`name\` AS \`us_name\`,
+        \`from_issuingauthority\`.\`uuid\` AS \`fia_uuid\`,
+        \`from_issuingauthority\`.\`name\` AS \`fia_name\`,
+        \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
+        \`issuingauthority\`.\`name\` AS \`ia_name\`,
+        \`field\`.\`uuid\` AS \`f_uuid\`,
+        \`field\`.\`name\` AS \`f_name\`,
+        \`templatefile\`.\`uuid\` AS \`tf_uuid\`,
+        \`templatefile\`.\`name\` AS \`tf_name\`
+      FROM
+        \`document\`
+      LEFT JOIN \`user\`
+        ON \`document\`.\`user_id\` = \`user\`.\`uuid\`
+      LEFT JOIN \`user\` AS \`usersign\`
+        ON \`document\`.\`usersign_id\` = \`usersign\`.\`uuid\`
+      LEFT JOIN \`issuingauthority\` AS \`from_issuingauthority\`
+        ON \`document\`.\`from_issuingauthority_id\` = \`from_issuingauthority\`.\`uuid\`
+      LEFT JOIN \`issuingauthority\`
+        ON \`document\`.\`issuingauthority_id\` = \`issuingauthority\`.\`uuid\`
+      LEFT JOIN \`field\`
+        ON \`document\`.\`field_id\` = \`field\`.\`uuid\`
+      LEFT JOIN \`templatefile\`
+        ON \`document\`.\`templatefile_id\` = \`templatefile\`.\`uuid\`
+      WHERE
+        \`document\`.\`uuid\` = '${uuid}'
+    `);
+    const data =
+      result == null
+        ? null
+        : {
+            uuid: result.uuid,
+            name: result.name,
+            summary: result.summary,
+            year: result.year,
+            original_location: result.original_location,
+            number_releases: result.number_releases,
+            status: result.status,
+            urgency_level: result.urgency_level,
+            confidentiality_level: result.confidentiality_level,
+            created_at: result.created_at,
+            updated_at: result.updated_at,
+            user: {
+              uuid: result.u_uuid,
+              name: result.u_name,
+            },
+            usersign: {
+              uuid: result.us_uuid,
+              name: result.us_name,
+            },
+            from_issuingauthority: {
+              uuid: result.fia_uuid,
+              name: result.fia_name,
+            },
+            issuingauthority: {
+              uuid: result.ia_uuid,
+              name: result.ia_name,
+            },
+            field: {
+              uuid: result.f_uuid,
+              name: result.f_name,
+            },
+            templatefile: {
+              uuid: result.tf_uuid,
+              name: result.tf_name,
+            },
+          };
+
+    return {
+      code: 200,
+      data: data,
     };
   } catch (error) {
     throw error;
@@ -217,5 +312,6 @@ async function createDocument({ user_id, body }) {
 
 module.exports = {
   getListDocumentOut,
+  getDetailDocument,
   createDocument,
 };

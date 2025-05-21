@@ -17,6 +17,16 @@ router.get("/out", checkLogin, async (req, res, next) => {
   }
 });
 
+router.get("/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.getDetailDocument({
+      uuid: req.params.id,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.createDocument({
