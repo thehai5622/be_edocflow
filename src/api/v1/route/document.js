@@ -17,6 +17,20 @@ router.get("/out", checkLogin, async (req, res, next) => {
   }
 });
 
+router.get("/in", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.getListDocumentIn({
+      user_id: req.payload.id,
+      keyword: req.query.keyword,
+      page: req.query.page,
+      limit: req.query.limit,
+      isRecycleBin: req.query.isRecycleBin,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.getDetailDocument({

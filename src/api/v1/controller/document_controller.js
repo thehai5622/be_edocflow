@@ -25,33 +25,19 @@ async function getListDocumentOut({
       `SELECT
         \`document\`.\`uuid\`,
         \`document\`.\`summary\`,
-        \`document\`.\`year\`,
-        \`document\`.\`original_location\`,
-        \`document\`.\`from_issuingauthority_id\`,
-        \`document\`.\`number_releases\`,
         \`document\`.\`status\`,
-        \`document\`.\`urgency_level\`,
-        \`document\`.\`confidentiality_level\`,
         \`document\`.\`created_at\`,
         \`document\`.\`updated_at\`,
         \`user\`.\`uuid\` AS \`u_uuid\`,
         \`user\`.\`name\` AS \`u_name\`,
         \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
-        \`issuingauthority\`.\`name\` AS \`ia_name\`,
-        \`field\`.\`uuid\` AS \`f_uuid\`,
-        \`field\`.\`name\` AS \`f_name\`,
-        \`templatefile\`.\`uuid\` AS \`tf_uuid\`,
-        \`templatefile\`.\`name\` AS \`tf_name\`
+        \`issuingauthority\`.\`name\` AS \`ia_name\`
       FROM
         \`document\`
       LEFT JOIN \`user\`
         ON \`document\`.\`user_id\` = \`user\`.\`uuid\`
       LEFT JOIN \`issuingauthority\`
         ON \`document\`.\`issuingauthority_id\` = \`issuingauthority\`.\`uuid\`
-      LEFT JOIN \`field\`
-        ON \`document\`.\`field_id\` = \`field\`.\`uuid\`
-      LEFT JOIN \`templatefile\`
-        ON \`document\`.\`templatefile_id\` = \`templatefile\`.\`uuid\`
       WHERE
         (\`document\`.\`summary\` LIKE '%${keyword}%'
         OR \`document\`.\`uuid\` LIKE '%${keyword}%' 
@@ -76,13 +62,7 @@ async function getListDocumentOut({
               uuid: item.uuid,
               name: item.name,
               summary: item.summary,
-              year: item.year,
-              original_location: item.original_location,
-              from_issuingauthority_id: item.from_issuingauthority_id,
-              number_releases: item.number_releases,
               status: item.status,
-              urgency_level: item.urgency_level,
-              confidentiality_level: item.confidentiality_level,
               created_at: item.created_at,
               updated_at: item.updated_at,
               user: {
@@ -93,13 +73,93 @@ async function getListDocumentOut({
                 uuid: item.ia_uuid,
                 name: item.ia_name,
               },
-              field: {
-                uuid: item.f_uuid,
-                name: item.f_name,
+            };
+          });
+
+    return {
+      code: 200,
+      data: data,
+      pagination: {
+        totalPage: Math.ceil(totalCount / limit),
+        totalCount,
+      },
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getListDocumentIn({
+  user_id = "",
+  keyword = "",
+  page = 1,
+  limit = 12,
+  isRecycleBin = 0,
+}) {
+  try {
+    const offset = offsetUtils.getOffset(page, limit);
+
+    let issuingauthority_id;
+
+    await db
+      .execute(
+        `SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`
+      )
+      .then((result) => {
+        issuingauthority_id = result[0].issuingauthority_id;
+      });
+
+    const result = await db.queryMultiple([
+      `SELECT
+        \`document\`.\`uuid\`,
+        \`document\`.\`summary\`,
+        \`document\`.\`status\`,
+        \`document\`.\`created_at\`,
+        \`document\`.\`updated_at\`,
+        \`user\`.\`uuid\` AS \`u_uuid\`,
+        \`user\`.\`name\` AS \`u_name\`,
+        \`issuingauthority\`.\`uuid\` AS \`fia_uuid\`,
+        \`issuingauthority\`.\`name\` AS \`fia_name\`
+      FROM
+        \`document\`
+      LEFT JOIN \`user\`
+        ON \`document\`.\`user_id\` = \`user\`.\`uuid\`
+      LEFT JOIN \`issuingauthority\`
+        ON \`document\`.\`from_issuingauthority_id\` = \`issuingauthority\`.\`uuid\`
+      WHERE
+        (\`document\`.\`summary\` LIKE '%${keyword}%'
+        OR \`document\`.\`uuid\` LIKE '%${keyword}%' 
+        OR \`document\`.\`original_location\` LIKE '%${keyword}%') AND
+        \`document\`.\`issuingauthority_id\` = '${issuingauthority_id}' AND
+        \`document\`.\`is_removed\` = ${isRecycleBin}
+      ORDER BY \`document\`.\`updated_at\` DESC
+        LIMIT ${offset}, ${limit}`,
+      `SELECT count(*) AS total FROM \`document\` WHERE
+        (\`summary\` LIKE '%${keyword}%' 
+        OR \`uuid\` LIKE '%${keyword}%' 
+        OR \`original_location\` LIKE '%${keyword}%') AND
+        \`issuingauthority_id\` = '${issuingauthority_id}' AND
+        \`is_removed\` = ${isRecycleBin}`,
+    ]);
+    const totalCount = result[1][0].total;
+    const data =
+      result[0] == null
+        ? null
+        : result[0].map((item) => {
+            return {
+              uuid: item.uuid,
+              name: item.name,
+              summary: item.summary,
+              status: item.status,
+              created_at: item.created_at,
+              updated_at: item.updated_at,
+              user: {
+                uuid: item.u_uuid,
+                name: item.u_name,
               },
-              templatefile: {
-                uuid: item.tf_uuid,
-                name: item.tf_name,
+              from_issuingauthority: {
+                uuid: item.ia_uuid,
+                name: item.ia_name,
               },
             };
           });
@@ -312,6 +372,7 @@ async function createDocument({ user_id, body }) {
 
 module.exports = {
   getListDocumentOut,
+  getListDocumentIn,
   getDetailDocument,
   createDocument,
 };
