@@ -1,7 +1,8 @@
 const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
 
-async function getListDocument({
+async function getListDocumentOut({
+  user_id = "",
   keyword = "",
   page = 1,
   limit = 12,
@@ -9,6 +10,14 @@ async function getListDocument({
 }) {
   try {
     const offset = offsetUtils.getOffset(page, limit);
+
+    let issuingauthority_id;
+
+    await db
+      .execute(`SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`)
+      .then((result) => {
+        issuingauthority_id = result[0].issuingauthority_id;
+      });
 
     const result = await db.queryMultiple([
       `SELECT
@@ -42,9 +51,10 @@ async function getListDocument({
       LEFT JOIN \`templatefile\`
         ON \`document\`.\`templatefile_id\` = \`templatefile\`.\`uuid\`
       WHERE
-        (\`document\`.\`summary\` LIKE '%${keyword}%' 
+        (\`document\`.\`summary\` LIKE '%${keyword}%'
         OR \`document\`.\`uuid\` LIKE '%${keyword}%' 
         OR \`document\`.\`original_location\` LIKE '%${keyword}%') AND
+        \`document\`.\`from_issuingauthority_id\` = '${issuingauthority_id}' AND
         \`document\`.\`is_removed\` = ${isRecycleBin}
       ORDER BY \`document\`.\`updated_at\` DESC
         LIMIT ${offset}, ${limit}`,
@@ -52,6 +62,7 @@ async function getListDocument({
         (\`summary\` LIKE '%${keyword}%' 
         OR \`uuid\` LIKE '%${keyword}%' 
         OR \`original_location\` LIKE '%${keyword}%') AND
+        \`from_issuingauthority_id\` = '${issuingauthority_id}' AND
         \`is_removed\` = ${isRecycleBin}`,
     ]);
     const totalCount = result[1][0].total;
@@ -106,7 +117,10 @@ async function getListDocument({
 
 async function createDocument({ user_id, body }) {
   try {
-    if (body.from_issuingauthority_id == null || body.from_issuingauthority_id == "") {
+    if (
+      body.from_issuingauthority_id == null ||
+      body.from_issuingauthority_id == ""
+    ) {
       const error = new Error("Cơ quan ban hành gửi văn bản đi là bắt buộc!");
       error.statusCode = 400;
       throw error;
@@ -202,6 +216,6 @@ async function createDocument({ user_id, body }) {
 }
 
 module.exports = {
-  getListDocument,
+  getListDocumentOut,
   createDocument,
 };
