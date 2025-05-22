@@ -1,6 +1,7 @@
 const db = require("../../utils/database");
 const { signAccessToken, verifyRefreshToken } = require("../../utils/token");
 const { deleteFile } = require("../controller/file_controller");
+const offsetUtils = require("../../utils/offset");
 
 async function getDetailInfo(id) {
   try {
@@ -50,6 +51,82 @@ async function getDetailInfo(id) {
     return {
       code: 200,
       data: data,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getListUser({
+  keyword = "",
+  page = 1,
+  limit = 12,
+  isRecycleBin = 0,
+}) {
+  try {
+    const offset = offsetUtils.getOffset(page, limit);
+
+    const result = await db.queryMultiple([
+      `SELECT
+        \`user\`.\`uuid\`,
+        \`user\`.\`name\`,
+        \`user\`.\`gender\`,
+        \`user\`.\`birth_day\`,
+        \`user\`.\`phone\`,
+        \`user\`.\`email\`,
+        \`user\`.\`username\`,
+        \`user\`.\`created_at\`,
+        \`user\`.\`updated_at\`,
+        \`user\`.\`avatar\`,
+        \`permission\`.\`uuid\` AS \`p_uuid\`,
+        \`permission\`.\`name\` AS \`p_name\`,
+        \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
+        \`issuingauthority\`.\`name\` AS \`ia_name\`
+      FROM
+        \`user\`
+      LEFT JOIN \`permission\` ON \`user\`.\`permission_id\` = \`permission\`.\`uuid\`
+      LEFT JOIN \`issuingauthority\` ON \`user\`.\`issuingauthority_id\` = \`issuingauthority\`.\`uuid\`
+      WHERE
+        \`user\`.\`name\` LIKE '%${keyword}%' OR \`user\`.\`uuid\` LIKE '%${keyword}%'
+      ORDER BY \`user\`.\`updated_at\` DESC
+        LIMIT ${offset}, ${limit}`,
+      `SELECT count(*) AS total FROM \`user\` WHERE
+        \`user\`.\`name\` LIKE '%${keyword}%' OR \`user\`.\`uuid\` LIKE '%${keyword}%'`,
+    ]);
+    const totalCount = result[1][0].total;
+    const data =
+      result[0] == null
+        ? null
+        : result[0].map((item) => {
+            return {
+              uuid: item.uuid,
+              name: item.name,
+              gender: item.gender,
+              birth_day: item.birth_day,
+              phone: item.phone,
+              email: item.email,
+              username: item.username,
+              created_at: item.created_at,
+              updated_at: item.updated_at,
+              avatar: item.avatar,
+              permission: {
+                uuid: item.p_uuid,
+                name: item.p_name,
+              },
+              issuing_authority: {
+                uuid: item.ia_uuid,
+                name: item.ia_name,
+              },
+            };
+          });
+
+    return {
+      code: 200,
+      data: data,
+      pagination: {
+        totalPage: Math.ceil(totalCount / limit),
+        totalCount,
+      },
     };
   } catch (error) {
     throw error;
@@ -264,6 +341,7 @@ async function logout(uuid) {
 
 module.exports = {
   getDetailInfo,
+  getListUser,
   login,
   refreshToken,
   updateProfile,
