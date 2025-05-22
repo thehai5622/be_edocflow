@@ -24,6 +24,17 @@ router.get("/", checkLogin, async (req, res, next) => {
   }
 });
 
+router.post("/", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.createUser({
+      user_id: req.payload.id,
+      body: req.body
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/login", async (req, res, next) => {
   try {
     res.json(await controller.login(req.body));
