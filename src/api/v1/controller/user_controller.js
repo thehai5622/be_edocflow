@@ -5,8 +5,6 @@ const offsetUtils = require("../../utils/offset");
 
 async function getDetailInfo(id) {
   try {
-    console.log(id);
-
     const [result] = await db.execute(`
       SELECT
         \`user\`.\`uuid\`,
