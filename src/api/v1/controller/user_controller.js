@@ -28,25 +28,28 @@ async function getDetailInfo(id) {
         \`user\`.\`uuid\` = '${id}'
     `);
 
-    const data = result == null ? null : {
-      uuid: result.uuid,
-      name: result.name,
-      avatar: result.avatar,
-      gender: result.gender,
-      birth_day: result.birth_day,
-      phone: result.phone,
-      email: result.email,
-      created_at: result.created_at,
-      updated_at: result.updated_at,
-      issuing_authority: {
-        uuid: result.ia_uuid,
-        name: result.ia_name,
-      },
-      permission: {
-        uuid: result.p_uuid,
-        name: result.p_name,
-      },
-    };
+    const data =
+      result == null
+        ? null
+        : {
+            uuid: result.uuid,
+            name: result.name,
+            avatar: result.avatar,
+            gender: result.gender,
+            birth_day: result.birth_day,
+            phone: result.phone,
+            email: result.email,
+            created_at: result.created_at,
+            updated_at: result.updated_at,
+            issuing_authority: {
+              uuid: result.ia_uuid,
+              name: result.ia_name,
+            },
+            permission: {
+              uuid: result.p_uuid,
+              name: result.p_name,
+            },
+          };
 
     return {
       code: 200,
@@ -135,92 +138,59 @@ async function getListUser({
 
 async function createUser({ user_id, body }) {
   try {
-    if (
-      body.from_issuingauthority_id == null ||
-      body.from_issuingauthority_id == ""
-    ) {
-      const error = new Error("Cơ quan ban hành gửi văn bản đi là bắt buộc!");
+    if (body.permission == null) {
+      const error = new Error("Quyền của cán bộ là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
     if (body.issuing_authority == null || body.issuing_authority == "") {
-      const error = new Error("Cơ quan ban hành là bắt buộc!");
+      const error = new Error("Thuộc cơ quan ban hành là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
-    if (body.field == null || body.field == "") {
-      const error = new Error("Lĩnh vực là bắt buộc!");
+    if (body.name == null || body.name == "") {
+      const error = new Error("Tên cán bộ là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
-    if (body.template_file == null || body.template_file == "") {
-      const error = new Error("File mẫu là bắt buộc!");
+    if (body.gender == null) {
+      const error = new Error("Giới tính là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
-    if (body.summary == null || body.summary == "") {
-      const error = new Error("Trích yếu là bắt buộc!");
+    if (body.birth_day == null || body.birth_day == "") {
+      const error = new Error("Ngày sinh là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
-    if (body.year == null) {
-      const error = new Error("Năm ban hành là bắt buộc!");
-      error.statusCode = 400;
-      throw error;
-    }
-    if (body.original_location == null || body.original_location == "") {
-      const error = new Error("Nơi lưu trữ bản gốc là bắt buộc!");
-      error.statusCode = 400;
-      throw error;
-    }
-    if (body.number_releases == null || body.number_releases == "") {
-      const error = new Error("Số bản lưu là bắt buộc!");
-      error.statusCode = 400;
-      throw error;
-    }
-    if (body.urgency_level == null) {
-      const error = new Error("Mức độ khẩn là bắt buộc!");
-      error.statusCode = 400;
-      throw error;
-    }
-    if (body.confidentiality_level == null) {
-      const error = new Error("Mức độ bảo mật là bắt buộc!");
+    if (body.phone == null || body.phone == "") {
+      const error = new Error("Số điện thoại là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
 
     await db.execute(`
-      INSERT INTO \`document\`(
+      INSERT INTO \`user\`(
         \`uuid\`,
-        \`user_id\`,
-        \`from_issuingauthority_id\`,
+        \`permission_id\`,
         \`issuingauthority_id\`,
-        \`usersign_id\`,
-        \`field_id\`,
-        \`templatefile_id\`,
-        \`summary\`,
-        \`year\`,
-        \`original_location\`,
-        \`number_releases\`,
-        \`status\`,
-        \`urgency_level\`,
-        \`confidentiality_level\`
+        \`name\`,
+        \`gender\`,
+        \`birth_day\`,
+        \`phone\`,
+        \`email\`,
+        \`avatar\`
       )
       VALUES(
         UUID(),
-        '${user_id}',
-        '${body.from_issuingauthority_id}',
+        '${body.permission}',
         '${body.issuing_authority}',
-        NULL,
-        '${body.field}',
-        '${body.template_file}',
-        '${body.summary}',
-        ${body.year},
-        '${body.original_location}',
-        ${body.number_releases},
-        1,
-        ${body.urgency_level},
-        ${body.confidentiality_level}
+        '${body.name}',
+        ${body.gender},
+        '${body.birth_day}',
+        ${body.phone},
+        ${body.email == null ? "NULL" : `'${body.email}'`},
+        ${body.avatar == null ? "NULL" : `'${body.avatar}'`}
       )
     `);
 

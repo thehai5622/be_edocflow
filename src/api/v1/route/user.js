@@ -32,7 +32,7 @@ router.get("/detail/:id", checkLogin, async (req, res, next) => {
   }
 });
 
-router.post("/", checkLogin, async (req, res, next) => {
+router.post("/create", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.createUser({
       user_id: req.payload.id,
