@@ -83,6 +83,22 @@ router.put("/change-status", checkLogin, async (req, res, next) => {
   }
 });
 
+router.put("/update-user/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.updateUser(req.params.id, req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/provide-account/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.provideAccount(req.params.id, req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.delete("/logout", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.logout(req.payload.id));

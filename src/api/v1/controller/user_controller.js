@@ -5,7 +5,8 @@ const offsetUtils = require("../../utils/offset");
 
 async function getDetailInfo(id) {
   try {
-    const [result] = await db.execute(`
+    const [result] = await db.execute(
+      `
       SELECT
         \`user\`.\`uuid\`,
         \`user\`.\`name\`,
@@ -25,8 +26,10 @@ async function getDetailInfo(id) {
       INNER JOIN \`issuingauthority\` ON \`issuingauthority\`.\`uuid\` = \`user\`.\`issuingauthority_id\`
       INNER JOIN \`permission\` ON \`permission\`.\`uuid\` = \`user\`.\`permission_id\`
       WHERE
-        \`user\`.\`uuid\` = '${id}'
-    `);
+        \`user\`.\`uuid\` = ?
+    `,
+      [id]
+    );
 
     const data =
       result == null
@@ -169,7 +172,8 @@ async function createUser({ user_id, body }) {
       throw error;
     }
 
-    await db.execute(`
+    await db.execute(
+      `
       INSERT INTO \`user\`(
         \`uuid\`,
         \`permission_id\`,
@@ -183,20 +187,80 @@ async function createUser({ user_id, body }) {
       )
       VALUES(
         UUID(),
-        '${body.permission}',
-        '${body.issuing_authority}',
-        '${body.name}',
-        ${body.gender},
-        '${body.birth_day}',
-        ${body.phone},
-        ${body.email == null ? "NULL" : `'${body.email}'`},
-        ${body.avatar == null ? "NULL" : `'${body.avatar}'`}
-      )
-    `);
+        ?, ?, ?, ?, ?, ?, ?, ?
+      )   
+    `,
+      [
+        body.permission,
+        body.issuing_authority,
+        body.name,
+        body.gender,
+        body.birth_day,
+        body.phone,
+        body.email || null,
+        body.avatar || null,
+      ]
+    );
 
     return {
       code: 200,
       message: "Đã thêm thông tin cán bộ thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateUser(uuid, body) {
+  try {
+    await db.execute(
+      `
+      UPDATE 
+        \`user\` 
+      SET
+        \`permission_id\` = ?,
+        \`issuingauthority_id\` = ?
+      WHERE 
+        \`uuid\` = ?
+    `,
+      [
+        body.permission,
+        body.issuing_authority,
+        uuid,
+      ]
+    );
+
+    return {
+      code: 200,
+      message: "Đã cập nhật thông tin cán bộ!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function provideAccount(uuid, body) {
+  try {
+    await db.execute(
+      `
+      UPDATE 
+        \`user\` 
+      SET
+        \`username\` = ?,
+        \`password\` = ?
+      WHERE 
+        \`uuid\` = ?
+    `,
+      [
+        body.username,
+        body.password,
+        uuid,
+      ]
+    );
+
+    return {
+      code: 200,
+      message: "Đã cấp tài khoản cho cán bộ!",
     };
   } catch (error) {
     throw error;
@@ -413,6 +477,8 @@ module.exports = {
   getDetailInfo,
   getListUser,
   createUser,
+  updateUser,
+  provideAccount,
   login,
   refreshToken,
   updateProfile,

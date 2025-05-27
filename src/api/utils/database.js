@@ -17,16 +17,16 @@ async function execute(sql, params) {
 
 async function queryMultiple(sqlList, params) {
   const conn = await pool.getConnection();
-
-  const result = [];
-
-  for (let i = 0; i < sqlList.length; i++) {
-    const [element] = await conn.query(sqlList[i], params);
-    result.push(element);
+  try {
+    const result = [];
+    for (let i = 0; i < sqlList.length; i++) {
+      const [element] = await conn.query(sqlList[i], params);
+      result.push(element);
+    }
+    return result;
+  } finally {
+    conn.release();
   }
-
-  conn.release();
-  return result;
 }
 
 module.exports = {
