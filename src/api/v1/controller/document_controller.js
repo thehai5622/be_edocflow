@@ -158,8 +158,8 @@ async function getListDocumentIn({
                 name: item.u_name,
               },
               from_issuingauthority: {
-                uuid: item.ia_uuid,
-                name: item.ia_name,
+                uuid: item.fia_uuid,
+                name: item.fia_name,
               },
             };
           });
