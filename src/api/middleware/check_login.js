@@ -14,19 +14,25 @@ const checkLogin = async (req, res, next) => {
 
     req.payload = await verifyAccessToken(token);
 
-    const [rows] = await db.execute(
-      `SELECT * FROM \`token\` WHERE \`user_id\` = '${req.payload.id}'`
-    );
-    
+    const [[token_res], [user]] = await db.queryMultiple([
+      `SELECT * FROM \`token\` WHERE \`user_id\` = '${req.payload.id}'`,
+      `SELECT \`status\` FROM \`user\` WHERE \`uuid\` = '${req.payload.id}'`,
+    ]);
 
-    if (rows.access_token != token) {
+    if (user.status == 0) {
+      var err = new Error("Tài khoản đã bị khóa!");
+      err.statusCode = 406;
+      next(err);
+      return;
+    }
+
+    if (token_res.access_token != token) {
       var err = new Error("Tài khoản này hiện đang được đăng nhập ở nơi khác!");
       err.statusCode = 406;
       next(err);
       return;
-    } else {
-      next();
     }
+    next();
   } catch (error) {
     next(error);
   }

@@ -99,6 +99,30 @@ router.put("/provide-account/:id", checkLogin, async (req, res, next) => {
   }
 });
 
+router.put("/reset-password/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.resetPassword(req.params.id, req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/lock/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.changeStatus(req.params.id, 0));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/unlock/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.changeStatus(req.params.id, 1));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.delete("/logout", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.logout(req.payload.id));

@@ -17,6 +17,7 @@ async function getDetailInfo(id) {
         \`user\`.\`email\`,
         \`user\`.\`created_at\`,
         \`user\`.\`updated_at\`,
+        \`user\`.\`status\`,
         \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
         \`issuingauthority\`.\`name\` AS \`ia_name\`,
         \`permission\`.\`uuid\` AS \`p_uuid\`,
@@ -44,6 +45,7 @@ async function getDetailInfo(id) {
             email: result.email,
             created_at: result.created_at,
             updated_at: result.updated_at,
+            status: result.status,
             issuing_authority: {
               uuid: result.ia_uuid,
               name: result.ia_name,
@@ -84,6 +86,7 @@ async function getListUser({
         \`user\`.\`created_at\`,
         \`user\`.\`updated_at\`,
         \`user\`.\`avatar\`,
+        \`user\`.\`status\`,
         \`permission\`.\`uuid\` AS \`p_uuid\`,
         \`permission\`.\`name\` AS \`p_name\`,
         \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
@@ -115,6 +118,7 @@ async function getListUser({
               created_at: item.created_at,
               updated_at: item.updated_at,
               avatar: item.avatar,
+              status: item.status,
               permission: {
                 uuid: item.p_uuid,
                 name: item.p_name,
@@ -267,11 +271,37 @@ async function provideAccount(uuid, body) {
   }
 }
 
+async function resetPassword(uuid, body) {
+  try {
+    await db.execute(
+      `
+      UPDATE 
+        \`user\` 
+      SET
+        \`password\` = ?
+      WHERE 
+        \`uuid\` = ?
+    `,
+      [
+        body.password,
+        uuid,
+      ]
+    );
+
+    return {
+      code: 200,
+      message: "Đã đặt lại mật khẩu mặc định cho cán bộ!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function login(user) {
   try {
     const [rows] = await db.execute(`
       SELECT  
-        \`uuid\`, \`name\`, \`avatar\`, \`permission_id\`, \`issuingauthority_id\`
+        \`uuid\`, \`name\`, \`avatar\`, \`permission_id\`, \`issuingauthority_id\`, \`status\`
       FROM \`user\` 
       WHERE 
         \`username\` = '${user.username}'
@@ -281,6 +311,14 @@ async function login(user) {
     if (rows == null) {
       const error = new Error(
         "Thông tin tài khoản hoặc mật khẩu không chính xác!"
+      );
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (rows.status == 0) {
+      const error = new Error(
+        "Tài khoản này đã bị khóa!"
       );
       error.statusCode = 400;
       throw error;
@@ -447,13 +485,23 @@ async function changePassword(uuid, body) {
   }
 }
 
-async function changeStatus(uuid, body) {
+async function changeStatus(uuid, status) {
   try {
-    // Thêm thay đổi trạng thái người dùng
+    await db.execute(`
+      UPDATE 
+        \`user\` 
+      SET
+        \`status\` = ?
+      WHERE 
+        \`uuid\` = ?
+    `, [
+      status,
+      uuid
+    ]);
 
     return {
       code: 200,
-      message: "Chưa thay đổi trạng thái!",
+      message: "Đã đổi trạng thái!",
     };
   } catch (error) {
     throw error;
@@ -479,6 +527,7 @@ module.exports = {
   createUser,
   updateUser,
   provideAccount,
+  resetPassword,
   login,
   refreshToken,
   updateProfile,

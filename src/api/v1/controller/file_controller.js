@@ -41,7 +41,9 @@ async function uploadMultipleFile(imageFiles) {
 async function deleteFile(nameFile) {
     const filePath = path.join(__dirname, '../../../' + nameFile)
 
-    fs.promises.rm(filePath)
+    if (fs.existsSync(filePath)) {
+        fs.promises.rm(filePath)
+    }
 
     return {
         code: 200,
