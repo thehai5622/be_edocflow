@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2025 at 12:03 PM
+-- Generation Time: May 29, 2025 at 04:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -74,8 +74,9 @@ CREATE TABLE `document` (
 -- Dumping data for table `document`
 --
 
-INSERT INTO `document` (`uuid`, `user_id`, `issuingauthority_id`, `usersign_id`, `field_id`, `templatefile_id`, `summary`, `year`, `original_location`, `number_releases`, `status`, `urgency_level`, `confidentiality_level`, `created_at`, `updated_at`, `is_removed`, `from_issuingauthority_id`) VALUES
-('d8bc0d6b-352b-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '53c2b8d5-2cf2-11f0-9674-089798d3', NULL, '1c159b67-fccd-11ef-b13b-089798d3', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'Một đoạn trích yếu nào đó', 2028, 'Tổng khu hành chính', 3, 1, 0, 0, '2025-05-20 10:38:07', '2025-05-20 16:25:04', 0, '6af857b7-2cf1-11f0-9674-089798d3');
+INSERT INTO `document` (`uuid`, `user_id`, `from_issuingauthority_id`, `issuingauthority_id`, `usersign_id`, `field_id`, `templatefile_id`, `summary`, `year`, `original_location`, `number_releases`, `status`, `urgency_level`, `confidentiality_level`, `created_at`, `updated_at`, `is_removed`) VALUES
+('b48f4319-3b6d-11f0-8dd8-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', '53c2b8d5-2cf2-11f0-9674-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', NULL, '97cea305-187a-11f0-bb92-089798d3', 'f99141d0-fcc4-11ef-b13b-089798d3', 'Hướng dẫn thực hiện Nghị định số X/2024/NĐ-CP', 2028, 'Kho', 2, 1, 2, 0, '2025-05-28 09:44:41', '2025-05-28 09:44:41', 0),
+('d8bc0d6b-352b-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', '53c2b8d5-2cf2-11f0-9674-089798d3', NULL, '1c159b67-fccd-11ef-b13b-089798d3', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'Một đoạn trích yếu nào đó', 2028, 'Tổng khu hành chính', 3, 1, 0, 0, '2025-05-20 10:38:07', '2025-05-20 16:25:04', 0);
 
 -- --------------------------------------------------------
 
@@ -202,8 +203,9 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`, `fcm_token`) VALUES
-('33dbd457-355a-11f0-b4a3-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3NzMyMTk2LCJleHAiOjE3NDc3MzM5OTZ9.0nqTcw-PI7pHltCs2bBqEYaxrHdFx7xyuDN44zY5_S0', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3NzMyMTk2LCJleHAiOjE3NTAzMjQxOTZ9.dBCnhsaQ2NL5fniLuJn9tLgnHD-rqD_7XoJfYcfz2Yw', NULL),
-('8cf56d3c-3561-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NzM1MzUzLCJleHAiOjE3NDc3MzcxNTN9.OIjv4jaFLRiPh9OrRTcl9wygJK1pY8OWHjI8JiE77rQ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ3NzM1MzUzLCJleHAiOjE3NTAzMjczNTN9.pE1-1I0j2KgL2maxg4cwxjKbSY6m4A4ty4Gt45nh970', 'fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ');
+('79c46574-3c33-11f0-8dd8-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ4NDg1MjIzLCJleHAiOjE3NDg0ODcwMjN9.pcLSW7dGIhDXoNOTPfbraDbrQWM0qSx-Hb3wnHLr7gA', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ4NDg1MjIzLCJleHAiOjE3NTEwNzcyMjN9.XTy-TKzC8C9E19FsVHjMa3BgU_FaZKl68iQ8bKNzZe0', 'fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ'),
+('a84653dc-37be-11f0-8594-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3OTk1MjQ1LCJleHAiOjE3NDc5OTcwNDV9.URm1CfzYL1MY8Z7y_XzYmgb8Er1ASOj40_Luo_e-rcM', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ3OTk1MjQ1LCJleHAiOjE3NTA1ODcyNDV9.zLNgrE9tgvrnJuEoYiVd2O7mMXjDneW0ZDEBi0nV2lE', 'String'),
+('d84fbf13-3ba2-11f0-8dd8-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NDIzMTA0LCJleHAiOjE3NDg0MjQ5MDR9.15lVK_k3PuYSaSNaSmRUOorhdelx0OjONzfAg267854', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NDIzMTA0LCJleHAiOjE3NTEwMTUxMDR9.h1dwPxCm8p4C-0PorMJWSdMmG-YGgH7iaZLyaO6OU4I', 'fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ');
 
 -- --------------------------------------------------------
 
@@ -246,18 +248,20 @@ CREATE TABLE `user` (
   `email` varchar(75) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
+  `avatar` varchar(75) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `avatar` varchar(75) DEFAULT NULL
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`uuid`, `permission_id`, `issuingauthority_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`, `avatar`) VALUES
-('8c951845-fb31-11ef-8991-309c23d7', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'ef73781effc5774100f87fe2f437a435', '2025-03-07 15:52:48', '2025-05-12 20:58:25', 'resources/ae6e246332d700ce171e7ca066e19a27.jpg'),
-('edd70544-f73e-11ef-9eb4-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Quản Trị Viên', 0, '1998-01-25', '0326090580', 'luonghai5622@gmail.com', 'admin', 'ef73781effc5774100f87fe2f437a435', '2025-03-02 15:18:32', '2025-05-13 21:45:23', 'resources/f7b84f16effa5961c0118e832b4b3c20.jpg');
+INSERT INTO `user` (`uuid`, `permission_id`, `issuingauthority_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `created_at`, `updated_at`, `avatar`, `status`) VALUES
+('418926cb-3aa1-11f0-8dd8-309c23d7', 1, '53c2b8d5-2cf2-11f0-9674-089798d3', 'AA', 1, '2025-05-27', '321654987', '', 'aa', 'e10adc3949ba59abbe56e057f20f883e', '2025-05-27 09:21:11', '2025-05-28 16:09:08', 'resources/781943260ed800e0288102e91d010393.png', 1),
+('8c951845-fb31-11ef-8991-309c23d7', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'ef73781effc5774100f87fe2f437a435', '2025-03-07 15:52:48', '2025-05-12 20:58:25', 'resources/ae6e246332d700ce171e7ca066e19a27.jpg', 1),
+('edd70544-f73e-11ef-9eb4-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Quản Trị Viên', 0, '1998-01-25', '0326090580', 'luonghai5622@gmail.com', 'admin', 'ef73781effc5774100f87fe2f437a435', '2025-03-02 15:18:32', '2025-05-28 15:28:32', 'resources/f7b84f16effa5961c0118e832b4b3c20.jpg', 1);
 
 --
 -- Indexes for dumped tables
