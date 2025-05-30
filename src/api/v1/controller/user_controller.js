@@ -485,8 +485,14 @@ async function changePassword(uuid, body) {
   }
 }
 
-async function changeStatus(uuid, status) {
+async function changeStatus(user_id, uuid, status) {
   try {
+    if (user_id == uuid) {
+      const error = new Error("Không thể tự thao tác này trên bản thân!");
+      error.statusCode = 400;
+      throw error;
+    }
+
     await db.execute(`
       UPDATE 
         \`user\` 

@@ -109,7 +109,7 @@ router.put("/reset-password/:id", checkLogin, async (req, res, next) => {
 
 router.put("/lock/:id", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.changeStatus(req.params.id, 0));
+    res.json(await controller.changeStatus(req.payload.id, req.params.id, 0));
   } catch (error) {
     next(error);
   }
@@ -117,7 +117,7 @@ router.put("/lock/:id", checkLogin, async (req, res, next) => {
 
 router.put("/unlock/:id", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.changeStatus(req.params.id, 1));
+    res.json(await controller.changeStatus(req.payload.id, req.params.id, 1));
   } catch (error) {
     next(error);
   }
