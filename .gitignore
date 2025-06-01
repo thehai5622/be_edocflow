@@ -1,3 +1,6 @@
 /node_modules
 /src/tests/test.js
 /src/api/log/log.txt
+
+# Firebase private key
+src/config/firebase

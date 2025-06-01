@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controller/user_controller");
 const { checkLogin } = require("../../middleware/check_login");
+const { sendPushNotification } = require("../../utils/notification");
 
 router.get("/me", checkLogin, async (req, res, next) => {
   try {
@@ -13,12 +14,14 @@ router.get("/me", checkLogin, async (req, res, next) => {
 
 router.get("/", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.getListUser({
-      keyword: req.query.keyword,
-      page: req.query.page,
-      limit: req.query.limit,
-      isRecycleBin: req.query.isRecycleBin,
-    }));
+    res.json(
+      await controller.getListUser({
+        keyword: req.query.keyword,
+        page: req.query.page,
+        limit: req.query.limit,
+        isRecycleBin: req.query.isRecycleBin,
+      })
+    );
   } catch (error) {
     next(error);
   }
@@ -34,10 +37,12 @@ router.get("/detail/:id", checkLogin, async (req, res, next) => {
 
 router.post("/create", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.createUser({
-      user_id: req.payload.id,
-      body: req.body
-    }));
+    res.json(
+      await controller.createUser({
+        user_id: req.payload.id,
+        body: req.body,
+      })
+    );
   } catch (error) {
     next(error);
   }
@@ -54,6 +59,19 @@ router.post("/login", async (req, res, next) => {
 router.post("/refresh-token", async (req, res, next) => {
   try {
     res.json(await controller.refreshToken(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/send-notification", checkLogin, async (req, res, next) => {
+  try {
+    await sendPushNotification(
+      "fVKhxPr5QteWdnWQyylZpi:APA91bEFISjl_ejPXrnqLgDL-Jnn8raaQ5IhUhr4K3B3fXZoHMEhyUDhHCmE9vRCBmlEcu8a0E2LlcJ070o8rjJ3fByT-ofsvgRgUfSXabfJpIPqykL3tdc",
+      "Xin chào",
+      "Bạn nhận được thông báo từ server!"
+    );
+    res.status(200).json({ message: "Thông báo đã được gửi!" });
   } catch (error) {
     next(error);
   }
