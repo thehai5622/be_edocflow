@@ -1,5 +1,6 @@
 const db = require("../../utils/database");
 const offsetUtils = require("../../utils/offset");
+const { sendMultiplePushNotification } = require("../../utils/notification");
 
 async function getListDocumentOut({
   user_id = "",
@@ -360,6 +361,23 @@ async function createDocument({ user_id, body }) {
         ${body.confidentiality_level}
       )
     `);
+
+    const listToken = await db.execute(`
+      SELECT
+        t.\`fcm_token\`
+      FROM \`token\` AS t
+      JOIN \`user\` AS u ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
+      WHERE
+        \`issuingauthority_id\` = '${body.issuing_authority}'
+    `);
+
+    await sendMultiplePushNotification(
+      listToken.map((t) => {
+        return t.fcm_token;
+      }).filter(item => item !== null),
+      "Văn bản đến",
+      "Bạn nhận được văn bản đến mới!"
+    );
 
     return {
       code: 200,
