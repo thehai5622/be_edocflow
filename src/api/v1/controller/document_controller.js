@@ -372,9 +372,11 @@ async function createDocument({ user_id, body }) {
     `);
 
     await sendMultiplePushNotification(
-      listToken.map((t) => {
-        return t.fcm_token;
-      }).filter(item => item !== null),
+      listToken
+        .map((t) => {
+          return t.fcm_token;
+        })
+        .filter((item) => item !== null),
       "Văn bản đến",
       "Bạn nhận được văn bản đến mới!"
     );
@@ -471,10 +473,50 @@ async function updateDocument({ user_id, body, uuid }) {
   }
 }
 
+async function signDocument({ user_id, uuid }) {
+  try {
+    const [result] = await db.execute(`
+      SELECT
+        \`status\`
+      FROM
+        \`document\`
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    if (result.status !== 2) {
+      const error = new Error("Văn bản này không thể cập nhật!");
+      error.statusCode = 400;
+      throw error;
+    }   
+
+    await db.execute(
+      `
+      UPDATE
+        \`document\`
+      SET
+        \`usersign_id\` = ?,
+        \`status\` = 2
+      WHERE
+        \`uuid\` = ?
+    `,
+      [user_id, uuid]
+    );
+
+    return {
+      code: 200,
+      message: "Đã ký thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getListDocumentOut,
   getListDocumentIn,
   getDetailDocument,
+  signDocument,
   createDocument,
   updateDocument,
 };
