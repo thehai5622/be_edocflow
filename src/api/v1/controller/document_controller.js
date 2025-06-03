@@ -388,9 +388,93 @@ async function createDocument({ user_id, body }) {
   }
 }
 
+async function updateDocument({ user_id, body, uuid }) {
+  try {
+    if (body.field == null || body.field == "") {
+      const error = new Error("Lĩnh vực là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.template_file == null || body.template_file == "") {
+      const error = new Error("File mẫu là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.summary == null || body.summary == "") {
+      const error = new Error("Trích yếu là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.year == null) {
+      const error = new Error("Năm ban hành là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.original_location == null || body.original_location == "") {
+      const error = new Error("Nơi lưu trữ bản gốc là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.number_releases == null || body.number_releases == "") {
+      const error = new Error("Số bản lưu là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.urgency_level == null) {
+      const error = new Error("Mức độ khẩn là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (body.confidentiality_level == null) {
+      const error = new Error("Mức độ bảo mật là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const [result] = await db.execute(`
+      SELECT
+        \`status\`
+      FROM
+        \`document\`
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    if (result.status !== 1) {
+      const error = new Error("Văn bản này không thể cập nhật!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(`
+      UPDATE
+        \`document\`
+      SET
+        \`field_id\` = '${body.field}',
+        \`templatefile_id\` = '${body.template_file}',
+        \`summary\` = '${body.summary}',
+        \`year\` = ${body.year},
+        \`original_location\` = '${body.original_location}',
+        \`number_releases\` = ${body.number_releases},
+        \`urgency_level\` = ${body.urgency_level},
+        \`confidentiality_level\` = ${body.confidentiality_level}
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    return {
+      code: 200,
+      message: "Đã chỉnh sửa văn bản đi thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getListDocumentOut,
   getListDocumentIn,
   getDetailDocument,
   createDocument,
+  updateDocument,
 };

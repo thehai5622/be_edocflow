@@ -52,4 +52,16 @@ router.post("/", checkLogin, async (req, res, next) => {
   }
 });
 
+router.put("/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.updateDocument({
+      user_id: req.payload.id,
+      uuid: req.params.id,
+      body: req.body
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
