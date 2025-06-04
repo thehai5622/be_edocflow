@@ -184,7 +184,7 @@ async function getDetailDocument({ uuid }) {
       SELECT
         \`document\`.\`uuid\`,
         \`document\`.\`summary\`,
-        \`document\`.\`year\`,
+        \`document\`.\`release\`,
         \`document\`.\`original_location\`,
         \`document\`.\`number_releases\`,
         \`document\`.\`status\`,
@@ -228,7 +228,7 @@ async function getDetailDocument({ uuid }) {
             uuid: result.uuid,
             name: result.name,
             summary: result.summary,
-            year: result.year,
+            release: result.release,
             original_location: result.original_location,
             number_releases: result.number_releases,
             status: result.status,
@@ -301,8 +301,8 @@ async function createDocument({ user_id, body }) {
       error.statusCode = 400;
       throw error;
     }
-    if (body.year == null) {
-      const error = new Error("Năm ban hành là bắt buộc!");
+    if (body.release == null) {
+      const error = new Error("Ngày ban hành là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
@@ -337,7 +337,7 @@ async function createDocument({ user_id, body }) {
         \`field_id\`,
         \`templatefile_id\`,
         \`summary\`,
-        \`year\`,
+        \`release\`,
         \`original_location\`,
         \`number_releases\`,
         \`status\`,
@@ -353,7 +353,7 @@ async function createDocument({ user_id, body }) {
         '${body.field}',
         '${body.template_file}',
         '${body.summary}',
-        ${body.year},
+        '${body.release}',
         '${body.original_location}',
         ${body.number_releases},
         1,
@@ -407,8 +407,8 @@ async function updateDocument({ user_id, body, uuid }) {
       error.statusCode = 400;
       throw error;
     }
-    if (body.year == null) {
-      const error = new Error("Năm ban hành là bắt buộc!");
+    if (body.release == null) {
+      const error = new Error("Ngày ban hành là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
@@ -455,7 +455,7 @@ async function updateDocument({ user_id, body, uuid }) {
         \`field_id\` = '${body.field}',
         \`templatefile_id\` = '${body.template_file}',
         \`summary\` = '${body.summary}',
-        \`year\` = ${body.year},
+        \`release\` = '${body.release}',
         \`original_location\` = '${body.original_location}',
         \`number_releases\` = ${body.number_releases},
         \`urgency_level\` = ${body.urgency_level},

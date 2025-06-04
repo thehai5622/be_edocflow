@@ -1,8 +1,6 @@
 const cron = require("node-cron");
 const db = require("./database");
 
-console.log("🚀 Đang kiểm tra các văn bản cần cập nhật trạng thái...");
-
 cron.schedule("0 0 * * *", async () => {
   console.log("🔄 Đang kiểm tra các văn bản cần cập nhật trạng thái...");
 
