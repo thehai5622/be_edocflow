@@ -11,8 +11,14 @@ cron.schedule("0 0 * * *", async () => {
       WHERE \`status\` = 1
         AND \`created_at\` <= NOW() - INTERVAL 7 DAY
     `);
-
     console.log(`✅ Đã cập nhật ${result.affectedRows} văn bản.`);
+    const [releaseUpdate] = await db.execute(`
+      UPDATE \`document\`
+      SET \`status\` = 4
+      WHERE \`status\` = 3
+        AND DATE(\`release\`) = CURDATE()
+    `);
+    console.log(`✅ Đã cập nhật ${releaseUpdate.affectedRows} văn bản release hôm nay thành hoạt động`);
   } catch (error) {
     console.error("❌ Lỗi khi cập nhật văn bản:", error);
   }
