@@ -4,7 +4,7 @@ const cors = require("cors");
 const { checkLogin } = require("./api/middleware/check_login");
 require("dotenv").config();
 require("./api/utils/document_status");
-require("./api/utils/notificatio_record");
+require("./api/utils/notification_record");
 
 // Setup server
 const app = express();

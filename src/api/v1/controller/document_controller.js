@@ -521,10 +521,10 @@ async function receptionDocument({ user_id, uuid }) {
       "Văn bản đi",
       "Một văn bản đi đã được tiếp nhập!",
       {
-        "document": JSON.stringify({
-          "uuid": uuid,
-          "message": "Văn bản đã tiếp nhận!"
-        })
+        document: JSON.stringify({
+          uuid: uuid,
+          message: "Văn bản đã tiếp nhận!",
+        }),
       }
     );
 
@@ -586,16 +586,109 @@ async function signDocument({ user_id, uuid }) {
       "Văn bản đi",
       "Một văn bản đi đã được ký duyệt!",
       {
-        "document": JSON.stringify({
-          "uuid": uuid,
-          "message": "Văn bản đã được ký duyệt!"
-        })
+        document: JSON.stringify({
+          uuid: uuid,
+          message: "Văn bản đã được ký duyệt!",
+        }),
       }
     );
 
     return {
       code: 200,
       message: "Đã ký thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function deleteDocument({ user_id, uuid }) {
+  try {
+    const [result] = await db.execute(`
+      SELECT
+        \`status\`
+      FROM
+        \`document\`
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    if (result.status !== 1) {
+      const error = new Error("Văn bản này không thể được thu hồi!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(`DELETE FROM \`document\`
+      WHERE \`uuid\` = '${uuid}'`);
+
+    return {
+      code: 200,
+      message: "Đã thu hồi văn bản thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function cancelDocument({ user_id, uuid }) {
+  try {
+    const [result] = await db.execute(`
+      SELECT
+        \`status\`,
+        \`from_issuingauthority_id\`
+      FROM
+        \`document\`
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    if (result.status !== 1) {
+      const error = new Error("Văn bản này không thể hủy!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(
+      `
+      UPDATE
+        \`document\`
+      SET
+        \`status\` = 0
+      WHERE
+        \`uuid\` = ?
+    `,
+      [uuid]
+    );
+
+    const listToken = await db.execute(`
+      SELECT
+        \`t\`.\`fcm_token\`
+      FROM \`token\` AS \`t\`
+      JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
+      WHERE
+        \`u\`.\`issuingauthority_id\` = '${result.from_issuingauthority_id}'
+    `);
+
+    await sendMultiplePushNotification(
+      listToken
+        .map((t) => {
+          return t.fcm_token;
+        })
+        .filter((item) => item !== null),
+      "Văn bản đi",
+      "Một văn bản đi đã bị hủy bỏ!",
+      {
+        document: JSON.stringify({
+          uuid: uuid,
+          message: "Văn bản đã bị hủy bỏ!",
+        }),
+      }
+    );
+
+    return {
+      code: 200,
+      message: "Đã hủy văn bản thành công!",
     };
   } catch (error) {
     throw error;
@@ -610,4 +703,6 @@ module.exports = {
   signDocument,
   createDocument,
   updateDocument,
+  deleteDocument,
+  cancelDocument,
 };

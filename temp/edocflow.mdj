@@ -2864,7 +2864,7 @@
 											"top": 439,
 											"width": 177.02978515625,
 											"height": 13,
-											"text": "-year: int[4]",
+											"text": "-release: date",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7054,10 +7054,9 @@
 							"_parent": {
 								"$ref": "AAAAAAGVejVxfuS2opM="
 							},
-							"name": "year",
+							"name": "release",
 							"visibility": "private",
-							"type": "int",
-							"multiplicity": "4"
+							"type": "date"
 						},
 						{
 							"_type": "UMLAttribute",

@@ -85,4 +85,24 @@ router.put("/:id", checkLogin, async (req, res, next) => {
   }
 });
 
+router.delete("/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.deleteDocument({
+      uuid: req.params.id,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/cancel/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.cancelDocument({
+      uuid: req.params.id,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
