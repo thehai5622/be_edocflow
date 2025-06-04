@@ -364,11 +364,11 @@ async function createDocument({ user_id, body }) {
 
     const listToken = await db.execute(`
       SELECT
-        t.\`fcm_token\`
-      FROM \`token\` AS t
-      JOIN \`user\` AS u ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
+        \`t\`.\`fcm_token\`
+      FROM \`token\` AS \`t\`
+      JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
       WHERE
-        \`issuingauthority_id\` = '${body.issuing_authority}'
+        \`u\`.\`issuingauthority_id\` = '${body.issuing_authority}'
     `);
 
     await sendMultiplePushNotification(
@@ -473,11 +473,76 @@ async function updateDocument({ user_id, body, uuid }) {
   }
 }
 
+async function receptionDocument({ user_id, uuid }) {
+  try {
+    const [result] = await db.execute(`
+      SELECT
+        \`status\`,
+        \`from_issuingauthority_id\`
+      FROM
+        \`document\`
+      WHERE
+        \`uuid\` = '${uuid}'
+    `);
+
+    if (result.status !== 1) {
+      const error = new Error("Văn bản này không thể cập nhật!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(
+      `
+      UPDATE
+        \`document\`
+      SET
+        \`status\` = 2
+      WHERE
+        \`uuid\` = ?
+    `,
+      [uuid]
+    );
+
+    const listToken = await db.execute(`
+      SELECT
+        \`t\`.\`fcm_token\`
+      FROM \`token\` AS \`t\`
+      JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
+      WHERE
+        \`u\`.\`issuingauthority_id\` = '${result.from_issuingauthority_id}'
+    `);
+
+    await sendMultiplePushNotification(
+      listToken
+        .map((t) => {
+          return t.fcm_token;
+        })
+        .filter((item) => item !== null),
+      "Văn bản đi",
+      "Một văn bản đi đã được tiếp nhập!",
+      {
+        "document": JSON.stringify({
+          "uuid": uuid,
+          "message": "Văn bản đã tiếp nhận!"
+        })
+      }
+    );
+
+    return {
+      code: 200,
+      message: "Đã tiếp nhận văn bản đến thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function signDocument({ user_id, uuid }) {
   try {
     const [result] = await db.execute(`
       SELECT
-        \`status\`
+        \`status\`,
+        \`from_issuingauthority_id\`
       FROM
         \`document\`
       WHERE
@@ -488,7 +553,7 @@ async function signDocument({ user_id, uuid }) {
       const error = new Error("Văn bản này không thể cập nhật!");
       error.statusCode = 400;
       throw error;
-    }   
+    }
 
     await db.execute(
       `
@@ -496,11 +561,36 @@ async function signDocument({ user_id, uuid }) {
         \`document\`
       SET
         \`usersign_id\` = ?,
-        \`status\` = 2
+        \`status\` = 3
       WHERE
         \`uuid\` = ?
     `,
       [user_id, uuid]
+    );
+
+    const listToken = await db.execute(`
+      SELECT
+        \`t\`.\`fcm_token\`
+      FROM \`token\` AS \`t\`
+      JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
+      WHERE
+        \`u\`.\`issuingauthority_id\` = '${result.from_issuingauthority_id}'
+    `);
+
+    await sendMultiplePushNotification(
+      listToken
+        .map((t) => {
+          return t.fcm_token;
+        })
+        .filter((item) => item !== null),
+      "Văn bản đi",
+      "Một văn bản đi đã được ký duyệt!",
+      {
+        "document": JSON.stringify({
+          "uuid": uuid,
+          "message": "Văn bản đã được ký duyệt!"
+        })
+      }
     );
 
     return {
@@ -516,6 +606,7 @@ module.exports = {
   getListDocumentOut,
   getListDocumentIn,
   getDetailDocument,
+  receptionDocument,
   signDocument,
   createDocument,
   updateDocument,

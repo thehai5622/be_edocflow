@@ -52,6 +52,16 @@ router.post("/", checkLogin, async (req, res, next) => {
   }
 });
 
+router.post("/reception-document/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.receptionDocument({
+      uuid: req.params.id,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/sign-document/:id", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.signDocument({
