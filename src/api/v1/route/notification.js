@@ -7,10 +7,18 @@ router.get("/", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.getListNotification({
       user_id: req.payload.id,
-      keyword: req.query.keyword,
       page: req.query.page,
       limit: req.query.limit,
-      isRecycleBin: req.query.isRecycleBin,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/read/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.readNotification({
+      uuid: req.params.id,
     }));
   } catch (error) {
     next(error);

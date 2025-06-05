@@ -364,7 +364,8 @@ async function createDocument({ user_id, body }) {
 
     const listToken = await db.execute(`
       SELECT
-        \`t\`.\`fcm_token\`
+        \`t\`.\`fcm_token\`,
+        \`u\`.\`uuid\` AS \`u_uuid\`
       FROM \`token\` AS \`t\`
       JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
       WHERE
@@ -379,6 +380,32 @@ async function createDocument({ user_id, body }) {
         .filter((item) => item !== null),
       "Văn bản đến",
       "Bạn nhận được văn bản đến mới!"
+    );
+    
+    db.execute(
+      `
+      INSERT INTO \`notification\`(
+        \`uuid\`,
+        \`user_id\`,
+        \`title\`,
+        \`body\`,
+        \`data\`
+      )
+      VALUES ${listToken
+        .map((t) => {
+          return `(
+            UUID(),
+            '${t.u_uuid}',
+            'Văn bản đến',
+            'Văn bản đến mới!',
+            '${JSON.stringify({
+              type: "document",
+              uuid: "",
+              more: "in"
+            })}'
+          )`;
+        })
+        .join(",")}`
     );
 
     return {
@@ -505,7 +532,8 @@ async function receptionDocument({ user_id, uuid }) {
 
     const listToken = await db.execute(`
       SELECT
-        \`t\`.\`fcm_token\`
+        \`t\`.\`fcm_token\`,
+        \`u\`.\`uuid\` AS \`u_uuid\`
       FROM \`token\` AS \`t\`
       JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
       WHERE
@@ -526,6 +554,32 @@ async function receptionDocument({ user_id, uuid }) {
           message: "Văn bản đã tiếp nhận!",
         }),
       }
+    );
+
+    db.execute(
+      `
+      INSERT INTO \`notification\`(
+        \`uuid\`,
+        \`user_id\`,
+        \`title\`,
+        \`body\`,
+        \`data\`
+      )
+      VALUES ${listToken
+        .map((t) => {
+          return `(
+            UUID(),
+            '${t.u_uuid}',
+            'Văn bản đi',
+            'Văn bản ${uuid} đã được tiếp nhận!',
+            '${JSON.stringify({
+              type: "document",
+              uuid: uuid,
+              more: "out"
+            })}'
+          )`;
+        })
+        .join(",")}`
     );
 
     return {
@@ -570,7 +624,8 @@ async function signDocument({ user_id, uuid }) {
 
     const listToken = await db.execute(`
       SELECT
-        \`t\`.\`fcm_token\`
+        \`t\`.\`fcm_token\`,
+        \`u\`.\`uuid\` AS \`u_uuid\`
       FROM \`token\` AS \`t\`
       JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
       WHERE
@@ -591,6 +646,32 @@ async function signDocument({ user_id, uuid }) {
           message: "Văn bản đã được ký duyệt!",
         }),
       }
+    );
+
+    db.execute(
+      `
+      INSERT INTO \`notification\`(
+        \`uuid\`,
+        \`user_id\`,
+        \`title\`,
+        \`body\`,
+        \`data\`
+      )
+      VALUES ${listToken
+        .map((t) => {
+          return `(
+            UUID(),
+            '${t.u_uuid}',
+            'Văn bản đi',
+            'Văn bản ${uuid} đã được ký duyệt!',
+            '${JSON.stringify({
+              type: "document",
+              uuid: uuid,
+              more: "out"
+            })}'
+          )`;
+        })
+        .join(",")}`
     );
 
     return {
@@ -663,7 +744,8 @@ async function cancelDocument({ user_id, uuid }) {
 
     const listToken = await db.execute(`
       SELECT
-        \`t\`.\`fcm_token\`
+        \`t\`.\`fcm_token\`,
+        \`u\`.\`uuid\` AS \`u_uuid\`
       FROM \`token\` AS \`t\`
       JOIN \`user\` AS \`u\` ON \`t\`.\`user_id\` = \`u\`.\`uuid\`
       WHERE
@@ -684,6 +766,32 @@ async function cancelDocument({ user_id, uuid }) {
           message: "Văn bản đã bị hủy bỏ!",
         }),
       }
+    );
+
+    db.execute(
+      `
+      INSERT INTO \`notification\`(
+        \`uuid\`,
+        \`user_id\`,
+        \`title\`,
+        \`body\`,
+        \`data\`
+      )
+      VALUES ${listToken
+        .map((t) => {
+          return `(
+            UUID(),
+            '${t.u_uuid}',
+            'Văn bản đi',
+            'Văn bản ${uuid} đã bị hủy bỏ!',
+            '${JSON.stringify({
+              type: "document",
+              uuid: uuid,
+              more: "out"
+            })}'
+          )`;
+        })
+        .join(",")}`
     );
 
     return {
