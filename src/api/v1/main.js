@@ -11,5 +11,6 @@ router.use("/administrativelevel", require("./route/administrativelevel"));
 router.use("/document", require("./route/document"));
 router.use("/permission", require("./route/permission"));
 router.use("/notification", require("./route/notification"));
+router.use("/dashboard", require("./route/dashboard"));
 
 module.exports = router;
