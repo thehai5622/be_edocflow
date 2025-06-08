@@ -13,7 +13,6 @@ async function getListDocumentOut({
     const offset = offsetUtils.getOffset(page, limit);
 
     let issuingauthority_id;
-
     await db
       .execute(
         `SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`
@@ -381,7 +380,7 @@ async function createDocument({ user_id, body }) {
       "Văn bản đến",
       "Bạn nhận được văn bản đến mới!"
     );
-    
+
     db.execute(
       `
       INSERT INTO \`notification\`(
@@ -401,7 +400,7 @@ async function createDocument({ user_id, body }) {
             '${JSON.stringify({
               type: "document",
               uuid: "",
-              more: "in"
+              more: "in",
             })}'
           )`;
         })
@@ -575,7 +574,7 @@ async function receptionDocument({ user_id, uuid }) {
             '${JSON.stringify({
               type: "document",
               uuid: uuid,
-              more: "out"
+              more: "out",
             })}'
           )`;
         })
@@ -667,7 +666,7 @@ async function signDocument({ user_id, uuid }) {
             '${JSON.stringify({
               type: "document",
               uuid: uuid,
-              more: "out"
+              more: "out",
             })}'
           )`;
         })
@@ -787,7 +786,7 @@ async function cancelDocument({ user_id, uuid }) {
             '${JSON.stringify({
               type: "document",
               uuid: uuid,
-              more: "out"
+              more: "out",
             })}'
           )`;
         })
