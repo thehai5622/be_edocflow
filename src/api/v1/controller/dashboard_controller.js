@@ -12,13 +12,13 @@ async function getDashboard({ user_id }) {
       });
 
     const documentOut = await db.queryMultiple([
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}'`,
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}' AND \`status\` = 1`,
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}' AND \`status\` = 2`,
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}' AND \`status\` = 3`,
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}' AND \`status\` = 4`,
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}' AND \`status\` = 5`,
-      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id \` = '${issuingauthority_id}' AND \`status\` = 0`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}'`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}' AND \`status\` = 1`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}' AND \`status\` = 2`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}' AND \`status\` = 3`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}' AND \`status\` = 4`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}' AND \`status\` = 5`,
+      `SELECT count(*) AS total FROM \`document\` WHERE \`from_issuingauthority_id\` = '${issuingauthority_id}' AND \`status\` = 0`,
     ]);
 
     const documentIn = await db.queryMultiple([
@@ -35,22 +35,22 @@ async function getDashboard({ user_id }) {
       code: 200,
       data: {
         document_out: {
-          total: documentOut[0].total,
-          waiting: documentOut[1].total,
-          processing: documentOut[2].total,
-          complete: documentOut[3].total,
-          canceled: documentOut[4].total,
-          rejected: documentOut[5].total,
-          recyclebin: documentOut[6].total,
+          total: documentOut[0][0].total ?? null,
+          unprocessed: documentOut[1][0].total ?? null,
+          pending_approval: documentOut[2][0].total ?? null,
+          pending_release: documentOut[3][0].total ?? null,
+          active: documentOut[4][0].total ?? null,
+          overdue: documentOut[5][0].total ?? null,
+          canceled: documentOut[6][0].total ?? null,
         },
         document_in: {
-          total: documentIn[0].total,
-          waiting: documentIn[1].total,
-          processing: documentIn[2].total,
-          complete: documentIn[3].total,
-          canceled: documentIn[4].total,
-          rejected: documentIn[5].total,
-          recyclebin: documentIn[6].total,
+          total: documentIn[0][0].total ?? null,
+          unprocessed: documentIn[1][0].total ?? null,
+          pending_approval: documentIn[2][0].total ?? null,
+          pending_release: documentIn[3][0].total ?? null,
+          active: documentIn[4][0].total ?? null,
+          overdue: documentIn[5][0].total ?? null,
+          canceled: documentIn[6][0].total ?? null,
         },
       }
     }
