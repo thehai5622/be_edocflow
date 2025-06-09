@@ -1,6 +1,6 @@
 const db = require("../../utils/database");
 
-async function getDashboard({ user_id }) {
+async function getDashboard({ user_id, filterType = "all" }) {
   try {
     let issuingauthority_id;
     await db

@@ -8,6 +8,7 @@ router.get("/", checkLogin, async (req, res, next) => {
     res.json(
       await controller.getDashboard({
         user_id: req.payload.id,
+        filterType: req.query.filterType,
       })
     );
   } catch (error) {
