@@ -378,7 +378,12 @@ async function createDocument({ user_id, body }) {
         })
         .filter((item) => item !== null),
       "Văn bản đến",
-      "Bạn nhận được văn bản đến mới!"
+      "Bạn nhận được văn bản đến mới!",
+      `${JSON.stringify({
+        type: "document",
+        uuid: "",
+        more: "in",
+      })}`
     );
 
     db.execute(
@@ -547,12 +552,11 @@ async function receptionDocument({ user_id, uuid }) {
         .filter((item) => item !== null),
       "Văn bản đi",
       "Một văn bản đi đã được tiếp nhập!",
-      {
-        document: JSON.stringify({
-          uuid: uuid,
-          message: "Văn bản đã tiếp nhận!",
-        }),
-      }
+      `${JSON.stringify({
+        type: "document",
+        uuid: uuid,
+        more: "out",
+      })}`
     );
 
     db.execute(
@@ -639,12 +643,11 @@ async function signDocument({ user_id, uuid }) {
         .filter((item) => item !== null),
       "Văn bản đi",
       "Một văn bản đi đã được ký duyệt!",
-      {
-        document: JSON.stringify({
-          uuid: uuid,
-          message: "Văn bản đã được ký duyệt!",
-        }),
-      }
+      `${JSON.stringify({
+        type: "document",
+        uuid: uuid,
+        more: "out",
+      })}`
     );
 
     db.execute(
@@ -759,12 +762,11 @@ async function cancelDocument({ user_id, uuid }) {
         .filter((item) => item !== null),
       "Văn bản đi",
       "Một văn bản đi đã bị hủy bỏ!",
-      {
-        document: JSON.stringify({
-          uuid: uuid,
-          message: "Văn bản đã bị hủy bỏ!",
-        }),
-      }
+      `${JSON.stringify({
+        type: "document",
+        uuid: uuid,
+        more: "out",
+      })}`
     );
 
     db.execute(

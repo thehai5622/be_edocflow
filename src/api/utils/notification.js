@@ -50,7 +50,7 @@ async function sendMultiplePushNotification(tokens, title, body, data) {
       },
     },
     tokens: tokens,
-    data,
+    data: { data },
   };
 
   try {
