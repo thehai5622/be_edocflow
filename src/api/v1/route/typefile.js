@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controller/typetemplatefile_controller");
+const controller = require("../controller/typefile_controller");
 const { checkLogin } = require("../../middleware/check_login");
 
 router.get("/", checkLogin, async (req, res, next) => {
@@ -29,7 +29,7 @@ router.get("/dropdown", checkLogin, async (req, res, next) => {
 
 router.post("/", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.createTypeTemplateFile({
+    res.json(await controller.createTypeFile({
       user_id: req.payload.id,
       body: req.body
     }));
@@ -40,7 +40,7 @@ router.post("/", checkLogin, async (req, res, next) => {
 
 router.put("/:id", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.updateTypeTemplateFile({
+    res.json(await controller.updateTypeFile({
       uuid: req.params.id,
       user_id: req.payload.id,
       body: req.body
@@ -52,7 +52,7 @@ router.put("/:id", checkLogin, async (req, res, next) => {
 
 router.delete("/:id", checkLogin, async (req, res, next) => {
   try {
-    res.json(await controller.deleteTypeTemplateFile({
+    res.json(await controller.deleteTypeFile({
       uuid: req.params.id,
     }));
   } catch (error) {

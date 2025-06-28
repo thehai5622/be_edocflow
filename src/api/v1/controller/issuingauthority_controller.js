@@ -58,9 +58,7 @@ async function getIssuingAuthority({
   }
 }
 
-async function getListIA({
-  keyword = "",
-}) {
+async function getListIA({ keyword = "" }) {
   try {
     const result = await db.execute(`
       SELECT
@@ -88,17 +86,30 @@ async function createIssuingAuthority({ user_id, body }) {
       error.statusCode = 400;
       throw error;
     }
+    if (
+      body.administrativelevel_id == null ||
+      body.administrativelevel_id == ""
+    ) {
+      const error = new Error("Cấp cơ quan là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
 
-    await db.execute(`
+    await db.execute(
+      `
       INSERT INTO \`issuingauthority\`(
         \`uuid\`,
-        \`name\`
+        \`name\`,
+        \`administrativelevel_id\`
       )
       VALUES(
         UUID(),
-        '${body.name}'
+        ?,
+        ?
       )
-    `);
+    `,
+      [body.name, body.administrativelevel_id]
+    );
 
     return {
       code: 200,
@@ -113,6 +124,14 @@ async function updateIssuingAuthority({ uuid, body }) {
   try {
     if (body.name == null || body.name == "") {
       const error = new Error("Vui lòng nhập tên!");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (
+      body.administrativelevel_id == null ||
+      body.administrativelevel_id == ""
+    ) {
+      const error = new Error("Cấp cơ quan là bắt buộc!");
       error.statusCode = 400;
       throw error;
     }

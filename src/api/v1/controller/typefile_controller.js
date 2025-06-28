@@ -60,10 +60,10 @@ async function getListTTF({
   }
 }
 
-async function createTypeTemplateFile({ user_id, body }) {
+async function createTypeFile({ user_id, body }) {
   try {
     if (body.name == null || body.name == "") {
-      const error = new Error("Vui lòng nhập tên!");
+      const error = new Error("Tên loại file là trường bắt buộc!");
       error.statusCode = 400;
       throw error;
     }
@@ -88,7 +88,7 @@ async function createTypeTemplateFile({ user_id, body }) {
   }
 }
 
-async function updateTypeTemplateFile({ uuid, user_id, body }) {
+async function updateTypeFile({ uuid, user_id, body }) {
   try {
     if (body.name == null || body.name == "") {
       const error = new Error("Vui lòng nhập tên!");
@@ -107,14 +107,14 @@ async function updateTypeTemplateFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      message: "Đã chỉnh sửa thông tin loại file mẫu thành công!",
+      message: "Đã chỉnh sửa thông tin loại file thành công!",
     };
   } catch (error) {
     throw error;
   }
 }
 
-async function deleteTypeTemplateFile({ uuid, user_id, body }) {
+async function deleteTypeFile({ uuid, user_id, body }) {
   try {
     await db.execute(`
       UPDATE
@@ -137,7 +137,7 @@ async function deleteTypeTemplateFile({ uuid, user_id, body }) {
 module.exports = {
   getListTypeTemplateFile,
   getListTTF,
-  createTypeTemplateFile,
-  updateTypeTemplateFile,
-  deleteTypeTemplateFile,
+  createTypeFile,
+  updateTypeFile,
+  deleteTypeFile,
 };
