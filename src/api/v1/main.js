@@ -10,6 +10,7 @@ router.use("/issuingauthority", require("./route/issuingauthority"));
 router.use("/administrativelevel", require("./route/administrativelevel"));
 router.use("/document", require("./route/document"));
 router.use("/permission", require("./route/permission"));
+router.use("/department", require("./route/department"));
 router.use("/notification", require("./route/notification"));
 router.use("/dashboard", require("./route/dashboard"));
 
