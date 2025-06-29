@@ -23,7 +23,7 @@ async function getIssuingAuthority({
       LEFT JOIN \`administrativelevel\` ON \`issuingauthority\`.\`administrativelevel_id\` = \`administrativelevel\`.\`uuid\`
       WHERE
         (\`issuingauthority\`.\`name\` LIKE '%${keyword}%') AND
-        \`is_removed\` = ${isRecycleBin}
+        \`issuingauthority\`.\`is_removed\` = ${isRecycleBin}
       ORDER BY \`issuingauthority\`.\`updated_at\` DESC
         LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`issuingauthority\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
