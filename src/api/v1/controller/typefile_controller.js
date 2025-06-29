@@ -81,7 +81,7 @@ async function createTypeFile({ user_id, body }) {
 
     return {
       code: 200,
-      message: "Đã thêm loại file mẫu thành công!",
+      message: "Đã thêm loại file thành công!",
     };
   } catch (error) {
     throw error;
@@ -127,7 +127,7 @@ async function deleteTypeFile({ uuid, user_id, body }) {
 
     return {
       code: 200,
-      message: "Đã xóa loại file mẫu thành công!",
+      message: "Đã xóa loại file thành công!",
     };
   } catch (error) {
     throw error;
