@@ -174,6 +174,34 @@ async function updateIssuingAuthority({ uuid, body }) {
   }
 }
 
+async function setDHandlerForIA({ uuid, body }) {
+  try {
+    if (body.department == null || body.department == "") {
+      const error = new Error("Phòng ban được chỉ định là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await db.execute(`
+      UPDATE \`department\`
+      SET \`is_handler\` = 0
+      WHERE \`issuingauthority_id\` = '${uuid}';
+    `);
+    await db.execute(`
+      UPDATE \`department\`
+      SET \`is_handler\` = 1
+      WHERE \`uuid\` = '${body.department}';
+    `);
+
+    return {
+      code: 200,
+      message: "Đã chỉnh sửa thông tin cơ quan ban hành thành công!",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function deleteIssuingAuthority({ uuid, user_id, body }) {
   try {
     await db.execute(`
@@ -199,5 +227,6 @@ module.exports = {
   getListIA,
   createIssuingAuthority,
   updateIssuingAuthority,
+  setDHandlerForIA,
   deleteIssuingAuthority,
 };

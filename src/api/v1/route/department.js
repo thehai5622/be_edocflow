@@ -21,6 +21,7 @@ router.get("/dropdown", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.getListD({
       keyword: req.query.keyword,
+      issuing_authority: req.query.issuing_authority
     }));
   } catch (error) {
     next(error);

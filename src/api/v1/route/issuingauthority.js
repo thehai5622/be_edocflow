@@ -49,6 +49,17 @@ router.put("/:id", checkLogin, async (req, res, next) => {
   }
 });
 
+router.put("/set-department-handler/:id", checkLogin, async (req, res, next) => {
+  try {
+    res.json(await controller.setDHandlerForIA({
+      uuid: req.params.id,
+      body: req.body
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.delete("/:id", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.deleteIssuingAuthority({

@@ -58,7 +58,7 @@ async function getListDepartment({
   }
 }
 
-async function getListD({ keyword = "" }) {
+async function getListD({ keyword = "", issuing_authority = "" }) {
   try {
     const result = await db.execute(`
       SELECT
@@ -68,6 +68,7 @@ async function getListD({ keyword = "" }) {
         \`department\`
       WHERE
         \`name\` LIKE '%${keyword}%' AND \`is_removed\` = 0
+        ${issuing_authority == "" ? "" : `AND \`issuingauthority_id\` = '${issuing_authority}'`}
     `);
 
     return {
@@ -126,25 +127,17 @@ async function updateDepartment({ uuid, body }) {
       error.statusCode = 400;
       throw error;
     }
-    if (body.issuingauthority_id == null || body.issuingauthority_id == "") {
-      const error = new Error(
-        "Thuộc bộ phận của cơ quan ban hành là bắt buộc!"
-      );
-      error.statusCode = 400;
-      throw error;
-    }
 
     await db.execute(
       `
       UPDATE
         \`department\`
       SET
-        \`name\` = ?,
-        \`issuingauthority_id\` = ?
+        \`name\` = ?
       WHERE
         \`uuid\` = ?
     `,
-      [body.name, body.issuingauthority_id, uuid]
+      [body.name, uuid]
     );
 
     return {

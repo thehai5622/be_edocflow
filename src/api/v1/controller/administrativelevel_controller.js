@@ -68,11 +68,9 @@ async function createAdministrativeLevel({ user_id, body }) {
 
     await db.execute(`
       INSERT INTO \`administrativelevel\`(
-        \`uuid\`,
         \`name\`
       )
       VALUES(
-        UUID(),
         '${body.name}'
       )
     `);
