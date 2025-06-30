@@ -12,20 +12,35 @@ async function getIssuingAuthority({
 
     const result = await db.queryMultiple([
       `SELECT
-          \`issuingauthority\`.\`uuid\`,
-          \`issuingauthority\`.\`name\`,
-          \`issuingauthority\`.\`created_at\`,
-          \`issuingauthority\`.\`updated_at\`,
-          \`administrativelevel\`.\`uuid\` AS \`a_uuid\`,
-          \`administrativelevel\`.\`name\` AS \`a_name\`
+        \`ia\`.\`uuid\`,
+        \`ia\`.\`name\`,
+        \`ia\`.\`created_at\`,
+        \`ia\`.\`updated_at\`,
+        \`al\`.\`uuid\` AS \`a_uuid\`,
+        \`al\`.\`name\` AS \`a_name\`,
+        (
+          SELECT \`d\`.\`uuid\`
+          FROM \`department\` \`d\`
+          WHERE \`d\`.\`issuingauthority_id\` = \`ia\`.\`uuid\` AND \`d\`.\`is_handler\` = 1
+          ORDER BY \`d\`.\`updated_at\` DESC
+          LIMIT 1
+        ) AS \`department_uuid\`,
+        (
+          SELECT \`d\`.\`name\`
+          FROM \`department\` \`d\`
+          WHERE \`d\`.\`issuingauthority_id\` = \`ia\`.\`uuid\` AND \`d\`.\`is_handler\` = 1
+          ORDER BY \`d\`.\`updated_at\` DESC
+          LIMIT 1
+        ) AS \`department_name\`
       FROM
-          \`issuingauthority\`
-      LEFT JOIN \`administrativelevel\` ON \`issuingauthority\`.\`administrativelevel_id\` = \`administrativelevel\`.\`uuid\`
+        \`issuingauthority\` \`ia\`
+      LEFT JOIN \`administrativelevel\` \`al\`
+        ON \`ia\`.\`administrativelevel_id\` = \`al\`.\`uuid\`
       WHERE
-        (\`issuingauthority\`.\`name\` LIKE '%${keyword}%') AND
-        \`issuingauthority\`.\`is_removed\` = ${isRecycleBin}
-      ORDER BY \`issuingauthority\`.\`updated_at\` DESC
-        LIMIT ${offset}, ${limit}`,
+        \`ia\`.\`name\` LIKE '%${keyword}%'
+        AND \`ia\`.\`is_removed\` = ${isRecycleBin}
+      ORDER BY \`ia\`.\`updated_at\` DESC
+      LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`issuingauthority\` WHERE \`name\` LIKE '%${keyword}%' AND is_removed = ${isRecycleBin}`,
     ]);
     const totalCount = result[1][0].total;
@@ -41,6 +56,10 @@ async function getIssuingAuthority({
               administrative_level: {
                 uuid: item.a_uuid,
                 name: item.a_name,
+              },
+              department: {
+                uuid: item.department_uuid,
+                name: item.department_name,
               },
             };
           });

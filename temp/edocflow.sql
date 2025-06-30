@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2025 at 09:19 PM
+-- Generation Time: Jun 30, 2025 at 02:39 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -31,18 +31,43 @@ CREATE TABLE `administrativelevel` (
   `uuid` tinyint(1) NOT NULL,
   `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_removed` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `administrativelevel`
 --
 
-INSERT INTO `administrativelevel` (`uuid`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Trung ương', '2025-05-08 19:49:02', '2025-05-08 19:49:02'),
-(2, 'Cấp tỉnh', '2025-05-08 19:49:02', '2025-05-08 19:49:02'),
-(3, 'Cấp huyện', '2025-05-08 19:49:02', '2025-05-08 19:49:02'),
-(4, 'Cấp xã', '2025-05-08 19:49:02', '2025-05-08 19:49:02');
+INSERT INTO `administrativelevel` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) VALUES
+(1, 'Trung ương', '2025-05-08 19:49:02', '2025-05-08 19:49:02', 0),
+(2, 'Cấp tỉnh', '2025-05-08 19:49:02', '2025-05-08 19:49:02', 0),
+(3, 'Cấp huyện', '2025-05-08 19:49:02', '2025-05-08 19:49:02', 0),
+(4, 'Cấp xã', '2025-05-08 19:49:02', '2025-05-08 19:49:02', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `department`
+--
+
+CREATE TABLE `department` (
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `is_handler` tinyint(1) DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `is_removed` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`uuid`, `issuingauthority_id`, `name`, `created_at`, `updated_at`, `is_removed`, `is_handler`) VALUES
+('6cf71324-5471-11f0-84eb-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', 'Nội vụ', '2025-06-29 05:44:18', '2025-06-29 05:44:18', 0, 0),
+('e8440156-5470-11f0-84eb-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', 'Công văn', '2025-06-29 05:40:35', '2025-06-29 16:01:55', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -59,6 +84,7 @@ CREATE TABLE `document` (
   `field_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `release` datetime DEFAULT NULL,
   `templatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reference_number` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `summary` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `original_location` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `number_releases` int(2) DEFAULT NULL,
@@ -74,10 +100,11 @@ CREATE TABLE `document` (
 -- Dumping data for table `document`
 --
 
-INSERT INTO `document` (`uuid`, `user_id`, `from_issuingauthority_id`, `issuingauthority_id`, `usersign_id`, `field_id`, `templatefile_id`, `summary`, `original_location`, `number_releases`, `status`, `urgency_level`, `confidentiality_level`, `created_at`, `updated_at`, `is_removed`, `release`) VALUES
-('41039ffa-4176-11f0-86e9-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', '324cf553-fccd-11ef-b13b-089798d3', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'aa', 'aa', 1, 4, 0, 0, '2025-06-05 02:00:57', '2025-06-05 02:03:39', 0, '2026-01-01 00:00:00'),
-('b48f4319-3b6d-11f0-8dd8-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', '53c2b8d5-2cf2-11f0-9674-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', NULL, '97cea305-187a-11f0-bb92-089798d3', 'f99141d0-fcc4-11ef-b13b-089798d3', 'Hướng dẫn thực hiện Nghị định số X/2024/NĐ-CP', 'Kho', 2, 1, 2, 0, '2025-05-28 09:44:41', '2025-05-28 09:44:41', 0, NULL),
-('d8bc0d6b-352b-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', '53c2b8d5-2cf2-11f0-9674-089798d3', NULL, '1c159b67-fccd-11ef-b13b-089798d3', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'Một đoạn trích yếu nào đó', 'Tổng khu hành chính', 3, 1, 0, 0, '2025-05-20 10:38:07', '2025-05-20 16:25:04', 0, NULL);
+INSERT INTO `document` (`uuid`, `user_id`, `from_issuingauthority_id`, `issuingauthority_id`, `usersign_id`, `field_id`, `release`, `templatefile_id`, `summary`, `original_location`, `number_releases`, `status`, `urgency_level`, `confidentiality_level`, `created_at`, `updated_at`, `is_removed`, `reference_number`) VALUES
+('2b26162f-41bb-11f0-9273-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', '1c159b67-fccd-11ef-b13b-089798d3', '2026-01-01 00:00:00', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'bb', 'bb', 1, 3, 0, 0, '2025-06-05 10:14:18', '2025-06-05 11:45:39', 0, NULL),
+('41039ffa-4176-11f0-86e9-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', '324cf553-fccd-11ef-b13b-089798d3', '2026-01-01 00:00:00', 'e85dd89d-fbc4-11ef-8991-309c23d7', 'aa', 'aa', 1, 4, 0, 0, '2025-06-05 02:00:57', '2025-06-05 02:03:39', 0, NULL),
+('b48f4319-3b6d-11f0-8dd8-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', '53c2b8d5-2cf2-11f0-9674-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', NULL, '97cea305-187a-11f0-bb92-089798d3', NULL, 'f99141d0-fcc4-11ef-b13b-089798d3', 'Hướng dẫn thực hiện Nghị định số X/2024/NĐ-CP', 'Kho', 2, 2, 2, 0, '2025-05-28 09:44:41', '2025-06-07 10:38:03', 0, NULL),
+('d8bc0d6b-352b-11f0-b4a3-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', '6af857b7-2cf1-11f0-9674-089798d3', '53c2b8d5-2cf2-11f0-9674-089798d3', NULL, '1c159b67-fccd-11ef-b13b-089798d3', NULL, 'e85dd89d-fbc4-11ef-8991-309c23d7', 'Một đoạn trích yếu nào đó', 'Tổng khu hành chính', 3, 5, 0, 0, '2025-05-20 10:38:07', '2025-06-13 00:00:00', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,7 +128,12 @@ INSERT INTO `field` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) V
 ('1c159b67-fccd-11ef-b13b-089798d3', 'Giải trí', '2025-03-09 16:58:54', '2025-03-09 17:00:56', 0),
 ('2e307e6b-fccd-11ef-b13b-089798d3', 'Truyền thống - Văn hóa', '2025-03-09 16:59:24', '2025-03-09 16:59:24', 0),
 ('324cf553-fccd-11ef-b13b-089798d3', 'Nghệ thuật', '2025-03-09 16:59:31', '2025-04-13 18:19:39', 0),
-('97cea305-187a-11f0-bb92-089798d3', 'Công nghiệp', '2025-04-13 22:18:46', '2025-04-14 20:03:28', 0);
+('97cea305-187a-11f0-bb92-089798d3', 'Công nghiệp', '2025-04-13 22:18:46', '2025-04-14 20:03:28', 0),
+('d9a8e3cd-543f-11f0-84eb-089798d3', 'Nội vụ', '2025-06-28 23:49:25', '2025-06-28 23:49:25', 0),
+('dea6f867-543f-11f0-84eb-089798d3', 'Tư pháp', '2025-06-28 23:49:34', '2025-06-28 23:49:34', 0),
+('eb9aaa71-543f-11f0-84eb-089798d3', 'Giáo dục', '2025-06-28 23:49:56', '2025-06-28 23:49:56', 0),
+('f3c3b6c8-543f-11f0-84eb-089798d3', 'An ninh', '2025-06-28 23:50:09', '2025-06-28 23:50:09', 0),
+('ff41222d-543f-11f0-84eb-089798d3', 'Y tế', '2025-06-28 23:50:29', '2025-06-28 23:50:29', 0);
 
 -- --------------------------------------------------------
 
@@ -147,9 +179,21 @@ CREATE TABLE `notification` (
   `title` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `body` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `data` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `notification`
+--
+
+INSERT INTO `notification` (`uuid`, `user_id`, `title`, `body`, `data`, `created_at`, `updated_at`, `is_read`) VALUES
+('2bb50271-41bb-11f0-9273-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'Văn bản đến', 'Văn bản đến mới!', '{\"type\":\"document\",\"uuid\":\"\", \"more\":\"in\"}', '2025-06-05 10:14:19', '2025-06-05 17:09:50', 0),
+('2bb51437-41bb-11f0-9273-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'Văn bản đến', 'Văn bản đến mới!', '{\"type\":\"document\",\"uuid\":\"\",\"more\": \"in\"}', '2025-06-05 10:14:19', '2025-06-05 17:11:56', 0),
+('d21bd9b0-4350-11f0-9273-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', 'Văn bản đi', 'Văn bản b48f4319-3b6d-11f0-8dd8-309c23d7 đã được tiếp nhận!', '{\"type\":\"document\",\"uuid\":\"b48f4319-3b6d-11f0-8dd8-309c23d7\",\"more\":\"out\"}', '2025-06-07 10:38:04', '2025-06-07 10:38:04', 0),
+('eed01248-41c7-11f0-9273-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'Văn bản đi', 'Văn bản 2b26162f-41bb-11f0-9273-309c23d7 đã được ký duyệt!', '{\"type\":\"document\",\"uuid\":\"2b26162f-41bb-11f0-9273-309c23d7\",\"more\":\"out\"}', '2025-06-05 11:45:40', '2025-06-05 17:09:59', 0),
+('eed2f579-41c7-11f0-9273-309c23d7', '8c951845-fb31-11ef-8991-309c23d7', 'Văn bản đi', 'Văn bản 2b26162f-41bb-11f0-9273-309c23d7 đã được ký duyệt!', '{\"type\":\"document\",\"uuid\":\"2b26162f-41bb-11f0-9273-309c23d7\",\"more\":\"out\"}', '2025-06-05 11:45:40', '2025-06-05 16:28:57', 0);
 
 -- --------------------------------------------------------
 
@@ -220,8 +264,8 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`, `fcm_token`) VALUES
-('aab714bd-3eb9-11f0-86e9-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NzYyNzU3LCJleHAiOjE3NDg3NjQ1NTd9.3CCqmWmU2lw7hng23Se4J3RW4N1ENn4yMOQHDumCPIE', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NzYyNzU3LCJleHAiOjE3NTEzNTQ3NTd9.cR_edcUJmw9L1QwqISjoXX5H2y8GLJYAR4LYAzkTXs4', NULL),
-('d2d76131-4173-11f0-86e9-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ5MDYyNjEzLCJleHAiOjE3NDkwNjQ0MTN9.F2Pddn8laccy6rAdtDx6oYsnXCrv7esI2jD49od2w_w', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzQ5MDYyNjEzLCJleHAiOjE3NTE2NTQ2MTN9.MjXAmoxDCMVpJ269y-0cpumDFc1wbKh8KjzKpFOg6Ws', 'fzfWJREUTc6kCzebT0LYFC:APA91bEvZvWMKarD_GaCOhIPipp1tdbA8jzWCzbC-X91oRGTjDaW5tK13shhWg6kOpyp5VxY5i3KPorRxHXhMABmhQnTRgnagFu454OFx3clEx2nbplI2-4'),
+('a141e357-4d18-11f0-8d95-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzUwMzQyODYyLCJleHAiOjE3NTAzNDQ2NjJ9.OK_2oq7PUUVIrTuZ-NCprkKYz_crsm0Hpr_KnNo33LE', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzUwMzQyODYyLCJleHAiOjE3NTI5MzQ4NjJ9.qH90B-dbZRO3sBn62027l7Vc6Y4X9d107mPvfHTFwSI', 'null'),
+('d4fbaba1-54ea-11f0-84eb-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzUxMjAyODAyLCJleHAiOjE3NTEyMDQ2MDJ9.Xohf3FhrjvkXDs1NP4Fsf0oJrnmqhs8XSHZj0rVRw24', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzUxMjAyODAyLCJleHAiOjE3NTM3OTQ4MDJ9.xmYymx8j4174gfMImf2mN4KSj1RmruaWqfsSiA2icas', 'null'),
 ('d84fbf13-3ba2-11f0-8dd8-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NDIzMTA0LCJleHAiOjE3NDg0MjQ5MDR9.15lVK_k3PuYSaSNaSmRUOorhdelx0OjONzfAg267854', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NDIzMTA0LCJleHAiOjE3NTEwMTUxMDR9.h1dwPxCm8p4C-0PorMJWSdMmG-YGgH7iaZLyaO6OU4I', 'fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ');
 
 -- --------------------------------------------------------
@@ -245,8 +289,15 @@ CREATE TABLE `typetemplatefile` (
 INSERT INTO `typetemplatefile` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) VALUES
 ('886419de-fcba-11ef-b13b-089798d3', 'Tờ trình', '2025-03-09 14:45:55', '2025-03-09 14:45:55', 0),
 ('886a0fd6-fcc7-11ef-b13b-089798d3', 'Chương trình', '2025-03-09 16:18:58', '2025-03-09 16:18:58', 0),
+('96ec3041-5440-11f0-84eb-089798d3', 'Chỉ thị', '2025-06-28 23:54:43', '2025-06-28 23:54:43', 0),
+('9a1a3f43-5440-11f0-84eb-089798d3', 'Quy chế', '2025-06-28 23:54:48', '2025-06-28 23:54:48', 0),
 ('9bdc8ea4-fcba-11ef-b13b-089798d3', 'Nghị quyết', '2025-03-09 14:46:28', '2025-03-09 16:16:40', 0),
-('e7fc979a-1935-11f0-991b-089798d3', 'Thông tư', '2025-04-14 20:39:36', '2025-04-14 20:47:17', 0);
+('a48b94e6-5440-11f0-84eb-089798d3', 'Quy định', '2025-06-28 23:55:06', '2025-06-28 23:55:06', 0),
+('a7f9dc21-5440-11f0-84eb-089798d3', 'Hướng dẫn', '2025-06-28 23:55:12', '2025-06-28 23:55:12', 0),
+('ae3f703b-5440-11f0-84eb-089798d3', 'Báo cáo', '2025-06-28 23:55:22', '2025-06-28 23:55:22', 0),
+('b368fc77-5440-11f0-84eb-089798d3', 'Biên bản', '2025-06-28 23:55:31', '2025-06-28 23:55:31', 0),
+('e7fc979a-1935-11f0-991b-089798d3', 'Thông tư', '2025-04-14 20:39:36', '2025-04-14 20:47:17', 0),
+('fc842fc6-5494-11f0-84eb-089798d3', 'Vẫn có đấy', '2025-06-29 09:58:51', '2025-06-29 09:59:02', 1);
 
 -- --------------------------------------------------------
 
@@ -292,10 +343,18 @@ ALTER TABLE `administrativelevel`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `department`
+--
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`uuid`),
+  ADD KEY `department_issuingauthority` (`issuingauthority_id`);
+
+--
 -- Indexes for table `document`
 --
 ALTER TABLE `document`
   ADD PRIMARY KEY (`uuid`),
+  ADD UNIQUE KEY `reference_number` (`reference_number`),
   ADD KEY `document_field` (`field_id`),
   ADD KEY `document_templatefile` (`templatefile_id`),
   ADD KEY `document_user` (`user_id`),
@@ -366,6 +425,12 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `department`
+--
+ALTER TABLE `department`
+  ADD CONSTRAINT `department_issuingauthority` FOREIGN KEY (`issuingauthority_id`) REFERENCES `issuingauthority` (`uuid`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `document`
