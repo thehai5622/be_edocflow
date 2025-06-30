@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2025 at 02:00 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Generation Time: Jun 30, 2025 at 09:35 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `administrativelevel` (
   `uuid` tinyint(1) NOT NULL,
-  `name` varchar(75) NOT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -52,9 +52,9 @@ INSERT INTO `administrativelevel` (`uuid`, `name`, `created_at`, `updated_at`, `
 --
 
 CREATE TABLE `department` (
-  `uuid` char(32) NOT NULL,
-  `issuingauthority_id` char(32) DEFAULT NULL,
-  `name` varchar(75) NOT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `is_handler` tinyint(1) DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -78,17 +78,17 @@ INSERT INTO `department` (`uuid`, `issuingauthority_id`, `name`, `is_handler`, `
 --
 
 CREATE TABLE `document` (
-  `uuid` char(32) NOT NULL,
-  `user_id` char(32) DEFAULT NULL,
-  `from_issuingauthority_id` char(32) DEFAULT NULL,
-  `issuingauthority_id` char(32) DEFAULT NULL,
-  `usersign_id` char(32) DEFAULT NULL,
-  `field_id` char(32) DEFAULT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `from_issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `usersign_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `field_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `release` datetime DEFAULT NULL,
-  `templatefile_id` char(32) DEFAULT NULL,
-  `reference_number` varchar(20) DEFAULT NULL,
-  `summary` varchar(75) DEFAULT NULL,
-  `original_location` varchar(75) DEFAULT NULL,
+  `templatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reference_number` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `summary` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `original_location` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `number_releases` int(2) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `urgency_level` tinyint(1) DEFAULT NULL,
@@ -115,8 +115,8 @@ INSERT INTO `document` (`uuid`, `user_id`, `from_issuingauthority_id`, `issuinga
 --
 
 CREATE TABLE `field` (
-  `uuid` char(32) NOT NULL,
-  `name` varchar(75) NOT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -144,9 +144,9 @@ INSERT INTO `field` (`uuid`, `name`, `created_at`, `updated_at`, `is_removed`) V
 --
 
 CREATE TABLE `issuingauthority` (
-  `uuid` char(32) NOT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `administrativelevel_id` tinyint(1) DEFAULT NULL,
-  `name` varchar(75) NOT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -176,11 +176,11 @@ INSERT INTO `issuingauthority` (`uuid`, `administrativelevel_id`, `name`, `creat
 --
 
 CREATE TABLE `notification` (
-  `uuid` char(32) NOT NULL,
-  `user_id` char(32) DEFAULT NULL,
-  `title` varchar(75) DEFAULT NULL,
-  `body` varchar(200) DEFAULT NULL,
-  `data` varchar(200) DEFAULT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `title` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `body` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `data` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_read` tinyint(1) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -205,7 +205,7 @@ INSERT INTO `notification` (`uuid`, `user_id`, `title`, `body`, `data`, `is_read
 
 CREATE TABLE `permission` (
   `uuid` tinyint(1) NOT NULL,
-  `name` varchar(75) NOT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -224,14 +224,14 @@ INSERT INTO `permission` (`uuid`, `name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `templatefile` (
-  `uuid` char(32) NOT NULL,
-  `user_id` char(32) DEFAULT NULL,
-  `typetemplatefile_id` char(32) DEFAULT NULL,
-  `name` varchar(75) NOT NULL,
-  `file` varchar(100) NOT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `typetemplatefile_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
+  `file` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `type` tinyint(1) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `note` varchar(500) DEFAULT NULL,
+  `note` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -254,11 +254,11 @@ INSERT INTO `templatefile` (`uuid`, `user_id`, `typetemplatefile_id`, `name`, `f
 --
 
 CREATE TABLE `token` (
-  `uuid` char(32) NOT NULL,
-  `user_id` char(32) NOT NULL,
-  `access_token` char(181) NOT NULL,
-  `refresh_token` char(181) NOT NULL,
-  `fcm_token` varchar(150) DEFAULT NULL
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `access_token` char(181) COLLATE utf8_unicode_ci NOT NULL,
+  `refresh_token` char(181) COLLATE utf8_unicode_ci NOT NULL,
+  `fcm_token` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -266,9 +266,9 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`, `fcm_token`) VALUES
-('a141e357-4d18-11f0-8d95-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzUwMzQyODYyLCJleHAiOjE3NTAzNDQ2NjJ9.OK_2oq7PUUVIrTuZ-NCprkKYz_crsm0Hpr_KnNo33LE', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzUwMzQyODYyLCJleHAiOjE3NTI5MzQ4NjJ9.qH90B-dbZRO3sBn62027l7Vc6Y4X9d107mPvfHTFwSI', 'null'),
-('c4dd8dde-55a9-11f0-8b29-309c23d7', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzUxMjg0ODA1LCJleHAiOjE3NTEyODY2MDV9.725E0h6SqYS2Ei2ijlOPW2YM3206vCRuCBrjgB8tzDk', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzUxMjg0ODA1LCJleHAiOjE3NTM4NzY4MDV9.yqf4pn8xZ9c9lqb3OSUxfni4wBYmfFkCxAZr8bQooFA', 'null'),
-('d84fbf13-3ba2-11f0-8dd8-309c23d7', '418926cb-3aa1-11f0-8dd8-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NDIzMTA0LCJleHAiOjE3NDg0MjQ5MDR9.15lVK_k3PuYSaSNaSmRUOorhdelx0OjONzfAg267854', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzQ4NDIzMTA0LCJleHAiOjE3NTEwMTUxMDR9.h1dwPxCm8p4C-0PorMJWSdMmG-YGgH7iaZLyaO6OU4I', 'fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ');
+('2b2fb14e-55e8-11f0-84eb-089798d3', 'edd70544-f73e-11ef-9eb4-089798d3', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzUxMzExNjA5LCJleHAiOjE3NTEzMTM0MDl9.c4BpVLZw0ghKdYPhPKXrEBjTkSq2fTQC3cPccMdnu4A', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVkZDcwNTQ0LWY3M2UtMTFlZi05ZWI0LTA4OTc5OGQzIiwiaWF0IjoxNzUxMzExNjA5LCJleHAiOjE3NTM5MDM2MDl9.XGEUQukGLylTk1jsWxX_vdPJaK60JrH5D1TGwHpmGi0', 'null'),
+('f1e639a4-55e7-11f0-84eb-089798d3', '418926cb-3aa1-11f0-8dd8-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzUxMzExNTEzLCJleHAiOjE3NTEzMTMzMTN9.05LjM510feWSqsrX6H66506rSy7iRtZmYOYqHrKvJig', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxODkyNmNiLTNhYTEtMTFmMC04ZGQ4LTMwOWMyM2Q3IiwiaWF0IjoxNzUxMzExNTEzLCJleHAiOjE3NTM5MDM1MTN9.5sJ5vPZwF2o24zO1war3Qs-DoCqoFz9UYwlcK3SILFU', 'null'),
+('fedf5fdd-55e7-11f0-84eb-089798d3', '8c951845-fb31-11ef-8991-309c23d7', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzUxMzExNTM0LCJleHAiOjE3NTEzMTMzMzR9.hTE_DXz_GL3xuObnuY1m7BWJUlsV9iGKiH3BYzQShv0', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOTUxODQ1LWZiMzEtMTFlZi04OTkxLTMwOWMyM2Q3IiwiaWF0IjoxNzUxMzExNTM0LCJleHAiOjE3NTM5MDM1MzR9.G71oWX-HmaV8qyBK45bZDUbumc8Vuz2E2_a2J6Cnr3U', 'null');
 
 -- --------------------------------------------------------
 
@@ -277,8 +277,8 @@ INSERT INTO `token` (`uuid`, `user_id`, `access_token`, `refresh_token`, `fcm_to
 --
 
 CREATE TABLE `typetemplatefile` (
-  `uuid` char(32) NOT NULL,
-  `name` varchar(75) NOT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_removed` tinyint(1) DEFAULT 0
@@ -308,21 +308,21 @@ INSERT INTO `typetemplatefile` (`uuid`, `name`, `created_at`, `updated_at`, `is_
 --
 
 CREATE TABLE `user` (
-  `uuid` char(32) NOT NULL,
+  `uuid` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `permission_id` tinyint(1) DEFAULT NULL,
-  `issuingauthority_id` char(32) DEFAULT NULL,
-  `name` varchar(75) NOT NULL,
+  `issuingauthority_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(75) COLLATE utf8_unicode_ci NOT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
-  `phone` varchar(10) NOT NULL,
-  `email` varchar(75) DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `avatar` varchar(75) DEFAULT NULL,
+  `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `avatar` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `department_id` char(32) DEFAULT NULL
+  `department_id` char(32) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -331,7 +331,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`uuid`, `permission_id`, `issuingauthority_id`, `name`, `gender`, `birth_day`, `phone`, `email`, `username`, `password`, `avatar`, `status`, `created_at`, `updated_at`, `department_id`) VALUES
 ('418926cb-3aa1-11f0-8dd8-309c23d7', 1, '53c2b8d5-2cf2-11f0-9674-089798d3', 'AA', 1, '2025-05-27', '321654987', '', 'aa', 'e10adc3949ba59abbe56e057f20f883e', 'resources/781943260ed800e0288102e91d010393.png', 1, '2025-05-27 09:21:11', '2025-06-30 14:41:09', '6c1b7393-556d-11f0-8b29-309c23d7'),
-('8c951845-fb31-11ef-8991-309c23d7', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', 'ef73781effc5774100f87fe2f437a435', 'resources/ae6e246332d700ce171e7ca066e19a27.jpg', 1, '2025-03-07 15:52:48', '2025-06-30 14:40:30', 'e8440156-5470-11f0-84eb-089798d3'),
+('4b7f530c-55e1-11f0-84eb-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Hồng Y giáo chủ', 1, '2025-07-14', '0326090589', 'hongy@gmail.com', NULL, NULL, NULL, 1, '2025-07-01 01:37:36', '2025-07-01 02:13:03', '6cf71324-5471-11f0-84eb-089798d3'),
+('8c951845-fb31-11ef-8991-309c23d7', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Nào đó', 1, NULL, '0123789456', 'naodo@gmail.com', 'some1', '487f7b22f68312d2c1bbc93b1aea445b', NULL, 1, '2025-03-07 15:52:48', '2025-07-01 02:30:18', 'e8440156-5470-11f0-84eb-089798d3'),
+('8d6c9cc3-55dc-11f0-84eb-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Nguyễn Văn A', 1, '2002-01-25', '0987123456', 'nguyena@gmail.com', NULL, NULL, NULL, 1, '2025-07-01 01:03:40', '2025-07-01 01:03:40', '187dfe9c-5585-11f0-8b29-309c23d7'),
+('bf1dc00f-55dc-11f0-84eb-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Trần Văn B', 1, '2025-07-01', '0987123654', 'bb@gmail.com', NULL, NULL, 'resources/2d62770ca562c4d585be24fcdce6cc6e.png', 1, '2025-07-01 01:05:03', '2025-07-01 01:05:03', '187dfe9c-5585-11f0-8b29-309c23d7'),
 ('edd70544-f73e-11ef-9eb4-089798d3', 1, '6af857b7-2cf1-11f0-9674-089798d3', 'Quản Trị Viên', 0, '1998-01-25', '0326090580', 'luonghai5622@gmail.com', 'admin', 'ef73781effc5774100f87fe2f437a435', 'resources/f7b84f16effa5961c0118e832b4b3c20.jpg', 1, '2025-03-02 15:18:32', '2025-06-30 14:40:02', '6cf71324-5471-11f0-84eb-089798d3');
 
 --
