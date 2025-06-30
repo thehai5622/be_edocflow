@@ -21,11 +21,14 @@ async function getDetailInfo(id) {
         \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
         \`issuingauthority\`.\`name\` AS \`ia_name\`,
         \`permission\`.\`uuid\` AS \`p_uuid\`,
-        \`permission\`.\`name\` AS \`p_name\`
+        \`permission\`.\`name\` AS \`p_name\`,
+        \`department\`.\`uuid\` AS \`d_uuid\`,
+        \`department\`.\`name\` AS \`d_name\`
       FROM
         \`user\`
       INNER JOIN \`issuingauthority\` ON \`issuingauthority\`.\`uuid\` = \`user\`.\`issuingauthority_id\`
       INNER JOIN \`permission\` ON \`permission\`.\`uuid\` = \`user\`.\`permission_id\`
+      INNER JOIN \`department\` ON \`department\`.\`uuid\` = \`user\`.\`department_id\`
       WHERE
         \`user\`.\`uuid\` = ?
     `,
@@ -53,6 +56,10 @@ async function getDetailInfo(id) {
             permission: {
               uuid: result.p_uuid,
               name: result.p_name,
+            },
+            department: {
+              uuid: result.d_uuid,
+              name: result.d_name,
             },
           };
 
@@ -95,6 +102,7 @@ async function getListUser({
         \`user\`
       LEFT JOIN \`permission\` ON \`user\`.\`permission_id\` = \`permission\`.\`uuid\`
       LEFT JOIN \`issuingauthority\` ON \`user\`.\`issuingauthority_id\` = \`issuingauthority\`.\`uuid\`
+      LEFT JOIN \`department\` ON \`user\`.\`department_id\` = \`department\`.\`uuid\`
       WHERE
         \`user\`.\`name\` LIKE '%${keyword}%' OR \`user\`.\`uuid\` LIKE '%${keyword}%'
       ORDER BY \`user\`.\`updated_at\` DESC
