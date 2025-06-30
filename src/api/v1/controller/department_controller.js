@@ -68,7 +68,7 @@ async function getListD({ keyword = "", issuing_authority = "" }) {
         \`department\`
       WHERE
         \`name\` LIKE '%${keyword}%' AND \`is_removed\` = 0
-        ${issuing_authority == "" ? "" : `AND \`issuingauthority_id\` = '${issuing_authority}'`}
+        AND \`issuingauthority_id\` = '${issuing_authority}'
     `);
 
     return {

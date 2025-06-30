@@ -163,6 +163,11 @@ async function createUser({ user_id, body }) {
       error.statusCode = 400;
       throw error;
     }
+    if (body.department == null || body.department == "") {
+      const error = new Error("Thuộc phòng ban là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
     if (body.name == null || body.name == "") {
       const error = new Error("Tên cán bộ là bắt buộc!");
       error.statusCode = 400;
@@ -190,6 +195,7 @@ async function createUser({ user_id, body }) {
         \`uuid\`,
         \`permission_id\`,
         \`issuingauthority_id\`,
+        \`department_id\`,
         \`name\`,
         \`gender\`,
         \`birth_day\`,
@@ -199,12 +205,13 @@ async function createUser({ user_id, body }) {
       )
       VALUES(
         UUID(),
-        ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?
       )   
     `,
       [
         body.permission,
         body.issuing_authority,
+        body.department,
         body.name,
         body.gender,
         body.birth_day,
