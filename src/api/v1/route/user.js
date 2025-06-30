@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controller/user_controller");
 const { checkLogin } = require("../../middleware/check_login");
-const { sendMultiplePushNotification } = require("../../utils/notification");
 
 router.get("/me", checkLogin, async (req, res, next) => {
   try {
@@ -59,19 +58,6 @@ router.post("/login", async (req, res, next) => {
 router.post("/refresh-token", async (req, res, next) => {
   try {
     res.json(await controller.refreshToken(req.body));
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post("/send-notification", checkLogin, async (req, res, next) => {
-  try {
-    await sendMultiplePushNotification(
-      ["fSkO1iNRRoim0gse5xiPiS:APA91bGIKust6WRsG6nBemLlYSia2KbZkD5gP-UPnelZRf3dXQqc6jH6YqxgsV0zV52Qc0-UHOx7_DLJTJltdGEWWfN_2pHZtzm7Yl-E_WBux0JIxmmHZuQ"],
-      "Xin chào",
-      "Bạn nhận được thông báo từ server!"
-    );
-    res.status(200).json({ message: "Thông báo đã được gửi!" });
   } catch (error) {
     next(error);
   }
