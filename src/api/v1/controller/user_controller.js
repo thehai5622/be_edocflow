@@ -97,7 +97,9 @@ async function getListUser({
         \`permission\`.\`uuid\` AS \`p_uuid\`,
         \`permission\`.\`name\` AS \`p_name\`,
         \`issuingauthority\`.\`uuid\` AS \`ia_uuid\`,
-        \`issuingauthority\`.\`name\` AS \`ia_name\`
+        \`issuingauthority\`.\`name\` AS \`ia_name\`,
+        \`department\`.\`uuid\` AS \`d_uuid\`,
+        \`department\`.\`name\` AS \`d_name\`
       FROM
         \`user\`
       LEFT JOIN \`permission\` ON \`user\`.\`permission_id\` = \`permission\`.\`uuid\`
@@ -134,6 +136,10 @@ async function getListUser({
               issuing_authority: {
                 uuid: item.ia_uuid,
                 name: item.ia_name,
+              },
+              department: {
+                uuid: item.d_uuid,
+                name: item.d_name,
               },
             };
           });
@@ -239,12 +245,14 @@ async function updateUser(uuid, body) {
       SET
         \`permission_id\` = ?,
         \`issuingauthority_id\` = ?
+        \`department_id\` = ?
       WHERE 
         \`uuid\` = ?
     `,
       [
         body.permission,
         body.issuing_authority,
+        body.department,
         uuid,
       ]
     );
