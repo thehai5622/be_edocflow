@@ -24,6 +24,7 @@ async function getListDocumentOut({
     const result = await db.queryMultiple([
       `SELECT
         \`document\`.\`uuid\`,
+        \`document\`.\`reference_number\`,
         \`document\`.\`summary\`,
         \`document\`.\`status\`,
         \`document\`.\`created_at\`,
@@ -60,6 +61,7 @@ async function getListDocumentOut({
         : result[0].map((item) => {
             return {
               uuid: item.uuid,
+              reference_number: item.reference_number,
               name: item.name,
               summary: item.summary,
               status: item.status,
@@ -112,6 +114,7 @@ async function getListDocumentIn({
     const result = await db.queryMultiple([
       `SELECT
         \`document\`.\`uuid\`,
+        \`document\`.\`reference_number\`,
         \`document\`.\`summary\`,
         \`document\`.\`status\`,
         \`document\`.\`created_at\`,
@@ -148,6 +151,7 @@ async function getListDocumentIn({
         : result[0].map((item) => {
             return {
               uuid: item.uuid,
+              reference_number: item.reference_number,
               name: item.name,
               summary: item.summary,
               status: item.status,
@@ -182,6 +186,7 @@ async function getDetailDocument({ uuid }) {
     const [result] = await db.execute(`
       SELECT
         \`document\`.\`uuid\`,
+        \`document\`.\`reference_number\`,
         \`document\`.\`summary\`,
         \`document\`.\`release\`,
         \`document\`.\`original_location\`,
@@ -225,6 +230,7 @@ async function getDetailDocument({ uuid }) {
         ? null
         : {
             uuid: result.uuid,
+            reference_number: result.reference_number,
             name: result.name,
             summary: result.summary,
             release: result.release,
@@ -272,6 +278,11 @@ async function getDetailDocument({ uuid }) {
 
 async function createDocument({ user_id, body }) {
   try {
+    if (body.reference_number == null || body.reference_number == "") {
+      const error = new Error("Số hiệu văn bản là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
     if (
       body.from_issuingauthority_id == null ||
       body.from_issuingauthority_id == ""
@@ -335,6 +346,7 @@ async function createDocument({ user_id, body }) {
         \`usersign_id\`,
         \`field_id\`,
         \`templatefile_id\`,
+        \`reference_number\`,
         \`summary\`,
         \`release\`,
         \`original_location\`,
@@ -351,6 +363,7 @@ async function createDocument({ user_id, body }) {
         NULL,
         '${body.field}',
         '${body.template_file}',
+        '${body.reference_number}',
         '${body.summary}',
         '${body.release}',
         '${body.original_location}',
@@ -423,6 +436,11 @@ async function createDocument({ user_id, body }) {
 
 async function updateDocument({ user_id, body, uuid }) {
   try {
+    if (body.reference_number == null || body.reference_number == "") {
+      const error = new Error("Số hiệu văn bản là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
     if (body.field == null || body.field == "") {
       const error = new Error("Lĩnh vực là bắt buộc!");
       error.statusCode = 400;
@@ -485,6 +503,7 @@ async function updateDocument({ user_id, body, uuid }) {
       SET
         \`field_id\` = '${body.field}',
         \`templatefile_id\` = '${body.template_file}',
+        \`reference_number\` = '${body.reference_number}',
         \`summary\` = '${body.summary}',
         \`release\` = '${body.release}',
         \`original_location\` = '${body.original_location}',

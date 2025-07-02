@@ -324,7 +324,13 @@ async function login(user) {
   try {
     const [rows] = await db.execute(`
       SELECT  
-        \`uuid\`, \`name\`, \`avatar\`, \`permission_id\`, \`issuingauthority_id\`, \`status\`
+        \`uuid\`,
+        \`name\`,
+        \`avatar\`,
+        \`permission_id\`,
+        \`issuingauthority_id\`,
+        \`department_id\`,
+        \`status\`
       FROM \`user\` 
       WHERE 
         \`username\` = '${user.username}'
@@ -378,6 +384,7 @@ async function login(user) {
         avatar: rows.avatar ?? null,
         permission: rows.permission_id ?? null,
         issuing_authority: rows.issuingauthority_id ?? null,
+        department: rows.department_id ?? null,
         access_token: token.access_token,
         refresh_token: token.refresh_token,
       },
