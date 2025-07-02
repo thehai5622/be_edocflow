@@ -13,12 +13,22 @@ async function getListDocumentOut({
     const offset = offsetUtils.getOffset(page, limit);
 
     let issuingauthority_id;
+    let is_handler;
+    let department_id;
     await db
       .execute(
-        `SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`
+        `SELECT
+          \`user\`.\`issuingauthority_id\`,
+          \`department\`.\`uuid\` as \`department_id\`,
+          \`department\`.\`is_handler\` as \`is_handler\`
+        FROM \`user\`
+        LEFT JOIN \`department\` ON \`user\`.\`department_id\` = \`department\`.\`uuid\`
+        WHERE \`user\`.\`uuid\` = '${user_id}'`
       )
       .then((result) => {
         issuingauthority_id = result[0].issuingauthority_id;
+        is_handler = result[0].is_handler;
+        department_id = result[0].department_id;
       });
 
     const result = await db.queryMultiple([
@@ -45,6 +55,11 @@ async function getListDocumentOut({
         OR \`document\`.\`original_location\` LIKE '%${keyword}%') AND
         \`document\`.\`from_issuingauthority_id\` = '${issuingauthority_id}' AND
         \`document\`.\`is_removed\` = ${isRecycleBin}
+        ${
+          is_handler == 1
+            ? ""
+            : ` AND \`document\`.\`department_id\` = '${department_id}'`
+        }
       ORDER BY \`document\`.\`updated_at\` DESC
         LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`document\` WHERE
@@ -52,7 +67,12 @@ async function getListDocumentOut({
         OR \`uuid\` LIKE '%${keyword}%' 
         OR \`original_location\` LIKE '%${keyword}%') AND
         \`from_issuingauthority_id\` = '${issuingauthority_id}' AND
-        \`is_removed\` = ${isRecycleBin}`,
+        \`is_removed\` = ${isRecycleBin}
+        ${
+          is_handler == 1
+            ? ""
+            : ` AND \`document\`.\`department_id\` = '${department_id}'`
+        }`,
     ]);
     const totalCount = result[1][0].total;
     const data =
@@ -102,13 +122,22 @@ async function getListDocumentIn({
     const offset = offsetUtils.getOffset(page, limit);
 
     let issuingauthority_id;
-
+    let is_handler;
+    let department_id;
     await db
       .execute(
-        `SELECT \`issuingauthority_id\` FROM \`user\` WHERE \`uuid\` = '${user_id}'`
+        `SELECT
+          \`user\`.\`issuingauthority_id\`,
+          \`department\`.\`uuid\` as \`department_id\`,
+          \`department\`.\`is_handler\` as \`is_handler\`
+        FROM \`user\`
+        LEFT JOIN \`department\` ON \`user\`.\`department_id\` = \`department\`.\`uuid\`
+        WHERE \`user\`.\`uuid\` = '${user_id}'`
       )
       .then((result) => {
         issuingauthority_id = result[0].issuingauthority_id;
+        is_handler = result[0].is_handler;
+        department_id = result[0].department_id;
       });
 
     const result = await db.queryMultiple([
@@ -135,6 +164,11 @@ async function getListDocumentIn({
         OR \`document\`.\`original_location\` LIKE '%${keyword}%') AND
         \`document\`.\`issuingauthority_id\` = '${issuingauthority_id}' AND
         \`document\`.\`is_removed\` = ${isRecycleBin}
+        ${
+          is_handler == 1
+            ? ""
+            : ` AND \`document\`.\`department_id\` = '${department_id}'`
+        }
       ORDER BY \`document\`.\`updated_at\` DESC
         LIMIT ${offset}, ${limit}`,
       `SELECT count(*) AS total FROM \`document\` WHERE
@@ -142,7 +176,12 @@ async function getListDocumentIn({
         OR \`uuid\` LIKE '%${keyword}%' 
         OR \`original_location\` LIKE '%${keyword}%') AND
         \`issuingauthority_id\` = '${issuingauthority_id}' AND
-        \`is_removed\` = ${isRecycleBin}`,
+        \`is_removed\` = ${isRecycleBin}
+        ${
+          is_handler == 1
+            ? ""
+            : ` AND \`document\`.\`department_id\` = '${department_id}'`
+        }`,
     ]);
     const totalCount = result[1][0].total;
     const data =
