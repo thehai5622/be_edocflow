@@ -562,8 +562,14 @@ async function updateDocument({ user_id, body, uuid }) {
   }
 }
 
-async function receptionDocument({ user_id, uuid }) {
+async function receptionDocument({ user_id, uuid, body }) {
   try {
+    if (body.department == null || body.department == "") {
+      const error = new Error("Phòng ban là bắt buộc!");
+      error.statusCode = 400;
+      throw error;
+    }
+
     const [result] = await db.execute(`
       SELECT
         \`status\`,
@@ -585,7 +591,8 @@ async function receptionDocument({ user_id, uuid }) {
       UPDATE
         \`document\`
       SET
-        \`status\` = 2
+        \`status\` = 2,
+        \`department_id\` = '${body.department}'
       WHERE
         \`uuid\` = ?
     `,

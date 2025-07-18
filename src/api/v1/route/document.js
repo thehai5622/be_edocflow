@@ -56,6 +56,7 @@ router.post("/reception-document/:id", checkLogin, async (req, res, next) => {
   try {
     res.json(await controller.receptionDocument({
       uuid: req.params.id,
+      body: req.body
     }));
   } catch (error) {
     next(error);
